@@ -88,13 +88,19 @@
             backdrop-filter: blur(20px);
             border-radius: 24px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
-            padding: 60px 50px;
-            max-width: 480px;
-            margin: 5vh auto;
+            padding: 40px 40px;
+            max-width: 420px;
+            width: 90%;
+            margin: 0 auto;
             text-align: center;
             border: 2px solid rgba(112, 207, 122, 0.2);
             position: relative;
             overflow: hidden;
+            /* Center vertically and horizontally */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .login-container::before {
@@ -108,23 +114,23 @@
         }
 
         .logo-img {
-            width: 60px;   /* adjust as needed */
-            height: auto;  /* keeps aspect ratio */
+            width: 55px;
+            height: auto;
             display: block;
-            margin: 0 auto; /* centers it */
+            margin: 0 auto;
         }
 
         .logo {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, #70CF7A, #43d270);
-            border-radius: 24px;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 25px;
+            margin: 0 auto 20px;
             color: white;
-            font-size: 36px;
+            font-size: 30px;
             font-weight: 800;
             box-shadow: 0 10px 30px rgba(112, 207, 122, 0.4);
             animation: pulse 2s ease-in-out infinite;
@@ -144,9 +150,9 @@
 
         .login-title {
             color: black;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             background: linear-gradient(135deg, black, #333);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -154,12 +160,12 @@
 
         .login-subtitle {
             color: #666;
-            font-size: 18px;
-            margin-bottom: 40px;
+            font-size: 16px;
+            margin-bottom: 30px;
         }
 
         .form-group {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: left;
         }
 
@@ -173,7 +179,7 @@
 
         .form-input {
             width: 100%;
-            padding: 18px 20px;
+            padding: 15px 18px;
             border: 2px solid #EBEDFC;
             border-radius: 16px;
             font-size: 16px;
@@ -191,16 +197,16 @@
 
         .login-btn {
             width: 100%;
-            padding: 18px;
+            padding: 15px;
             background: linear-gradient(135deg, #70CF7A, #43d270);
             color: white;
             border: none;
             border-radius: 16px;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 15px;
+            margin-top: 10px;
             box-shadow: 0 10px 30px rgba(112, 207, 122, 0.3);
         }
 
@@ -446,6 +452,30 @@
             font-weight: 500;
         }
 
+        .access-key {
+            font-size: 11px;
+            color: #43d270;
+            background: rgba(112, 207, 122, 0.1);
+            padding: 4px 10px;
+            border-radius: 15px;
+            margin-top: 10px;
+            display: inline-block;
+            font-weight: 600;
+            border: 1px solid rgba(112, 207, 122, 0.3);
+        }
+
+        .user-key {
+            font-size: 11px;
+            color: #2196F3;
+            background: rgba(33, 150, 243, 0.1);
+            padding: 4px 10px;
+            border-radius: 15px;
+            margin-top: 5px;
+            display: inline-block;
+            font-weight: 600;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+
         .visit-btn {
             width: 100%;
             padding: 15px 20px;
@@ -552,14 +582,16 @@
             font-size: 18px;
         }
 
-        .user-key {
-            font-size: 13px;
-            color: #666;
-            background: #EBEDFC;
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-top: 5px;
+        .user-key-display {
+            font-size: 12px;
+            color: #2196F3;
+            background: rgba(33, 150, 243, 0.1);
+            padding: 6px 12px;
+            border-radius: 12px;
+            margin-top: 8px;
             display: inline-block;
+            font-weight: 600;
+            border: 1px solid rgba(33, 150, 243, 0.3);
         }
 
         .site-permissions {
@@ -609,7 +641,8 @@
             transform: translateX(30px);
         }
 
-        .add-user-form, .add-app-form {
+        .add-user-form,
+        .add-app-form {
             background: rgba(248, 249, 250, 0.8);
             backdrop-filter: blur(10px);
             padding: 25px;
@@ -620,9 +653,13 @@
 
         .form-row {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr auto;
+            grid-template-columns: 1fr 1fr auto;
             gap: 20px;
             align-items: end;
+        }
+
+        .form-row.three-column {
+            grid-template-columns: 1fr 1fr 1fr auto;
         }
 
         .form-row .form-input {
@@ -631,12 +668,17 @@
 
         /* Add App Form Styles */
         .form-row.app-form {
-            grid-template-columns: 1fr 1fr auto;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
             margin-bottom: 15px;
         }
 
         .form-row.app-form-full {
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row.app-key-row {
             grid-template-columns: 1fr auto;
             gap: 20px;
         }
@@ -684,6 +726,24 @@
             box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
         }
 
+        .generate-key-btn {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            padding: 18px 20px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .generate-key-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+        }
+
         @media (max-width: 768px) {
             .login-container {
                 padding: 40px 30px;
@@ -705,7 +765,11 @@
                 grid-template-columns: 1fr;
             }
 
-            .form-row, .form-row.app-form, .form-row.app-form-full {
+            .form-row,
+            .form-row.app-form,
+            .form-row.app-form-full,
+            .form-row.app-key-row,
+            .form-row.three-column {
                 grid-template-columns: 1fr;
             }
 
@@ -800,28 +864,56 @@
                     <div class="section-header">
                         <h3 style="color: black; font-weight: 700;">App Management</h3>
                         <button class="add-app-btn" onclick="toggleAddAppForm()">
-                            <span id="addAppBtnText">➕ Add New App</span>
+                            <span id="addAppBtnText">Add New App</span>
                         </button>
                     </div>
 
                     <!-- Add App Form -->
                     <div id="addAppForm" class="add-app-form" style="display: none;">
                         <h4 style="margin-bottom: 20px; color: black; font-weight: 700;">Add New Application</h4>
-                        
+
                         <div class="form-row app-form">
-                            <input type="text" id="newAppTitle" class="form-input" placeholder="App Title (e.g., ChatGPT)">
-                            <input type="text" id="newAppLogo" class="form-input" placeholder="Logo Emoji (e.g., 🤖)">
-                            <input type="text" id="newAppCategory" class="form-input" placeholder="Category">
+                            <div>
+                                <label class="form-label">App Title</label>
+                                <input type="text" id="newAppTitle" class="form-input" placeholder="e.g., ChatGPT">
+                            </div>
+                            <div>
+                                <label class="form-label">Logo Emoji</label>
+                                <input type="text" id="newAppLogo" class="form-input" placeholder="e.g., 🤖">
+                            </div>
+                            <div>
+                                <label class="form-label">Category</label>
+                                <input type="text" id="newAppCategory" class="form-input" placeholder="e.g., AI Tools">
+                            </div>
                         </div>
-                        
+
                         <div class="form-row app-form-full">
-                            <input type="text" id="newAppDescription" class="form-input" placeholder="App Description">
-                            <input type="url" id="newAppUrl" class="form-input" placeholder="App URL (https://...)">
+                            <div>
+                                <label class="form-label">Description</label>
+                                <input type="text" id="newAppDescription" class="form-input"
+                                    placeholder="Brief description of the app">
+                            </div>
+                            <div>
+                                <label class="form-label">App URL</label>
+                                <input type="url" id="newAppUrl" class="form-input" placeholder="https://...">
+                            </div>
                         </div>
-                        
+
+                        <div class="form-row app-key-row">
+                            <div>
+                                <label class="form-label">Access Key</label>
+                                <input type="text" id="newAppKey" class="form-input"
+                                    placeholder="Unique access key for this app" readonly>
+                            </div>
+                            <button type="button" class="generate-key-btn" onclick="generateAccessKey()">Generate
+                                Key</button>
+                        </div>
+
                         <div style="display: flex; gap: 15px; margin-top: 15px;">
-                            <button class="login-btn" onclick="addNewApp()" style="width: auto; padding: 12px 24px;">Add App</button>
-                            <button class="nav-button" onclick="toggleAddAppForm()" style="margin-left: 0; padding: 12px 24px;">Cancel</button>
+                            <button class="login-btn" onclick="addNewApp()" style="width: auto; padding: 12px 24px;">Add
+                                App</button>
+                            <!-- <button class="nav-button" onclick="toggleAddAppForm()"
+                                style="margin-left: 0; padding: 12px 24px;">Cancel</button> -->
                         </div>
                     </div>
 
@@ -832,13 +924,26 @@
 
                 <!-- User Management Section -->
                 <div id="usersSection" class="admin-section">
+                    <!-- In the User Management Section -->
                     <div class="add-user-form">
                         <h3 style="margin-bottom: 20px; color: black; font-weight: 700;">Add New User</h3>
-                        <div class="form-row">
-                            <input type="text" id="newUsername" class="form-input" placeholder="Username">
-                            <input type="password" id="newPassword" class="form-input" placeholder="Password">
-                            <input type="text" id="newUserKey" class="form-input" placeholder="User Key">
-                            <button class="login-btn" onclick="addNewUser()">Add User</button>
+                        <div class="form-row three-column">
+                            <div>
+                                <label class="form-label">Username</label>
+                                <input type="text" id="newUsername" class="form-input" placeholder="Username">
+                            </div>
+                            <div>
+                                <label class="form-label">Password</label>
+                                <input type="password" id="newPassword" class="form-input" placeholder="Password">
+                            </div>
+                            <div>
+                                <label class="form-label">User Key</label>
+                                <input type="text" id="newUserKey" class="form-input" placeholder="Unique user key">
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <button class="login-btn" onclick="addNewUser()"
+                                style="width: auto; padding: 12px 24px;">Add User</button>
                         </div>
                     </div>
 
@@ -851,96 +956,63 @@
     </div>
 
     <script>
-        // Mock user database with their accessible sites
+        // Mock user database with their accessible sites and user keys
         let users = {
             'admin': {
                 password: 'admin123',
-                key: 'adm_001',
+                userKey: 'admin_uk_a1b2c3d4',
                 isAdmin: true,
-                sites: ['youtube', 'google', 'github', 'netflix', 'spotify', 'twitter', 'instagram', 'linkedin']
+                sites: ['carbon-impact', 'digital-twin']
             },
             'john.doe': {
                 password: 'password123',
-                key: 'usr_002',
+                userKey: 'joh_uk_e5f6g7h8',
                 isAdmin: false,
-                sites: ['youtube', 'google', 'github', 'spotify']
+                sites: ['carbon-impact']
             },
             'jane.smith': {
                 password: 'secure456',
-                key: 'usr_003',
+                userKey: 'jan_uk_i9j0k1l2',
                 isAdmin: false,
-                sites: ['netflix', 'spotify', 'instagram', 'linkedin']
+                sites: ['digital-twin']
             },
             'demo': {
                 password: 'demo',
-                key: 'demo_001',
+                userKey: 'dem_uk_m3n4o5p6',
                 isAdmin: false,
-                sites: ['youtube', 'google', 'github', 'netflix', 'spotify', 'twitter']
+                sites: ['carbon-impact', 'digital-twin']
             }
         };
-
-        // Popular public sites - now modifiable
-        let publicSites = {
-            'youtube': {
-                title: 'YouTube',
-                description: 'Watch, share and discover videos from creators worldwide',
-                logo: '▶️',
-                category: 'Entertainment',
-                url: 'https://www.youtube.com'
+        // Apps with individual access keys
+        let apps = {
+            'carbon-impact': {
+                title: 'Carbon Impact Assessment',
+                description: 'Analyze and assess carbon footprint and environmental impact metrics',
+                logo: '🌱',
+                category: 'Environmental',
+                url: 'https://carbon-assessment.carbonzeroed.com',
+                accessKey: 'cia_ak_7f8e9d2c'
             },
-            'google': {
-                title: 'Google',
-                description: 'Search the world\'s information and access Google services',
-                logo: '🔍',
-                category: 'Search',
-                url: 'https://www.google.com'
-            },
-            'github': {
-                title: 'GitHub',
-                description: 'Collaborate on code with millions of developers worldwide',
-                logo: '🐙',
-                category: 'Development',
-                url: 'https://github.com'
-            },
-            'netflix': {
-                title: 'Netflix',
-                description: 'Stream movies, TV shows and original content',
-                logo: '🎬',
-                category: 'Streaming',
-                url: 'https://www.netflix.com'
-            },
-            'spotify': {
-                title: 'Spotify',
-                description: 'Listen to music, podcasts and audio content',
-                logo: '🎵',
-                category: 'Music',
-                url: 'https://www.spotify.com'
-            },
-            'twitter': {
-                title: 'Twitter',
-                description: 'Connect with people and join the conversation',
-                logo: '🐦',
-                category: 'Social',
-                url: 'https://twitter.com'
-            },
-            'instagram': {
-                title: 'Instagram',
-                description: 'Share photos, videos and stories with friends',
-                logo: '📷',
-                category: 'Social',
-                url: 'https://www.instagram.com'
-            },
-            'linkedin': {
-                title: 'LinkedIn',
-                description: 'Professional networking and career development',
-                logo: '💼',
-                category: 'Professional',
-                url: 'https://www.linkedin.com'
+            'digital-twin': {
+                title: 'Digital Twin',
+                description: 'Create and manage digital representations of physical systems',
+                logo: '🔗',
+                category: 'Technology',
+                url: 'https://digital-twin.carbonzeroed.com',
+                accessKey: 'dt_ak_4a5b6c7d'
             }
         };
 
         let currentUser = null;
         let currentView = 'dashboard';
+
+        // Generate unique access key for new apps
+        function generateAccessKey() {
+            const prefix = document.getElementById('newAppTitle').value.toLowerCase().substring(0, 3) || 'app';
+            const randomStr = Math.random().toString(36).substring(2, 10);
+            const accessKey = `${prefix}_ak_${randomStr}`;
+            document.getElementById('newAppKey').value = accessKey;
+        }
 
         // Login form handler
         document.getElementById('loginForm').addEventListener('submit', function (e) {
@@ -1012,34 +1084,44 @@
             const sitesGrid = document.getElementById('sitesGrid');
             sitesGrid.innerHTML = '';
 
-            currentUser.sites.forEach(siteId => {
-                const site = publicSites[siteId];
-                if (site) {
-                    const siteCard = createSiteCard(siteId, site);
+            currentUser.sites.forEach(appId => {
+                const app = apps[appId];
+                if (app) {
+                    const siteCard = createSiteCard(appId, app);
                     sitesGrid.appendChild(siteCard);
                 }
             });
         }
 
-        function createSiteCard(siteId, site, isAdmin = false) {
+        function createSiteCard(appId, app, isAdmin = false) {
             const card = document.createElement('div');
             card.className = 'site-card';
 
             const deleteButton = isAdmin ? `
-                <button class="delete-btn" onclick="deleteApp('${siteId}')" style="width: 100%;">
+                <button class="delete-btn" onclick="deleteApp('${appId}')" style="width: 100%;">
                     🗑️ Delete App
                 </button>
             ` : '';
 
+            const accessKeyDisplay = isAdmin ? `
+                <div class="access-key">🔑 ${app.accessKey}</div>
+            ` : `<div class="access-key">🔑 ${app.accessKey}</div>`;
+
+            const userKeyDisplay = !isAdmin && currentUser ? `
+                <div class="user-key">👤 ${currentUser.userKey}</div>
+            ` : '';
+
             card.innerHTML = `
-                <div class="site-logo">${site.logo}</div>
-                <h3 class="site-title">${site.title}</h3>
-                <p class="site-description">${site.description}</p>
+                <div class="site-logo">${app.logo}</div>
+                <h3 class="site-title">${app.title}</h3>
+                <p class="site-description">${app.description}</p>
                 <div class="site-meta">
-                    <span class="site-category">${site.category}</span>
-                    <span class="site-url">${site.url}</span>
+                    <span class="site-category">${app.category}</span>
+                    <span class="site-url">${app.url}</span>
                 </div>
-                ${isAdmin ? '' : `<button class="visit-btn" onclick="visitSite('${siteId}', '${site.url}')">
+                ${accessKeyDisplay}
+                ${userKeyDisplay}
+                ${isAdmin ? '' : `<button class="visit-btn" onclick="visitSite('${appId}', '${app.url}', '${app.accessKey}')">
                     Launch App →
                 </button>`}
                 ${deleteButton}
@@ -1048,16 +1130,16 @@
             return card;
         }
 
-        function visitSite(siteId, siteUrl) {
-            // Add access key to URL
-            const separator = siteUrl.includes('?') ? '&' : '?';
-            const finalUrl = `${siteUrl}${separator}access_key=${currentUser.key}&user=${currentUser.username}&site=${siteId}`;
+        function visitSite(appId, appUrl, accessKey) {
+            // Add access key and user key to URL
+            const separator = appUrl.includes('?') ? '&' : '?';
+            const finalUrl = `${appUrl}${separator}access_key=${accessKey}&user_key=${currentUser.userKey}&user=${currentUser.username}&app=${appId}`;
 
             // Open site in new tab
             window.open(finalUrl, '_blank');
 
             // For demo purposes, also show a notification
-            showMessage('success', `Opening ${publicSites[siteId].title}...`);
+            showMessage('success', `Opening ${apps[appId].title} with access key and user key...`);
         }
 
         function loadAdminContent() {
@@ -1078,10 +1160,12 @@
         function toggleAddAppForm() {
             const form = document.getElementById('addAppForm');
             const btnText = document.getElementById('addAppBtnText');
-            
+
             if (form.style.display === 'none' || form.style.display === '') {
                 form.style.display = 'block';
                 btnText.textContent = '❌ Cancel';
+                // Auto-generate a key when form opens
+                generateAccessKey();
             } else {
                 form.style.display = 'none';
                 btnText.textContent = '➕ Add New App';
@@ -1091,6 +1175,7 @@
                 document.getElementById('newAppCategory').value = '';
                 document.getElementById('newAppDescription').value = '';
                 document.getElementById('newAppUrl').value = '';
+                document.getElementById('newAppKey').value = '';
             }
         }
 
@@ -1100,9 +1185,10 @@
             const category = document.getElementById('newAppCategory').value.trim();
             const description = document.getElementById('newAppDescription').value.trim();
             const url = document.getElementById('newAppUrl').value.trim();
+            const accessKey = document.getElementById('newAppKey').value.trim();
 
-            if (!title || !logo || !category || !description || !url) {
-                showMessage('error', 'Please fill in all fields');
+            if (!title || !logo || !category || !description || !url || !accessKey) {
+                showMessage('error', 'Please fill in all fields and generate an access key');
                 return;
             }
 
@@ -1114,21 +1200,29 @@
                 return;
             }
 
-            // Generate unique site ID
-            const siteId = title.toLowerCase().replace(/[^a-z0-9]/g, '');
-            
-            if (publicSites[siteId]) {
+            // Generate unique app ID
+            const appId = title.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+            if (apps[appId]) {
                 showMessage('error', 'An app with this name already exists');
                 return;
             }
 
-            // Add new site
-            publicSites[siteId] = {
+            // Check if access key already exists
+            const existingKey = Object.values(apps).find(app => app.accessKey === accessKey);
+            if (existingKey) {
+                showMessage('error', 'This access key already exists. Please generate a new one.');
+                return;
+            }
+
+            // Add new app
+            apps[appId] = {
                 title: title,
                 description: description,
                 logo: logo,
                 category: category,
-                url: url
+                url: url,
+                accessKey: accessKey
             };
 
             // Clear form and hide it
@@ -1137,25 +1231,25 @@
             // Reload admin content
             loadSiteManagement();
             loadUserManagement();
-            showMessage('success', `App "${title}" added successfully`);
+            showMessage('success', `App "${title}" added successfully with access key: ${accessKey}`);
         }
 
-        function deleteApp(siteId) {
-            if (!confirm(`Are you sure you want to delete "${publicSites[siteId].title}"? This will remove access for all users.`)) {
+        function deleteApp(appId) {
+            if (!confirm(`Are you sure you want to delete "${apps[appId].title}"? This will remove access for all users.`)) {
                 return;
             }
 
             // Remove app from all users
             Object.keys(users).forEach(username => {
                 const userSites = users[username].sites;
-                const index = userSites.indexOf(siteId);
+                const index = userSites.indexOf(appId);
                 if (index > -1) {
                     userSites.splice(index, 1);
                 }
             });
 
             // Delete the app
-            delete publicSites[siteId];
+            delete apps[appId];
 
             // Reload content
             loadSiteManagement();
@@ -1178,14 +1272,17 @@
             const card = document.createElement('div');
             card.className = 'user-card';
 
-            const sitesHtml = Object.keys(publicSites).map(siteId => {
-                const site = publicSites[siteId];
-                const hasAccess = user.sites.includes(siteId);
+            const sitesHtml = Object.keys(apps).map(appId => {
+                const app = apps[appId];
+                const hasAccess = user.sites.includes(appId);
                 return `
                     <div class="permission-item">
-                        <span>${site.logo} ${site.title}</span>
+                        <div>
+                            <span>${app.logo} ${app.title}</span>
+                            <div style="font-size: 11px; color: #666; margin-top: 2px;">🔑 ${app.accessKey}</div>
+                        </div>
                         <div class="permission-toggle ${hasAccess ? 'active' : ''}" 
-                             onclick="toggleUserAccess('${username}', '${siteId}')"></div>
+                             onclick="toggleUserAccess('${username}', '${appId}')"></div>
                     </div>
                 `;
             }).join('');
@@ -1194,7 +1291,7 @@
                 <div class="user-card-header">
                     <div>
                         <div class="user-name">${username}</div>
-                        <div class="user-key">${user.key}</div>
+                        <div class="user-key-display">👤 ${user.userKey}</div>
                         ${user.isAdmin ? '<div style="color: #70CF7A; font-size: 12px; font-weight: 600; margin-top: 5px;">ADMIN</div>' : ''}
                     </div>
                 </div>
@@ -1206,18 +1303,18 @@
             return card;
         }
 
-        function toggleUserAccess(username, siteId) {
+        function toggleUserAccess(username, appId) {
             const user = users[username];
-            const siteIndex = user.sites.indexOf(siteId);
+            const appIndex = user.sites.indexOf(appId);
 
-            if (siteIndex > -1) {
-                user.sites.splice(siteIndex, 1);
+            if (appIndex > -1) {
+                user.sites.splice(appIndex, 1);
             } else {
-                user.sites.push(siteId);
+                user.sites.push(appId);
             }
 
             loadUserManagement();
-            showMessage('success', `Updated ${publicSites[siteId].title} access for ${username}`);
+            showMessage('success', `Updated ${apps[appId].title} access for ${username}`);
         }
 
         function addNewUser() {
@@ -1226,7 +1323,7 @@
             const userKey = document.getElementById('newUserKey').value.trim();
 
             if (!username || !password || !userKey) {
-                showMessage('error', 'Please fill in all fields');
+                showMessage('error', 'Please fill in all fields including user key');
                 return;
             }
 
@@ -1235,9 +1332,16 @@
                 return;
             }
 
+            // Check if user key already exists
+            const existingUserKey = Object.values(users).find(user => user.userKey === userKey);
+            if (existingUserKey) {
+                showMessage('error', 'This user key already exists. Please use a different one.');
+                return;
+            }
+
             users[username] = {
                 password: password,
-                key: userKey,
+                userKey: userKey,
                 isAdmin: false,
                 sites: []
             };
@@ -1248,36 +1352,36 @@
             document.getElementById('newUserKey').value = '';
 
             loadUserManagement();
-            showMessage('success', `User ${username} created successfully`);
+            showMessage('success', `User ${username} created successfully with user key: ${userKey}`);
         }
-
         function loadSiteManagement() {
             const grid = document.getElementById('adminSitesGrid');
             grid.innerHTML = '';
 
-            Object.keys(publicSites).forEach(siteId => {
-                const site = publicSites[siteId];
-                const siteCard = createAdminSiteCard(siteId, site);
+            Object.keys(apps).forEach(appId => {
+                const app = apps[appId];
+                const siteCard = createAdminSiteCard(appId, app);
                 grid.appendChild(siteCard);
             });
         }
 
-        function createAdminSiteCard(siteId, site) {
+        function createAdminSiteCard(appId, app) {
             const card = document.createElement('div');
             card.className = 'site-card';
 
-            const userCount = Object.values(users).filter(user => user.sites.includes(siteId)).length;
+            const userCount = Object.values(users).filter(user => user.sites.includes(appId)).length;
             const totalUsers = Object.keys(users).length;
             const accessPercentage = totalUsers > 0 ? Math.round((userCount / totalUsers) * 100) : 0;
 
             card.innerHTML = `
-                <div class="site-logo">${site.logo}</div>
-                <h3 class="site-title">${site.title}</h3>
-                <p class="site-description">${site.description}</p>
+                <div class="site-logo">${app.logo}</div>
+                <h3 class="site-title">${app.title}</h3>
+                <p class="site-description">${app.description}</p>
                 <div class="site-meta">
-                    <span class="site-category">${site.category}</span>
+                    <span class="site-category">${app.category}</span>
                     <span class="site-url">${userCount}/${totalUsers} users</span>
                 </div>
+                <div class="access-key">🔑 ${app.accessKey}</div>
                 <div style="margin-top: 20px; padding: 15px; background: rgba(112, 207, 122, 0.1); border-radius: 12px; border: 1px solid rgba(112, 207, 122, 0.2);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <span style="font-size: 14px; color: #666; font-weight: 600;">Access Rate</span>
@@ -1288,10 +1392,10 @@
                     </div>
                 </div>
                 <div style="margin-top: 15px; padding: 10px; background: rgba(248, 249, 250, 0.8); border-radius: 8px;">
-                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Site URL:</div>
-                    <div style="font-size: 12px; color: #333; word-break: break-all;">${site.url}</div>
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">App URL:</div>
+                    <div style="font-size: 12px; color: #333; word-break: break-all;">${app.url}</div>
                 </div>
-                <button class="delete-btn" onclick="deleteApp('${siteId}')" style="width: 100%; margin-top: 15px;">
+                <button class="delete-btn" onclick="deleteApp('${appId}')" style="width: 100%; margin-top: 15px;">
                     🗑️ Delete App
                 </button>
             `;
@@ -1306,7 +1410,7 @@
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('loginPage').style.display = 'block';
             document.getElementById('loginForm').reset();
-            
+
             // Hide add app form if it was open
             const addAppForm = document.getElementById('addAppForm');
             const addAppBtnText = document.getElementById('addAppBtnText');
@@ -1318,18 +1422,20 @@
 
         // Demo credentials info
         console.log('🚀 Demo Credentials:');
-        console.log('Username: demo, Password: demo');
-        console.log('Username: admin, Password: admin123 (Admin Access)');
-        console.log('Username: john.doe, Password: password123');
-        console.log('Username: jane.smith, Password: secure456');
+        console.log('Username: demo, Password: demo (User Key: dem_uk_m3n4o5p6)');
+        console.log('Username: admin, Password: admin123 (Admin Access, User Key: admin_uk_a1b2c3d4)');
+        console.log('Username: john.doe, Password: password123 (User Key: joh_uk_e5f6g7h8)');
+        console.log('Username: jane.smith, Password: secure456 (User Key: jan_uk_i9j0k1l2)');
         console.log('');
-        console.log('🌟 Features:');
-        console.log('- Modern glassmorphism design');
-        console.log('- Animated background elements');
-        console.log('- Popular site access with secure keys');
-        console.log('- Admin panel for user & site management');
-        console.log('- Add/Delete apps functionality (Admin only)');
-        console.log('- Responsive design for all devices');
+        console.log('🌟 Key Features - User Key & App Access System:');
+        console.log('- Each user has their own unique user key');
+        console.log('- Each app has its own unique access key');
+        console.log('- User keys are generated automatically when adding new users');
+        console.log('- Both user key and access key are included in URLs when launching apps');
+        console.log('- Admin panel shows all user keys and access keys for management');
+        console.log('- User keys are displayed in user management and on app cards');
+        console.log('- Secure key generation with user-specific prefixes');
+        console.log('- URL format: app_url?access_key={app_key}&user_key={user_key}&user={username}&app={app_id}');
     </script>
 </body>
 
