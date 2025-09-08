@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #EBEDFC 0%, #ffffff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 60px 50px;
+            max-width: 450px;
+            margin: 0 auto;
+            text-align: center;
+            border: 1px solid #EBEDFC;
+        }
+
+        .login-header {
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .login-title {
+            color: black;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            color: black;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 18px;
+            border: 2px solid #EBEDFC;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #70CF7A;
+            box-shadow: 0 0 0 3px rgba(112, 207, 122, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(112, 207, 122, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            background: #ff4757;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #EBEDFC;
+        }
+
+        .dashboard-title {
+            color: black;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 2px solid #EBEDFC;
+            color: black;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            border-color: #70CF7A;
+            color: #43d270;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            padding: 0 10px;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #EBEDFC;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #70CF7A;
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .app-card:hover::before {
+            opacity: 1;
+        }
+
+        .app-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #EBEDFC, #ffffff);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            border: 2px solid #EBEDFC;
+        }
+
+        .app-title {
+            color: black;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .app-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .app-category {
+            background: #EBEDFC;
+            color: black;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .apps-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="login-container">
+            <div class="login-header">
+                <div class="logo">AP</div>
+                <h1 class="login-title">Welcome Back</h1>
+                <p class="login-subtitle">Sign in to access your applications</p>
+            </div>
+            
+            <div id="errorMessage" class="error-message"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">My Apps</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="usernameDisplay"></span>
+                    <button class="logout-btn" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+            
+            <div class="apps-grid" id="appsGrid">
+                <!-- Apps will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock user database with their accessible apps
+        const users = {
+            'admin': {
+                password: 'admin123',
+                key: 'adm_001',
+                apps: ['crm', 'analytics', 'hr', 'finance', 'project', 'docs']
+            },
+            'john.doe': {
+                password: 'password123',
+                key: 'usr_002',
+                apps: ['crm', 'project', 'docs']
+            },
+            'jane.smith': {
+                password: 'secure456',
+                key: 'usr_003',
+                apps: ['hr', 'finance', 'docs']
+            },
+            'demo': {
+                password: 'demo',
+                key: 'demo_001',
+                apps: ['crm', 'analytics', 'project', 'docs']
+            }
+        };
+
+        // Available applications
+        const applications = {
+            'crm': {
+                title: 'Customer CRM',
+                description: 'Manage customer relationships and sales pipeline',
+                icon: '👥',
+                category: 'Sales',
+                url: 'https://example.com/crm'
+            },
+            'analytics': {
+                title: 'Analytics Dashboard',
+                description: 'Business intelligence and data visualization',
+                icon: '📊',
+                category: 'Analytics',
+                url: 'https://example.com/analytics'
+            },
+            'hr': {
+                title: 'HR Management',
+                description: 'Employee management and human resources',
+                icon: '👨‍💼',
+                category: 'HR',
+                url: 'https://example.com/hr'
+            },
+            'finance': {
+                title: 'Finance Portal',
+                description: 'Financial management and accounting tools',
+                icon: '💰',
+                category: 'Finance',
+                url: 'https://example.com/finance'
+            },
+            'project': {
+                title: 'Project Manager',
+                description: 'Project planning and team collaboration',
+                icon: '📋',
+                category: 'Productivity',
+                url: 'https://example.com/projects'
+            },
+            'docs': {
+                title: 'Document Center',
+                description: 'Document storage and collaboration platform',
+                icon: '📄',
+                category: 'Productivity',
+                url: 'https://example.com/docs'
+            }
+        };
+
+        let currentUser = null;
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            login(username, password);
+        });
+
+        function login(username, password) {
+            const user = users[username];
+            const errorDiv = document.getElementById('errorMessage');
+            
+            if (user && user.password === password) {
+                currentUser = { username, ...user };
+                showDashboard();
+            } else {
+                errorDiv.textContent = 'Invalid username or password';
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            
+            // Update user info
+            document.getElementById('usernameDisplay').textContent = currentUser.username;
+            document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+            
+            // Load user's accessible apps
+            loadUserApps();
+        }
+
+        function loadUserApps() {
+            const appsGrid = document.getElementById('appsGrid');
+            appsGrid.innerHTML = '';
+            
+            currentUser.apps.forEach(appId => {
+                const app = applications[appId];
+                if (app) {
+                    const appCard = createAppCard(appId, app);
+                    appsGrid.appendChild(appCard);
+                }
+            });
+        }
+
+        function createAppCard(appId, app) {
+            const card = document.createElement('div');
+            card.className = 'app-card';
+            card.onclick = () => openApp(appId, app.url);
+            
+            card.innerHTML = `
+                <div class="app-icon">${app.icon}</div>
+                <h3 class="app-title">${app.title}</h3>
+                <p class="app-description">${app.description}</p>
+                <span class="app-category">${app.category}</span>
+            `;
+            
+            return card;
+        }
+
+        function openApp(appId, appUrl) {
+            // Route to application with user key
+            const urlWithKey = `${appUrl}?user=${currentUser.username}&key=${currentUser.key}&app=${appId}`;
+            
+            // In a real application, you would redirect to the actual app
+            // For demo purposes, we'll show an alert
+            alert(`Opening ${applications[appId].title}...\n\nURL: ${urlWithKey}\nUser: ${currentUser.username}\nKey: ${currentUser.key}`);
+            
+            // Uncomment the line below to actually redirect
+            // window.open(urlWithKey, '_blank');
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('loginForm').reset();
+        }
+
+        // Demo credentials info (you can remove this in production)
+        console.log('Demo Credentials:');
+        console.log('Username: demo, Password: demo');
+        console.log('Username: admin, Password: admin123');
+        console.log('Username: john.doe, Password: password123');
+        console.log('Username: jane.smith, Password: secure456');
+    </script>
+</body>
+</html>

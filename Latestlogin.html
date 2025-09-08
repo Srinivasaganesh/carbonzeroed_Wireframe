@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbonzeroed</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #70CF7A;
+            --primary-dark: #43d270;
+            --accent: #EBEDFC;
+            --dark: #000000;
+            --light: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.2);
+            --blur: blur(16px);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--light) 30%, var(--accent) 60%, var(--light) 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced background with morphism effects */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            opacity: 0.1;
+            animation: morphFloat 8s ease-in-out infinite;
+            filter: blur(1px);
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -10%;
+            left: -5%;
+            animation-delay: -1s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            right: -10%;
+            animation-delay: -3s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            bottom: -5%;
+            left: 30%;
+            animation-delay: -5s;
+        }
+
+        .floating-shape:nth-child(4) {
+            width: 250px;
+            height: 250px;
+            top: 30%;
+            left: 60%;
+            animation-delay: -2s;
+            opacity: 0.05;
+        }
+
+        @keyframes morphFloat {
+            0%, 100% { 
+                transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
+                border-radius: 50%;
+            }
+            25% { 
+                transform: translateY(-30px) translateX(20px) rotate(90deg) scale(1.1);
+                border-radius: 60% 40% 30% 70%;
+            }
+            50% { 
+                transform: translateY(-15px) translateX(-10px) rotate(180deg) scale(0.9);
+                border-radius: 30% 60% 70% 40%;
+            }
+            75% { 
+                transform: translateY(20px) translateX(15px) rotate(270deg) scale(1.05);
+                border-radius: 70% 30% 50% 60%;
+            }
+        }
+
+        /* Mesh gradient overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(112, 207, 122, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(67, 210, 112, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(235, 237, 252, 0.2) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        /* Enhanced Login Page */
+        .login-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--blur);
+            border-radius: 32px;
+            box-shadow: var(--shadow);
+            padding: 60px 50px;
+            max-width: 480px;
+            margin: 5vh auto;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark), var(--primary));
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: var(--light);
+            font-size: 48px;
+            font-weight: 800;
+            box-shadow: 0 20px 40px rgba(112, 207, 122, 0.3);
+            animation: logoPulse 3s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: logoShine 4s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(2deg); }
+        }
+
+        @keyframes logoShine {
+            0% { transform: rotate(0deg) translate(-50%, -50%); }
+            100% { transform: rotate(360deg) translate(-50%, -50%); }
+        }
+
+        .login-title {
+            color: var(--dark);
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--dark), #333, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGradient 4s ease-in-out infinite;
+        }
+
+        @keyframes textGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 40px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            text-align: left;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--dark);
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 20px 24px;
+            border: 2px solid rgba(235, 237, 252, 0.5);
+            border-radius: 20px;
+            font-size: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: var(--blur);
+            font-weight: 500;
+            position: relative;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(112, 207, 122, 0.2);
+            transform: translateY(-2px) scale(1.01);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .form-input:focus + .form-focus-effect {
+            width: 100%;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--light);
+            border: none;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 15px;
+            box-shadow: 0 15px 35px rgba(112, 207, 122, 0.4);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(112, 207, 122, 0.5);
+        }
+
+        .login-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .error-message, .success-message {
+            padding: 16px 24px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            display: none;
+            font-weight: 600;
+            backdrop-filter: var(--blur);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.9), rgba(255, 56, 56, 0.9));
+            color: var(--light);
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, rgba(112, 207, 122, 0.9), rgba(67, 210, 112, 0.9));
+            color: var(--light);
+        }
+
+        /* Enhanced Dashboard */
+        .dashboard {
+            display: none;
+            animation: fadeSlideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeSlideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(40px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--blur);
+            padding: 30px 40px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark), var(--primary));
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .dashboard-title {
+            color: var(--dark);
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-weight: 800;
+            font-size: 20px;
+            box-shadow: 0 10px 30px rgba(112, 207, 122, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: var(--blur);
+            border: 1px solid var(--glass-border);
+            color: var(--dark);
+            padding: 14px 24px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 15px;
+            font-size: 15px;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-button:hover {
+            border-color: var(--primary);
+            background: rgba(112, 207, 122, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(112, 207, 122, 0.2);
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--light);
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(112, 207, 122, 0.4);
+        }
+
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 32px;
+            padding: 10px;
+        }
+
+        .site-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--blur);
+            border-radius: 24px;
+            padding: 32px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .site-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(112, 207, 122, 0.1), transparent);
+            transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .site-card:hover::before {
+            left: 100%;
+        }
+
+        .site-card:hover {
+            transform: translateY(-16px) scale(1.03);
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .site-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .site-card:hover::after {
+            opacity: 1;
+        }
+
+        .site-logo {
+            width: 88px;
+            height: 88px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+            font-size: 44px;
+            background: linear-gradient(135deg, var(--accent), var(--light));
+            border: 2px solid rgba(235, 237, 252, 0.6);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(235, 237, 252, 0.3);
+        }
+
+        .site-logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(112, 207, 122, 0.2), transparent);
+            transition: transform 0.6s;
+            transform: rotate(-45deg) translate(-100%, -100%);
+        }
+
+        .site-card:hover .site-logo::before {
+            transform: rotate(-45deg) translate(0%, 0%);
+        }
+
+        .site-card:hover .site-logo {
+            transform: rotate(8deg) scale(1.15);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(112, 207, 122, 0.4);
+        }
+
+        .site-title {
+            color: var(--dark);
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.3px;
+        }
+
+        .site-description {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .site-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .site-category {
+            background: linear-gradient(135deg, var(--accent), var(--light));
+            color: var(--dark);
+            padding: 8px 20px;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid rgba(235, 237, 252, 0.8);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .site-url {
+            font-size: 13px;
+            color: #666;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .visit-btn {
+            width: 100%;
+            padding: 18px 24px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--light);
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 12px 32px rgba(112, 207, 122, 0.4);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .visit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .visit-btn:hover::before {
+            left: 100%;
+        }
+
+        .visit-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 48px rgba(112, 207, 122, 0.5);
+        }
+
+        /* Enhanced Admin Panel */
+        .admin-panel {
+            display: none;
+            animation: fadeSlideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .admin-content {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: var(--blur);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark), var(--primary));
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid rgba(235, 237, 252, 0.3);
+            padding-bottom: 20px;
+        }
+
+        .admin-tab {
+            padding: 16px 32px;
+            background: none;
+            border: none;
+            color: #666;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 3px solid transparent;
+            font-size: 16px;
+            letter-spacing: 0.3px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .admin-tab:hover {
+            color: var(--primary);
+            background: rgba(112, 207, 122, 0.1);
+        }
+
+        .admin-tab.active {
+            color: var(--primary-dark);
+            border-bottom-color: var(--primary);
+            background: rgba(112, 207, 122, 0.1);
+        }
+
+        .admin-section {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-management-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 32px;
+            margin-top: 32px;
+        }
+
+        .user-card {
+            background: rgba(248, 249, 250, 0.6);
+            backdrop-filter: var(--blur);
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid rgba(235, 237, 252, 0.8);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .user-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+            background: rgba(248, 249, 250, 0.8);
+        }
+
+        .user-name {
+            font-weight: 800;
+            color: var(--dark);
+            font-size: 20px;
+            margin-bottom: 8px;
+            letter-spacing: -0.2px;
+        }
+
+        .user-key {
+            font-size: 13px;
+            color: #666;
+            background: var(--accent);
+            padding: 6px 16px;
+            border-radius: 24px;
+            margin-top: 8px;
+            display: inline-block;
+            font-weight: 600;
+            border: 1px solid rgba(235, 237, 252, 0.8);
+        }
+
+        .site-permissions {
+            margin-top: 24px;
+        }
+
+        .permission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(235, 237, 252, 0.6);
+            font-weight: 600;
+        }
+
+        .permission-item:last-child {
+            border-bottom: none;
+        }
+
+        .permission-toggle {
+            width: 64px;
+            height: 32px;
+            background: #ddd;
+            border-radius: 32px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .permission-toggle.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 4px 16px rgba(112, 207, 122, 0.4);
+        }
+
+        .permission-toggle::after {
+            content: '';
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: var(--light);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .permission-toggle.active::after {
+            transform: translateX(32px);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .add-user-form {
+            background: rgba(248, 249, 250, 0.6);
+            backdrop-filter: var(--blur);
+            padding: 32px;
+            border-radius: 20px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(235, 237, 252, 0.8);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 24px;
+            align-items: end;
+        }
+
+        .form-row .form-input {
+            margin-bottom: 0;
+        }
+
+        /* Enhanced responsive design */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+
+            .sites-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .user-management-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-tabs {
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+
+            .dashboard-title {
+                font-size: 28px;
+            }
+
+            .login-title {
+                font-size: 32px;
+            }
+        }
+
+        /* Additional modern touches */
+        .floating-shape:nth-child(4) {
+            width: 180px;
+            height: 180px;
+            bottom: 10%;
+            right: 20%;
+            animation-delay: -4s;
+            opacity: 0.08;
+        }
+
+        /* Scroll animations */
+        @media (prefers-reduced-motion: no-preference) {
+            .site-card {
+                opacity: 0;
+                transform: translateY(30px);
+                animation: cardReveal 0.6s ease-out forwards;
+            }
+
+            .site-card:nth-child(1) { animation-delay: 0.1s; }
+            .site-card:nth-child(2) { animation-delay: 0.2s; }
+            .site-card:nth-child(3) { animation-delay: 0.3s; }
+            .site-card:nth-child(4) { animation-delay: 0.4s; }
+            .site-card:nth-child(5) { animation-delay: 0.5s; }
+            .site-card:nth-child(6) { animation-delay: 0.6s; }
+        }
+
+        @keyframes cardReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(235, 237, 252, 0.3);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+        }
+
+        /* Loading animation */
+        .loading-spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(112, 207, 122, 0.3);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Micro interactions */
+        .site-card .site-title,
+        .site-card .site-description {
+            transition: all 0.3s ease;
+        }
+
+        .site-card:hover .site-title {
+            transform: translateX(5px);
+        }
+
+        .site-card:hover .site-description {
+            color: #555;
+        }
+
+        /* Glass morphism enhancements */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Enhanced hover effects for buttons */
+        button {
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:not(.permission-toggle)::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:not(.permission-toggle):hover::before {
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="login-container glass-effect">
+            <div class="login-header">
+                <div class="logo">C</div>
+                <h1 class="login-title">Welcome</h1>
+                <p class="login-subtitle">Access your sites with secure authentication</p>
+            </div>
+            
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+            <div class="loading-spinner" id="loadingSpinner"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="dashboard-header glass-effect">
+                <h1 class="dashboard-title">Popular Sites</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="usernameDisplay"></span>
+                    <button class="nav-button" id="adminBtn" onclick="showAdminPanel()" style="display: none;">Admin Panel</button>
+                    <button class="nav-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+            
+            <div class="sites-grid" id="sitesGrid">
+                <!-- Sites will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel">
+            <div class="dashboard-header glass-effect">
+                <h1 class="dashboard-title">Admin Panel</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="adminAvatar"></div>
+                    <span id="adminUsernameDisplay"></span>
+                    <button class="nav-button" onclick="showDashboard()">Back to Sites</button>
+                    <button class="nav-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+
+            <div class="admin-content glass-effect">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="showAdminTab('users')">User Management</button>
+                    <button class="admin-tab" onclick="showAdminTab('sites')">Site Management</button>
+                </div>
+
+                <!-- User Management Section -->
+                <div id="usersSection" class="admin-section active">
+                    <div class="add-user-form glass-effect">
+                        <h3 style="margin-bottom: 24px; color: var(--dark); font-weight: 800; font-size: 20px;">Add New User</h3>
+                        <div class="form-row">
+                            <input type="text" id="newUsername" class="form-input" placeholder="Username">
+                            <input type="password" id="newPassword" class="form-input" placeholder="Password">
+                            <input type="text" id="newUserKey" class="form-input" placeholder="User Key">
+                            <button class="login-btn" onclick="addNewUser()">Add User</button>
+                        </div>
+                    </div>
+
+                    <div class="user-management-grid" id="userManagementGrid">
+                        <!-- User cards will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Site Management Section -->
+                <div id="sitesSection" class="admin-section">
+                    <h3 style="color: var(--dark); margin-bottom: 32px; font-weight: 800; font-size: 24px;">Site Access Overview</h3>
+                    <div class="sites-grid" id="adminSitesGrid">
+                        <!-- Sites overview will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock user database with their accessible sites
+        let users = {
+            'admin': {
+                password: 'admin123',
+                key: 'adm_001',
+                isAdmin: true,
+                sites: ['youtube', 'google', 'github', 'netflix', 'spotify', 'twitter', 'instagram', 'linkedin']
+            },
+            'john.doe': {
+                password: 'password123',
+                key: 'usr_002',
+                isAdmin: false,
+                sites: ['youtube', 'google', 'github', 'spotify']
+            },
+            'jane.smith': {
+                password: 'secure456',
+                key: 'usr_003',
+                isAdmin: false,
+                sites: ['netflix', 'spotify', 'instagram', 'linkedin']
+            },
+            'demo': {
+                password: 'demo',
+                key: 'demo_001',
+                isAdmin: false,
+                sites: ['youtube', 'google', 'github', 'netflix', 'spotify', 'twitter']
+            }
+        };
+
+        // Popular public sites
+        const publicSites = {
+            'youtube': {
+                title: 'YouTube',
+                description: 'Watch, share and discover videos from creators worldwide',
+                logo: '▶️',
+                category: 'Entertainment',
+                url: 'https://www.youtube.com'
+            },
+            'google': {
+                title: 'Google',
+                description: 'Search the world\'s information and access Google services',
+                logo: '🔍',
+                category: 'Search',
+                url: 'https://www.google.com'
+            },
+            'github': {
+                title: 'GitHub',
+                description: 'Collaborate on code with millions of developers worldwide',
+                logo: '🐙',
+                category: 'Development',
+                url: 'https://github.com'
+            },
+            'netflix': {
+                title: 'Netflix',
+                description: 'Stream movies, TV shows and original content',
+                logo: '🎬',
+                category: 'Streaming',
+                url: 'https://www.netflix.com'
+            },
+            'spotify': {
+                title: 'Spotify',
+                description: 'Listen to music, podcasts and audio content',
+                logo: '🎵',
+                category: 'Music',
+                url: 'https://www.spotify.com'
+            },
+            'twitter': {
+                title: 'Twitter',
+                description: 'Connect with people and join the conversation',
+                logo: '🐦',
+                category: 'Social',
+                url: 'https://twitter.com'
+            },
+            'instagram': {
+                title: 'Instagram',
+                description: 'Share photos, videos and stories with friends',
+                logo: '📷',
+                category: 'Social',
+                url: 'https://www.instagram.com'
+            },
+            'linkedin': {
+                title: 'LinkedIn',
+                description: 'Professional networking and career development',
+                logo: '💼',
+                category: 'Professional',
+                url: 'https://www.linkedin.com'
+            }
+        };
+
+        let currentUser = null;
+        let currentView = 'dashboard';
+
+        // Login form handler with enhanced UX
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Show loading spinner
+            showLoadingSpinner(true);
+            
+            // Simulate loading delay for better UX
+            setTimeout(() => {
+                login(username, password);
+                showLoadingSpinner(false);
+            }, 800);
+        });
+
+        function showLoadingSpinner(show) {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.style.display = show ? 'block' : 'none';
+        }
+
+        function login(username, password) {
+            const user = users[username];
+            const errorDiv = document.getElementById('errorMessage');
+            
+            if (user && user.password === password) {
+                currentUser = { username, ...user };
+                showDashboard();
+            } else {
+                showMessage('error', 'Invalid username or password');
+            }
+        }
+
+        function showMessage(type, message) {
+            const messageDiv = document.getElementById(type === 'error' ? 'errorMessage' : 'successMessage');
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 4000);
+        }
+
+        function showDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            currentView = 'dashboard';
+            
+            // Update user info
+            document.getElementById('usernameDisplay').textContent = currentUser.username;
+            document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+            
+            // Show admin button if user is admin
+            const adminBtn = document.getElementById('adminBtn');
+            if (currentUser.isAdmin) {
+                adminBtn.style.display = 'block';
+            } else {
+                adminBtn.style.display = 'none';
+            }
+            
+            // Load user's accessible sites
+            loadUserSites();
+        }
+
+        function showAdminPanel() {
+            if (!currentUser.isAdmin) return;
+            
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            currentView = 'admin';
+            
+            // Update admin user info
+            document.getElementById('adminUsernameDisplay').textContent = currentUser.username;
+            document.getElementById('adminAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+            
+            loadAdminContent();
+        }
+
+        function loadUserSites() {
+            const sitesGrid = document.getElementById('sitesGrid');
+            sitesGrid.innerHTML = '';
+            
+            currentUser.sites.forEach((siteId, index) => {
+                const site = publicSites[siteId];
+                if (site) {
+                    const siteCard = createSiteCard(siteId, site);
+                    // Add staggered animation
+                    siteCard.style.animationDelay = `${index * 0.1}s`;
+                    sitesGrid.appendChild(siteCard);
+                }
+            });
+        }
+
+        function createSiteCard(siteId, site) {
+            const card = document.createElement('div');
+            card.className = 'site-card glass-effect';
+            
+            card.innerHTML = `
+                <div class="site-logo">${site.logo}</div>
+                <h3 class="site-title">${site.title}</h3>
+                <p class="site-description">${site.description}</p>
+                <div class="site-meta">
+                    <span class="site-category">${site.category}</span>
+                    <span class="site-url">${site.url}</span>
+                </div>
+                <button class="visit-btn" onclick="visitSite('${siteId}', '${site.url}')">
+                    Visit Site →
+                </button>
+            `;
+            
+            return card;
+        }
+
+        function visitSite(siteId, siteUrl) {
+            // Add access key to URL
+            const separator = siteUrl.includes('?') ? '&' : '?';
+            const finalUrl = `${siteUrl}${separator}access_key=${currentUser.key}&user=${currentUser.username}&site=${siteId}`;
+            
+            // Open site in new tab
+            window.open(finalUrl, '_blank');
+            
+            // Show success message with enhanced animation
+            showMessage('success', `Opening ${publicSites[siteId].title}...`);
+        }
+
+        function loadAdminContent() {
+            loadUserManagement();
+            loadSiteManagement();
+        }
+
+        function showAdminTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide sections
+            document.querySelectorAll('.admin-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(tabName + 'Section').classList.add('active');
+        }
+
+        function loadUserManagement() {
+            const grid = document.getElementById('userManagementGrid');
+            grid.innerHTML = '';
+            
+            Object.keys(users).forEach(username => {
+                const user = users[username];
+                const userCard = createUserManagementCard(username, user);
+                grid.appendChild(userCard);
+            });
+        }
+
+        function createUserManagementCard(username, user) {
+            const card = document.createElement('div');
+            card.className = 'user-card glass-effect';
+            
+            const sitesHtml = Object.keys(publicSites).map(siteId => {
+                const site = publicSites[siteId];
+                const hasAccess = user.sites.includes(siteId);
+                return `
+                    <div class="permission-item">
+                        <span>${site.logo} ${site.title}</span>
+                        <div class="permission-toggle ${hasAccess ? 'active' : ''}" 
+                             onclick="toggleUserAccess('${username}', '${siteId}')"></div>
+                    </div>
+                `;
+            }).join('');
+            
+            card.innerHTML = `
+                <div class="user-card-header">
+                    <div>
+                        <div class="user-name">${username}</div>
+                        <div class="user-key">${user.key}</div>
+                        ${user.isAdmin ? '<div style="color: var(--primary); font-size: 13px; font-weight: 700; margin-top: 8px; text-transform: uppercase; letter-spacing: 0.5px;">ADMIN</div>' : ''}
+                    </div>
+                </div>
+                <div class="site-permissions">
+                    ${sitesHtml}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function toggleUserAccess(username, siteId) {
+            const user = users[username];
+            const siteIndex = user.sites.indexOf(siteId);
+            
+            if (siteIndex > -1) {
+                user.sites.splice(siteIndex, 1);
+            } else {
+                user.sites.push(siteId);
+            }
+            
+            loadUserManagement();
+            showMessage('success', `Updated ${publicSites[siteId].title} access for ${username}`);
+        }
+
+        function addNewUser() {
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value.trim();
+            const userKey = document.getElementById('newUserKey').value.trim();
+            
+            if (!username || !password || !userKey) {
+                showMessage('error', 'Please fill in all fields');
+                return;
+            }
+            
+            if (users[username]) {
+                showMessage('error', 'Username already exists');
+                return;
+            }
+            
+            users[username] = {
+                password: password,
+                key: userKey,
+                isAdmin: false,
+                sites: []
+            };
+            
+            // Clear form
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('newUserKey').value = '';
+            
+            loadUserManagement();
+            showMessage('success', `User ${username} created successfully`);
+        }
+
+        function loadSiteManagement() {
+            const grid = document.getElementById('adminSitesGrid');
+            grid.innerHTML = '';
+            
+            Object.keys(publicSites).forEach(siteId => {
+                const site = publicSites[siteId];
+                const siteCard = createAdminSiteCard(siteId, site);
+                grid.appendChild(siteCard);
+            });
+        }
+
+        function createAdminSiteCard(siteId, site) {
+            const card = document.createElement('div');
+            card.className = 'site-card glass-effect';
+            
+            const userCount = Object.values(users).filter(user => user.sites.includes(siteId)).length;
+            const totalUsers = Object.keys(users).length;
+            const accessPercentage = Math.round((userCount / totalUsers) * 100);
+            
+            card.innerHTML = `
+                <div class="site-logo">${site.logo}</div>
+                <h3 class="site-title">${site.title}</h3>
+                <p class="site-description">${site.description}</p>
+                <div class="site-meta">
+                    <span class="site-category">${site.category}</span>
+                    <span class="site-url">${userCount}/${totalUsers} users</span>
+                </div>
+                <div style="margin-top: 24px; padding: 20px; background: rgba(112, 207, 122, 0.1); border-radius: 16px; border: 1px solid rgba(112, 207, 122, 0.2); backdrop-filter: blur(10px);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <span style="font-size: 14px; color: #666; font-weight: 700;">Access Rate</span>
+                        <span style="font-size: 18px; color: var(--primary-dark); font-weight: 800;">${accessPercentage}%</span>
+                    </div>
+                    <div style="width: 100%; height: 10px; background: rgba(235, 237, 252, 0.5); border-radius: 10px; overflow: hidden;">
+                        <div style="width: ${accessPercentage}%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 10px;"></div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; padding: 16px; background: rgba(248, 249, 250, 0.6); border-radius: 12px; backdrop-filter: blur(10px);">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 8px; font-weight: 600;">Site URL:</div>
+                    <div style="font-size: 13px; color: var(--dark); word-break: break-all; font-weight: 500;">${site.url}</div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function logout() {
+            currentUser = null;
+            currentView = 'login';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('loginForm').reset();
+        }
+
+        // Enhanced demo credentials info
+        console.log('🎨 Modernized Carbonzeroed - Demo Credentials:');
+        console.log('👤 Username: demo, Password: demo');
+        console.log('🔧 Username: admin, Password: admin123 (Admin Access)');
+        console.log('👨‍💼 Username: john.doe, Password: password123');
+        console.log('👩‍💼 Username: jane.smith, Password: secure456');
+        console.log('');
+        console.log('✨ Modern Features:');
+        console.log('• Glassmorphism design with advanced blur effects');
+        console.log('• Smooth micro-animations and transitions');
+        console.log('• Enhanced color palette integration');
+        console.log('• Modern typography and spacing');
+        console.log('• Responsive design with mobile-first approach');
+        console.log('• Interactive hover effects and loading states');
+        console.log('• Custom scrollbar and advanced CSS properties');
+    </script>
+</body>
+</html>

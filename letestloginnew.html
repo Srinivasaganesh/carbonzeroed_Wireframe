@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbonzeroed</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #EBEDFC 0%, #ffffff 50%, #EBEDFC 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-delay: -1s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -3s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            padding: 60px 50px;
+            max-width: 480px;
+            margin: 5vh auto;
+            text-align: center;
+            border: 2px solid rgba(112, 207, 122, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: white;
+            font-size: 36px;
+            font-weight: 800;
+            box-shadow: 0 10px 30px rgba(112, 207, 122, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .login-title {
+            color: black;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            color: black;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid #EBEDFC;
+            border-radius: 16px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #70CF7A;
+            box-shadow: 0 0 0 4px rgba(112, 207, 122, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 10px 30px rgba(112, 207, 122, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(112, 207, 122, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message, .success-message {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #ff4757, #ff3838);
+            color: white;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 25px 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .dashboard-title {
+            color: black;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 8px 25px rgba(112, 207, 122, 0.3);
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #EBEDFC;
+            color: black;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+        }
+
+        .nav-button:hover {
+            border-color: #70CF7A;
+            background: rgba(112, 207, 122, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border-color: #70CF7A;
+        }
+
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 10px;
+        }
+
+        .site-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(235, 237, 252, 0.5);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .site-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(112, 207, 122, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .site-card:hover::before {
+            left: 100%;
+        }
+
+        .site-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+            border-color: #70CF7A;
+        }
+
+        .site-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .site-card:hover::after {
+            opacity: 1;
+        }
+
+        .site-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 40px;
+            background: #EBEDFC;
+            border: 3px solid rgba(235, 237, 252, 0.8);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .site-card:hover .site-logo {
+            transform: rotate(5deg) scale(1.1);
+            border-color: #70CF7A;
+        }
+
+        .site-title {
+            color: black;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .site-description {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .site-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .site-category {
+            background: linear-gradient(135deg, #EBEDFC, #ffffff);
+            color: black;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 2px solid rgba(235, 237, 252, 0.8);
+        }
+
+        .site-url {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .visit-btn {
+            width: 100%;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(112, 207, 122, 0.3);
+        }
+
+        .visit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(112, 207, 122, 0.4);
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            display: none;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .admin-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 35px;
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 35px;
+            border-bottom: 3px solid #EBEDFC;
+        }
+
+        .admin-tab {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            color: #666;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            font-size: 16px;
+        }
+
+        .admin-tab.active {
+            color: #43d270;
+            border-bottom-color: #70CF7A;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .user-management-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .user-card {
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            border: 2px solid #EBEDFC;
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border-color: #70CF7A;
+        }
+
+        .user-name {
+            font-weight: 700;
+            color: black;
+            font-size: 18px;
+        }
+
+        .user-key {
+            font-size: 13px;
+            color: #666;
+            background: #EBEDFC;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .site-permissions {
+            margin-top: 20px;
+        }
+
+        .permission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(235, 237, 252, 0.8);
+        }
+
+        .permission-item:last-child {
+            border-bottom: none;
+        }
+
+        .permission-toggle {
+            width: 60px;
+            height: 30px;
+            background: #ccc;
+            border-radius: 30px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .permission-toggle.active {
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .permission-toggle::after {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .permission-toggle.active::after {
+            transform: translateX(30px);
+        }
+
+        .add-user-form {
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border: 2px solid #EBEDFC;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .form-row .form-input {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .sites-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .user-management-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-tabs {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="login-container">
+            <div class="login-header">
+                <div class="logo">C</div>
+                <h1 class="login-title">Welcome</h1>
+                <p class="login-subtitle">Access your sites with secure authentication</p>
+            </div>
+            
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Popular Sites</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="usernameDisplay"></span>
+                    <button class="nav-button" id="adminBtn" onclick="showAdminPanel()" style="display: none;">Admin Panel</button>
+                    <button class="nav-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+            
+            <div class="sites-grid" id="sitesGrid">
+                <!-- Sites will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Admin Panel</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="adminAvatar"></div>
+                    <span id="adminUsernameDisplay"></span>
+                    <button class="nav-button" onclick="showDashboard()">Back to Sites</button>
+                    <button class="nav-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+
+            <div class="admin-content">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="showAdminTab('users')">User Management</button>
+                    <button class="admin-tab" onclick="showAdminTab('sites')">Site Management</button>
+                </div>
+
+                <!-- User Management Section -->
+                <div id="usersSection" class="admin-section active">
+                    <div class="add-user-form">
+                        <h3 style="margin-bottom: 20px; color: black; font-weight: 700;">Add New User</h3>
+                        <div class="form-row">
+                            <input type="text" id="newUsername" class="form-input" placeholder="Username">
+                            <input type="password" id="newPassword" class="form-input" placeholder="Password">
+                            <input type="text" id="newUserKey" class="form-input" placeholder="User Key">
+                            <button class="login-btn" onclick="addNewUser()">Add User</button>
+                        </div>
+                    </div>
+
+                    <div class="user-management-grid" id="userManagementGrid">
+                        <!-- User cards will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Site Management Section -->
+                <div id="sitesSection" class="admin-section">
+                    <h3 style="color: black; margin-bottom: 25px; font-weight: 700;">Site Access Overview</h3>
+                    <div class="sites-grid" id="adminSitesGrid">
+                        <!-- Sites overview will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock user database with their accessible sites
+        let users = {
+            'admin': {
+                password: 'admin123',
+                key: 'adm_001',
+                isAdmin: true,
+                sites: ['youtube', 'google', 'github', 'netflix', 'spotify', 'twitter', 'instagram', 'linkedin']
+            },
+            'john.doe': {
+                password: 'password123',
+                key: 'usr_002',
+                isAdmin: false,
+                sites: ['youtube', 'google', 'github', 'spotify']
+            },
+            'jane.smith': {
+                password: 'secure456',
+                key: 'usr_003',
+                isAdmin: false,
+                sites: ['netflix', 'spotify', 'instagram', 'linkedin']
+            },
+            'demo': {
+                password: 'demo',
+                key: 'demo_001',
+                isAdmin: false,
+                sites: ['youtube', 'google', 'github', 'netflix', 'spotify', 'twitter']
+            }
+        };
+
+        // Popular public sites
+        const publicSites = {
+            'youtube': {
+                title: 'YouTube',
+                description: 'Watch, share and discover videos from creators worldwide',
+                logo: '▶️',
+                category: 'Entertainment',
+                url: 'https://www.youtube.com'
+            },
+            'google': {
+                title: 'Google',
+                description: 'Search the world\'s information and access Google services',
+                logo: '🔍',
+                category: 'Search',
+                url: 'https://www.google.com'
+            },
+            'github': {
+                title: 'GitHub',
+                description: 'Collaborate on code with millions of developers worldwide',
+                logo: '🐙',
+                category: 'Development',
+                url: 'https://github.com'
+            },
+            'netflix': {
+                title: 'Netflix',
+                description: 'Stream movies, TV shows and original content',
+                logo: '🎬',
+                category: 'Streaming',
+                url: 'https://www.netflix.com'
+            },
+            'spotify': {
+                title: 'Spotify',
+                description: 'Listen to music, podcasts and audio content',
+                logo: '🎵',
+                category: 'Music',
+                url: 'https://www.spotify.com'
+            },
+            'twitter': {
+                title: 'Twitter',
+                description: 'Connect with people and join the conversation',
+                logo: '🐦',
+                category: 'Social',
+                url: 'https://twitter.com'
+            },
+            'instagram': {
+                title: 'Instagram',
+                description: 'Share photos, videos and stories with friends',
+                logo: '📷',
+                category: 'Social',
+                url: 'https://www.instagram.com'
+            },
+            'linkedin': {
+                title: 'LinkedIn',
+                description: 'Professional networking and career development',
+                logo: '💼',
+                category: 'Professional',
+                url: 'https://www.linkedin.com'
+            }
+        };
+
+        let currentUser = null;
+        let currentView = 'dashboard';
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            login(username, password);
+        });
+
+        function login(username, password) {
+            const user = users[username];
+            const errorDiv = document.getElementById('errorMessage');
+            
+            if (user && user.password === password) {
+                currentUser = { username, ...user };
+                showDashboard();
+            } else {
+                showMessage('error', 'Invalid username or password');
+            }
+        }
+
+        function showMessage(type, message) {
+            const messageDiv = document.getElementById(type === 'error' ? 'errorMessage' : 'successMessage');
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 4000);
+        }
+
+        function showDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            currentView = 'dashboard';
+            
+            // Update user info
+            document.getElementById('usernameDisplay').textContent = currentUser.username;
+            document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+            
+            // Show admin button if user is admin
+            const adminBtn = document.getElementById('adminBtn');
+            if (currentUser.isAdmin) {
+                adminBtn.style.display = 'block';
+            } else {
+                adminBtn.style.display = 'none';
+            }
+            
+            // Load user's accessible sites
+            loadUserSites();
+        }
+
+        function showAdminPanel() {
+            if (!currentUser.isAdmin) return;
+            
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            currentView = 'admin';
+            
+            // Update admin user info
+            document.getElementById('adminUsernameDisplay').textContent = currentUser.username;
+            document.getElementById('adminAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+            
+            loadAdminContent();
+        }
+
+        function loadUserSites() {
+            const sitesGrid = document.getElementById('sitesGrid');
+            sitesGrid.innerHTML = '';
+            
+            currentUser.sites.forEach(siteId => {
+                const site = publicSites[siteId];
+                if (site) {
+                    const siteCard = createSiteCard(siteId, site);
+                    sitesGrid.appendChild(siteCard);
+                }
+            });
+        }
+
+        function createSiteCard(siteId, site) {
+            const card = document.createElement('div');
+            card.className = 'site-card';
+            
+            card.innerHTML = `
+                <div class="site-logo">${site.logo}</div>
+                <h3 class="site-title">${site.title}</h3>
+                <p class="site-description">${site.description}</p>
+                <div class="site-meta">
+                    <span class="site-category">${site.category}</span>
+                    <span class="site-url">${site.url}</span>
+                </div>
+                <button class="visit-btn" onclick="visitSite('${siteId}', '${site.url}')">
+                    Visit Site →
+                </button>
+            `;
+            
+            return card;
+        }
+
+        function visitSite(siteId, siteUrl) {
+            // Add access key to URL
+            const separator = siteUrl.includes('?') ? '&' : '?';
+            const finalUrl = `${siteUrl}${separator}access_key=${currentUser.key}&user=${currentUser.username}&site=${siteId}`;
+            
+            // Open site in new tab
+            window.open(finalUrl, '_blank');
+            
+            // For demo purposes, also show a notification
+            showMessage('success', `Opening ${publicSites[siteId].title}...`);
+        }
+
+        function loadAdminContent() {
+            loadUserManagement();
+            loadSiteManagement();
+        }
+
+        function showAdminTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide sections
+            document.querySelectorAll('.admin-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(tabName + 'Section').classList.add('active');
+        }
+
+        function loadUserManagement() {
+            const grid = document.getElementById('userManagementGrid');
+            grid.innerHTML = '';
+            
+            Object.keys(users).forEach(username => {
+                const user = users[username];
+                const userCard = createUserManagementCard(username, user);
+                grid.appendChild(userCard);
+            });
+        }
+
+        function createUserManagementCard(username, user) {
+            const card = document.createElement('div');
+            card.className = 'user-card';
+            
+            const sitesHtml = Object.keys(publicSites).map(siteId => {
+                const site = publicSites[siteId];
+                const hasAccess = user.sites.includes(siteId);
+                return `
+                    <div class="permission-item">
+                        <span>${site.logo} ${site.title}</span>
+                        <div class="permission-toggle ${hasAccess ? 'active' : ''}" 
+                             onclick="toggleUserAccess('${username}', '${siteId}')"></div>
+                    </div>
+                `;
+            }).join('');
+            
+            card.innerHTML = `
+                <div class="user-card-header">
+                    <div>
+                        <div class="user-name">${username}</div>
+                        <div class="user-key">${user.key}</div>
+                        ${user.isAdmin ? '<div style="color: #70CF7A; font-size: 12px; font-weight: 600; margin-top: 5px;">ADMIN</div>' : ''}
+                    </div>
+                </div>
+                <div class="site-permissions">
+                    ${sitesHtml}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function toggleUserAccess(username, siteId) {
+            const user = users[username];
+            const siteIndex = user.sites.indexOf(siteId);
+            
+            if (siteIndex > -1) {
+                user.sites.splice(siteIndex, 1);
+            } else {
+                user.sites.push(siteId);
+            }
+            
+            loadUserManagement();
+            showMessage('success', `Updated ${publicSites[siteId].title} access for ${username}`);
+        }
+
+        function addNewUser() {
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value.trim();
+            const userKey = document.getElementById('newUserKey').value.trim();
+            
+            if (!username || !password || !userKey) {
+                showMessage('error', 'Please fill in all fields');
+                return;
+            }
+            
+            if (users[username]) {
+                showMessage('error', 'Username already exists');
+                return;
+            }
+            
+            users[username] = {
+                password: password,
+                key: userKey,
+                isAdmin: false,
+                sites: []
+            };
+            
+            // Clear form
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('newUserKey').value = '';
+            
+            loadUserManagement();
+            showMessage('success', `User ${username} created successfully`);
+        }
+
+        function loadSiteManagement() {
+            const grid = document.getElementById('adminSitesGrid');
+            grid.innerHTML = '';
+            
+            Object.keys(publicSites).forEach(siteId => {
+                const site = publicSites[siteId];
+                const siteCard = createAdminSiteCard(siteId, site);
+                grid.appendChild(siteCard);
+            });
+        }
+
+        function createAdminSiteCard(siteId, site) {
+            const card = document.createElement('div');
+            card.className = 'site-card';
+            
+            const userCount = Object.values(users).filter(user => user.sites.includes(siteId)).length;
+            const totalUsers = Object.keys(users).length;
+            const accessPercentage = Math.round((userCount / totalUsers) * 100);
+            
+            card.innerHTML = `
+                <div class="site-logo">${site.logo}</div>
+                <h3 class="site-title">${site.title}</h3>
+                <p class="site-description">${site.description}</p>
+                <div class="site-meta">
+                    <span class="site-category">${site.category}</span>
+                    <span class="site-url">${userCount}/${totalUsers} users</span>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: rgba(112, 207, 122, 0.1); border-radius: 12px; border: 1px solid rgba(112, 207, 122, 0.2);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-size: 14px; color: #666; font-weight: 600;">Access Rate</span>
+                        <span style="font-size: 16px; color: #43d270; font-weight: 700;">${accessPercentage}%</span>
+                    </div>
+                    <div style="width: 100%; height: 8px; background: #EBEDFC; border-radius: 10px; overflow: hidden;">
+                        <div style="width: ${accessPercentage}%; height: 100%; background: linear-gradient(135deg, #70CF7A, #43d270); transition: width 0.5s ease;"></div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(248, 249, 250, 0.8); border-radius: 8px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Site URL:</div>
+                    <div style="font-size: 12px; color: #333; word-break: break-all;">${site.url}</div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function logout() {
+            currentUser = null;
+            currentView = 'login';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('loginForm').reset();
+        }
+
+        // Demo credentials info
+        console.log('🚀 Demo Credentials:');
+        console.log('Username: demo, Password: demo');
+        console.log('Username: admin, Password: admin123 (Admin Access)');
+        console.log('Username: john.doe, Password: password123');
+        console.log('Username: jane.smith, Password: secure456');
+        console.log('');
+        console.log('🌟 Features:');
+        console.log('- Modern glassmorphism design');
+        console.log('- Animated background elements');
+        console.log('- Popular site access with secure keys');
+        console.log('- Admin panel for user & site management');
+        console.log('- Responsive design for all devices');
+    </script>
+</body>
+</html>

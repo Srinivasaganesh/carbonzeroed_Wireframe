@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carbonzeroed</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #EBEDFC 0%, #ffffff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 60px 50px;
+            max-width: 450px;
+            margin: 0 auto;
+            text-align: center;
+            border: 1px solid #EBEDFC;
+        }
+
+        .login-header {
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .login-title {
+            color: black;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            color: black;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 18px;
+            border: 2px solid #EBEDFC;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #70CF7A;
+            box-shadow: 0 0 0 3px rgba(112, 207, 122, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(112, 207, 122, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message, .success-message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message {
+            background: #ff4757;
+            color: white;
+        }
+
+        .success-message {
+            background: #70CF7A;
+            color: white;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #EBEDFC;
+        }
+
+        .dashboard-title {
+            color: black;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .nav-button {
+            background: transparent;
+            border: 2px solid #EBEDFC;
+            color: black;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .nav-button:hover {
+            border-color: #70CF7A;
+            color: #43d270;
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border-color: #70CF7A;
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            padding: 0 10px;
+        }
+
+        .app-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #EBEDFC;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #70CF7A;
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .app-card:hover::before {
+            opacity: 1;
+        }
+
+        .app-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #EBEDFC, #ffffff);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            border: 2px solid #EBEDFC;
+        }
+
+        .app-title {
+            color: black;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .app-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .app-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .app-category {
+            background: #EBEDFC;
+            color: black;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .app-url {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .app-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .app-btn {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .app-btn-primary {
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+        }
+
+        .app-btn-secondary {
+            background: white;
+            color: #43d270;
+            border: 2px solid #43d270;
+        }
+
+        .app-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .admin-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            border: 1px solid #EBEDFC;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #EBEDFC;
+        }
+
+        .admin-tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .admin-tab.active {
+            color: #43d270;
+            border-bottom-color: #70CF7A;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .user-management-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .user-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            border: 2px solid #EBEDFC;
+        }
+
+        .user-card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: black;
+            font-size: 16px;
+        }
+
+        .user-key {
+            font-size: 12px;
+            color: #666;
+            background: #EBEDFC;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .app-permissions {
+            margin-top: 15px;
+        }
+
+        .permission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #EBEDFC;
+        }
+
+        .permission-item:last-child {
+            border-bottom: none;
+        }
+
+        .permission-toggle {
+            width: 50px;
+            height: 25px;
+            background: #ccc;
+            border-radius: 25px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .permission-toggle.active {
+            background: #70CF7A;
+        }
+
+        .permission-toggle::after {
+            content: '';
+            position: absolute;
+            width: 21px;
+            height: 21px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .permission-toggle.active::after {
+            transform: translateX(25px);
+        }
+
+        .add-user-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #EBEDFC;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .form-row .form-input {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .apps-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .user-management-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="login-container">
+            <div class="login-header">
+                <div class="logo">C</div>
+                <h1 class="login-title">Welcome</h1>
+                <p class="login-subtitle">Sign in to access your applications</p>
+            </div>
+            
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">My Apps</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="usernameDisplay"></span>
+                    <button class="nav-button" id="adminBtn" onclick="showAdminPanel()" style="display: none;">Admin Panel</button>
+                    <button class="nav-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+            
+            <div class="apps-grid" id="appsGrid">
+                <!-- Apps will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Admin Panel</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="adminAvatar"></div>
+                    <span id="adminUsernameDisplay"></span>
+                    <button class="nav-button" onclick="showDashboard()">Back to Apps</button>
+                    <button class="nav-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+
+            <div class="admin-content">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="showAdminTab('users')">User Management</button>
+                    <button class="admin-tab" onclick="showAdminTab('apps')">App Management</button>
+                </div>
+
+                <!-- User Management Section -->
+                <div id="usersSection" class="admin-section active">
+                    <div class="add-user-form">
+                        <h3 style="margin-bottom: 15px; color: black;">Add New User</h3>
+                        <div class="form-row">
+                            <input type="text" id="newUsername" class="form-input" placeholder="Username">
+                            <input type="password" id="newPassword" class="form-input" placeholder="Password">
+                            <input type="text" id="newUserKey" class="form-input" placeholder="User Key">
+                            <button class="login-btn" onclick="addNewUser()">Add User</button>
+                        </div>
+                    </div>
+
+                    <div class="user-management-grid" id="userManagementGrid">
+                        <!-- User cards will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- App Management Section -->
+                <div id="appsSection" class="admin-section">
+                    <h3 style="color: black; margin-bottom: 20px;">Application Overview</h3>
+                    <div class="apps-grid" id="adminAppsGrid">
+                        <!-- Apps overview will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock user database with their accessible apps
+        let users = {
+            'admin': {
+                password: 'admin123',
+                key: 'adm_001',
+                isAdmin: true,
+                apps: ['crm', 'analytics', 'hr', 'finance', 'project', 'docs']
+            },
+            'john.doe': {
+                password: 'password123',
+                key: 'usr_002',
+                isAdmin: false,
+                apps: ['crm', 'project', 'docs']
+            },
+            'jane.smith': {
+                password: 'secure456',
+                key: 'usr_003',
+                isAdmin: false,
+                apps: ['hr', 'finance', 'docs']
+            },
+            'demo': {
+                password: 'demo',
+                key: 'demo_001',
+                isAdmin: false,
+                apps: ['crm', 'analytics', 'project', 'docs']
+            }
+        };
+
+        // Available applications
+        const applications = {
+            'crm': {
+                title: 'Customer CRM',
+                description: 'Manage customer relationships and sales pipeline',
+                icon: '👥',
+                category: 'Sales',
+                url: 'https://crm.example.com',
+                publicUrl: 'https://public-crm.example.com'
+            },
+            'analytics': {
+                title: 'Analytics Dashboard',
+                description: 'Business intelligence and data visualization',
+                icon: '📊',
+                category: 'Analytics',
+                url: 'https://analytics.example.com',
+                publicUrl: 'https://public-analytics.example.com'
+            },
+            'hr': {
+                title: 'HR Management',
+                description: 'Employee management and human resources',
+                icon: '👨‍💼',
+                category: 'HR',
+                url: 'https://hr.example.com',
+                publicUrl: 'https://public-hr.example.com'
+            },
+            'finance': {
+                title: 'Finance Portal',
+                description: 'Financial management and accounting tools',
+                icon: '💰',
+                category: 'Finance',
+                url: 'https://finance.example.com',
+                publicUrl: 'https://public-finance.example.com'
+            },
+            'project': {
+                title: 'Project Manager',
+                description: 'Project planning and team collaboration',
+                icon: '📋',
+                category: 'Productivity',
+                url: 'https://projects.example.com',
+                publicUrl: 'https://public-projects.example.com'
+            },
+            'docs': {
+                title: 'Document Center',
+                description: 'Document storage and collaboration platform',
+                icon: '📄',
+                category: 'Productivity',
+                url: 'https://docs.example.com',
+                publicUrl: 'https://public-docs.example.com'
+            }
+        };
+
+        let currentUser = null;
+        let currentView = 'dashboard';
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            login(username, password);
+        });
+
+        function login(username, password) {
+            const user = users[username];
+            const errorDiv = document.getElementById('errorMessage');
+            
+            if (user && user.password === password) {
+                currentUser = { username, ...user };
+                showDashboard();
+            } else {
+                showMessage('error', 'Invalid username or password');
+            }
+        }
+
+        function showMessage(type, message) {
+            const messageDiv = document.getElementById(type === 'error' ? 'errorMessage' : 'successMessage');
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function showDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            currentView = 'dashboard';
+            
+            // Update user info
+            document.getElementById('usernameDisplay').textContent = currentUser.username;
+            document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+            
+            // Show admin button if user is admin
+            const adminBtn = document.getElementById('adminBtn');
+            if (currentUser.isAdmin) {
+                adminBtn.style.display = 'block';
+            } else {
+                adminBtn.style.display = 'none';
+            }
+            
+            // Load user's accessible apps
+            loadUserApps();
+        }
+
+        function showAdminPanel() {
+            if (!currentUser.isAdmin) return;
+            
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            currentView = 'admin';
+            
+            // Update admin user info
+            document.getElementById('adminUsernameDisplay').textContent = currentUser.username;
+            document.getElementById('adminAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+            
+            loadAdminContent();
+        }
+
+        function loadUserApps() {
+            const appsGrid = document.getElementById('appsGrid');
+            appsGrid.innerHTML = '';
+            
+            currentUser.apps.forEach(appId => {
+                const app = applications[appId];
+                if (app) {
+                    const appCard = createAppCard(appId, app);
+                    appsGrid.appendChild(appCard);
+                }
+            });
+        }
+
+        function createAppCard(appId, app) {
+            const card = document.createElement('div');
+            card.className = 'app-card';
+            
+            card.innerHTML = `
+                <div class="app-icon">${app.icon}</div>
+                <h3 class="app-title">${app.title}</h3>
+                <p class="app-description">${app.description}</p>
+                <div class="app-meta">
+                    <span class="app-category">${app.category}</span>
+                    <span class="app-url">${app.publicUrl}</span>
+                </div>
+                <div class="app-buttons">
+                    <button class="app-btn app-btn-primary" onclick="openApp('${appId}', '${app.url}', 'internal')">
+                        Open App
+                    </button>
+                    <button class="app-btn app-btn-secondary" onclick="openApp('${appId}', '${app.publicUrl}', 'public')">
+                        Public Site
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function openApp(appId, appUrl, type) {
+            let finalUrl;
+            
+            if (type === 'public') {
+                // Open public website with access key
+                finalUrl = `${appUrl}?access_key=${currentUser.key}&user=${currentUser.username}&app=${appId}`;
+                window.open(finalUrl, '_blank');
+            } else {
+                // Open internal app with user key
+                finalUrl = `${appUrl}?user=${currentUser.username}&key=${currentUser.key}&app=${appId}`;
+                
+                // For demo purposes, show an alert
+                alert(`Opening ${applications[appId].title}...\n\nURL: ${finalUrl}\nUser: ${currentUser.username}\nKey: ${currentUser.key}`);
+                
+                // Uncomment to actually redirect
+                // window.open(finalUrl, '_blank');
+            }
+        }
+
+        function loadAdminContent() {
+            loadUserManagement();
+            loadAppManagement();
+        }
+
+        function showAdminTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide sections
+            document.querySelectorAll('.admin-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(tabName + 'Section').classList.add('active');
+        }
+
+        function loadUserManagement() {
+            const grid = document.getElementById('userManagementGrid');
+            grid.innerHTML = '';
+            
+            Object.keys(users).forEach(username => {
+                const user = users[username];
+                const userCard = createUserManagementCard(username, user);
+                grid.appendChild(userCard);
+            });
+        }
+
+        function createUserManagementCard(username, user) {
+            const card = document.createElement('div');
+            card.className = 'user-card';
+            
+            const appsHtml = Object.keys(applications).map(appId => {
+                const app = applications[appId];
+                const hasAccess = user.apps.includes(appId);
+                return `
+                    <div class="permission-item">
+                        <span>${app.title}</span>
+                        <div class="permission-toggle ${hasAccess ? 'active' : ''}" 
+                             onclick="toggleUserAccess('${username}', '${appId}')"></div>
+                    </div>
+                `;
+            }).join('');
+            
+            card.innerHTML = `
+                <div class="user-card-header">
+                    <div>
+                        <div class="user-name">${username}</div>
+                        <div class="user-key">${user.key}</div>
+                    </div>
+                </div>
+                <div class="app-permissions">
+                    ${appsHtml}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function toggleUserAccess(username, appId) {
+            const user = users[username];
+            const appIndex = user.apps.indexOf(appId);
+            
+            if (appIndex > -1) {
+                user.apps.splice(appIndex, 1);
+            } else {
+                user.apps.push(appId);
+            }
+            
+            loadUserManagement();
+            showMessage('success', `Updated access for ${username}`);
+        }
+
+        function addNewUser() {
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value.trim();
+            const userKey = document.getElementById('newUserKey').value.trim();
+            
+            if (!username || !password || !userKey) {
+                showMessage('error', 'Please fill in all fields');
+                return;
+            }
+            
+            if (users[username]) {
+                showMessage('error', 'Username already exists');
+                return;
+            }
+            
+            users[username] = {
+                password: password,
+                key: userKey,
+                isAdmin: false,
+                apps: []
+            };
+            
+            // Clear form
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('newUserKey').value = '';
+            
+            loadUserManagement();
+            showMessage('success', `User ${username} created successfully`);
+        }
+
+        function loadAppManagement() {
+            const grid = document.getElementById('adminAppsGrid');
+            grid.innerHTML = '';
+            
+            Object.keys(applications).forEach(appId => {
+                const app = applications[appId];
+                const appCard = createAdminAppCard(appId, app);
+                grid.appendChild(appCard);
+            });
+        }
+
+        function createAdminAppCard(appId, app) {
+            const card = document.createElement('div');
+            card.className = 'app-card';
+            
+            const userCount = Object.values(users).filter(user => user.apps.includes(appId)).length;
+            
+            card.innerHTML = `
+                <div class="app-icon">${app.icon}</div>
+                <h3 class="app-title">${app.title}</h3>
+                <p class="app-description">${app.description}</p>
+                <div class="app-meta">
+                    <span class="app-category">${app.category}</span>
+                    <span class="app-url">${userCount} users</span>
+                </div>
+                <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Internal URL:</div>
+                    <div style="font-size: 12px; color: #333; margin-bottom: 10px;">${app.url}</div>
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Public URL:</div>
+                    <div style="font-size: 12px; color: #333;">${app.publicUrl}</div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function logout() {
+            currentUser = null;
+            currentView = 'login';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('loginForm').reset();
+        }
+
+        // Demo credentials info
+        console.log('Demo Credentials:');
+        console.log('Username: demo, Password: demo');
+        console.log('Username: admin, Password: admin123 (Admin Access)');
+        console.log('Username: john.doe, Password: password123');
+        console.log('Username: jane.smith, Password: secure456');
+    </script>
+</body>
+</html>
