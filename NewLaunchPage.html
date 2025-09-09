@@ -471,7 +471,7 @@
     </div>
 
     <!-- Launch Animation Overlay -->
-    <div class="launch-animation" id="launchAnimation">
+    <div class="launch-animation hidden" id="launchAnimation">
         <div class="animation-content">
             <div class="logo-animation" id="appLogoAnimation">🚀</div>
             <h2 class="animation-text" id="animationAppName">Loading Application</h2>
@@ -484,13 +484,13 @@
     </div>
 
     <!-- Application Interface -->
-    <div class="app-container" id="appContainer">
+    <div class="app-container visible" id="appContainer">
         <div class="app-header">
             <h1 class="app-header-title" id="appTitle">Application Dashboard</h1>
             <div class="app-header-actions">
-                <button class="app-header-btn" onclick="showDashboard()">Dashboard</button>
-                <button class="app-header-btn" onclick="showSettings()">Settings</button>
-                <button class="app-header-btn" onclick="showHelp()">Help</button>
+                <!-- <button class="app-header-btn" onclick="showDashboard()">Dashboard</button> -->
+                <!-- <button class="app-header-btn" onclick="showSettings()">Settings</button> -->
+                <!-- <button class="app-header-btn" onclick="showHelp()">Help</button> -->
                 <button class="app-header-btn" onclick="window.close()" style="background: rgba(244, 67, 54, 0.2); color: #f44336;">Close</button>
             </div>
         </div>
@@ -651,26 +651,27 @@
             document.getElementById('animationAppName').textContent = `Loading ${app.title}`;
             
             // Start loading animation
-            const progressBar = document.getElementById('loadingProgress');
-            let progress = 0;
+            // const progressBar = document.getElementById('loadingProgress');
+            // let progress = 0;
             
-            const loadingInterval = setInterval(() => {
-                progress += 2;
-                progressBar.style.width = `${progress}%`;
+            // const loadingInterval = setInterval(() => {
+            //     progress += 2;
+            //     progressBar.style.width = `${progress}%`;
                 
-                if (progress >= 100) {
-                    clearInterval(loadingInterval);
+            //     if (progress >= 100) {
+            //         clearInterval(loadingInterval);
                     
-                    // Hide animation and show app
-                    setTimeout(() => {
-                        document.getElementById('launchAnimation').classList.add('hidden');
-                        document.getElementById('appContainer').classList.add('visible');
+            //         // Hide animation and show app
+            //         setTimeout(() => {
+            //             document.getElementById('launchAnimation').classList.add('hidden');
+            //             document.getElementById('appContainer').classList.add('visible');
                         
-                        // Populate app information
-                        populateAppInfo(params, app);
-                    }, 500);
-                }
-            }, 60);
+            //             // Populate app information
+            //             populateAppInfo(params, app);
+            //         }, 500);
+            //     }
+            // }, 60);
+            populateAppInfo(params, app);
         }
 
         // Populate application information
