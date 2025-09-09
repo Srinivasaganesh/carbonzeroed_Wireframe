@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbonzeroed</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+  .user-management-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 30px;
+            margin-top: 25px;
+        }
+
+        .user-card {
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            border: 2px solid #EBEDFC;
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border-color: #70CF7A;
+        }
+
+        .user-name {
+            font-weight: 700;
+            color: black;
+            font-size: 18px;
+        }
+
+        .user-key-display {
+            font-size: 12px;
+            color: #2196F3;
+            background: rgba(33, 150, 243, 0.1);
+            padding: 6px 12px;
+            border-radius: 12px;
+            margin-top: 8px;
+            display: inline-block;
+            font-weight: 600;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+
+        .site-permissions {
+            margin-top: 20px;
+        }
+
+        .permission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(235, 237, 252, 0.8);
+        }
+
+        .permission-item:last-child {
+            border-bottom: none;
+        }
+
+        .permission-toggle {
+            width: 60px;
+            height: 30px;
+            background: #ccc;
+            border-radius: 30px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .permission-toggle.active {
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .permission-toggle::after {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .permission-toggle.active::after {
+            transform: translateX(30px);
+        }
+
+        .add-user-form,
+        .add-app-form {
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            border: 2px solid #EBEDFC;
+        }
+
+         .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .form-row.three-column {
+            grid-template-columns: 1fr 1fr 1fr auto;
+        }
+
+        .form-row .form-input {
+            margin-bottom: 0;
+        }
+
+        /* Add App Form Styles */
+        .form-row.app-form {
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-row.app-form-full {
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row.app-key-row {
+            grid-template-columns: 1fr auto;
+            gap: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+                .delete-btn {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .delete-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+        }
+
+                .add-app-btn {
+            background: linear-gradient(135deg, #43a047, #2e7d32);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(67, 160, 71, 0.3);
+        }
+
+        .add-app-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(67, 160, 71, 0.4);
+        }
+
+         .generate-key-btn {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            padding: 18px 20px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .generate-key-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+        }
+
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #EBEDFC 0%, #ffffff 50%, #EBEDFC 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-delay: -1s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -3s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            padding: 40px 40px;
+            max-width: 420px;
+            width: 90%;
+            margin: 0 auto;
+            text-align: center;
+            border: 2px solid rgba(112, 207, 122, 0.2);
+            position: relative;
+            overflow: hidden;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .logo-img {
+            width: 55px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 30px;
+            font-weight: 800;
+            box-shadow: 0 10px 30px rgba(112, 207, 122, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .login-title {
+            color: black;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            color: black;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid #EBEDFC;
+            border-radius: 16px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #70CF7A;
+            box-shadow: 0 0 0 4px rgba(112, 207, 122, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 10px 30px rgba(112, 207, 122, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(112, 207, 122, 0.4);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message,
+        .success-message {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #ff4757, #ff3838);
+            color: white;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 25px 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .dashboard-title {
+            color: black;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 8px 25px rgba(112, 207, 122, 0.3);
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #EBEDFC;
+            color: black;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+        }
+
+        .nav-button:hover {
+            border-color: #70CF7A;
+            background: rgba(112, 207, 122, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border-color: #70CF7A;
+        }
+
+        /* New Split Layout for Dashboard */
+        .dashboard-content {
+            display: flex;
+            gap: 40px;
+            height: calc(100vh - 200px);
+        }
+
+        .apps-sidebar {
+            flex: 0 0 35%;
+            /* Changed from flex: 0 0 380px; */
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            overflow-y: auto;
+            position: relative;
+            scrollbar-width: thin;
+        }
+
+        .apps-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .sidebar-title {
+            color: black;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .apps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .app-card-compact {
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card-compact:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #70CF7A;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .app-card-compact.selected {
+            border-color: #70CF7A;
+            background: rgba(112, 207, 122, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(112, 207, 122, 0.3);
+        }
+
+        .app-card-compact::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            transition: width 0.3s ease;
+        }
+
+        .app-card-compact.selected::before {
+            width: 4px;
+        }
+
+        .app-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .app-logo-small {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: #EBEDFC;
+            border: 2px solid rgba(112, 207, 122, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .app-card-compact:hover .app-logo-small {
+            transform: scale(1.1);
+            border-color: #70CF7A;
+        }
+
+        .app-info {
+            flex: 1;
+        }
+
+        .app-title-small {
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .app-category-small {
+            background: linear-gradient(135deg, #EBEDFC, #ffffff);
+            color: #666;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* App Preview Panel */
+        .app-preview {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .preview-content {
+            display: none;
+            padding: 40px;
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .preview-content.active {
+            display: block;
+        }
+
+        .preview-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            text-align: center;
+            height: 100%;
+        }
+
+        .preview-placeholder-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .preview-placeholder-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .preview-placeholder-subtext {
+            font-size: 16px;
+            opacity: 0.7;
+        }
+
+        .app-video-container {
+            margin-bottom: 30px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .app-video {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            border-radius: 16px;
+        }
+
+        .app-details {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .app-logo-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            background: #EBEDFC;
+            border: 3px solid rgba(112, 207, 122, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-meta {
+            flex: 1;
+        }
+
+        .app-title-large {
+            color: black;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .app-category-large {
+            background: linear-gradient(135deg, #EBEDFC, #ffffff);
+            color: black;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            border: 2px solid rgba(235, 237, 252, 0.8);
+        }
+
+        .app-description-large {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .app-features {
+            margin-bottom: 30px;
+        }
+
+        .features-title {
+            color: black;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .feature-icon {
+            color: #70CF7A;
+            font-weight: 700;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .launch-btn {
+            flex: 1;
+            padding: 18px 25px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(112, 207, 122, 0.3);
+        }
+
+        .launch-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(112, 207, 122, 0.4);
+        }
+
+        .info-btn {
+            padding: 18px 25px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #EBEDFC;
+            color: black;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .info-btn:hover {
+            border-color: #70CF7A;
+            background: rgba(112, 207, 122, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Admin Panel Styles (keeping existing styles) */
+        .admin-panel {
+            display: none;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .admin-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 35px;
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 35px;
+            border-bottom: 3px solid #EBEDFC;
+        }
+
+        .admin-tab {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            color: #666;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            font-size: 16px;
+        }
+
+        .admin-tab.active {
+            color: #43d270;
+            border-bottom-color: #70CF7A;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 10px;
+        }
+
+        .site-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(112, 207, 122, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .site-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(112, 207, 122, 0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .site-card:hover::before {
+            left: 100%;
+        }
+
+        .site-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+            border-color: #70CF7A;
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .site-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .site-card:hover::after {
+            opacity: 1;
+        }
+
+        .site-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 40px;
+            background: #EBEDFC;
+            border: 3px solid rgba(112, 207, 122, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .site-card:hover .site-logo {
+            transform: rotate(5deg) scale(1.1);
+            border-color: #70CF7A;
+        }
+
+        .site-title {
+            color: black;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .site-description {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .site-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .site-category {
+            background: linear-gradient(135deg, #EBEDFC, #ffffff);
+            color: black;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 2px solid rgba(235, 237, 252, 0.8);
+        }
+
+        .site-url {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .access-key {
+            font-size: 11px;
+            color: #43d270;
+            background: rgba(112, 207, 122, 0.1);
+            padding: 4px 10px;
+            border-radius: 15px;
+            margin-top: 10px;
+            display: inline-block;
+            font-weight: 600;
+            border: 1px solid rgba(112, 207, 122, 0.3);
+        }
+
+        .user-key {
+            font-size: 11px;
+            color: #2196F3;
+            background: rgba(33, 150, 243, 0.1);
+            padding: 4px 10px;
+            border-radius: 15px;
+            margin-top: 5px;
+            display: inline-block;
+            font-weight: 600;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+        }
+
+        .visit-btn {
+            width: 100%;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(112, 207, 122, 0.3);
+        }
+
+        .visit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(112, 207, 122, 0.4);
+        }
+
+        /* Launch Animation Styles */
+        .launch-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .launch-animation.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .animation-content {
+            text-align: center;
+            color: white;
+        }
+
+        .logo-animation {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 60px;
+            position: relative;
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(112, 207, 122, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 30px rgba(112, 207, 122, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(112, 207, 122, 0);
+            }
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin: 30px auto;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 10px;
+            transition: width 3s ease;
+        }
+
+        .animation-text {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .animation-subtext {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particle-float 5s linear infinite;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Dummy App Page Styles */
+        .dummy-app {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 10000;
+            overflow-y: auto;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .app-header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .app-header-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .app-header-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .app-content {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .app-welcome {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .app-welcome h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #1a1f2e;
+        }
+
+        .app-welcome p {
+            font-size: 18px;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .app-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .dashboard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #EBEDFC;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .dashboard-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #1a1f2e;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-card .card-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #70CF7A;
+        }
+
+        .app-footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            margin-top: 50px;
+            border-top: 1px solid #EBEDFC;
+        }
+
+        .close-app-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .close-app-btn:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-content {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .apps-sidebar {
+                flex: none;
+                margin-bottom: 30px;
+            }
+
+            .apps-list {
+                flex-direction: row;
+                overflow-x: auto;
+                gap: 15px;
+                padding-bottom: 10px;
+            }
+
+            .app-card-compact {
+                flex: 0 0 250px;
+            }
+
+            .app-preview {
+                min-height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .dashboard-content {
+                gap: 20px;
+            }
+
+            .apps-sidebar {
+                padding: 20px;
+            }
+
+            .apps-list {
+                flex-direction: column;
+            }
+
+            .app-card-compact {
+                flex: none;
+            }
+
+            .preview-content {
+                padding: 20px;
+            }
+
+            .app-actions {
+                flex-direction: column;
+            }
+
+            .animation-text {
+                font-size: 24px;
+            }
+
+            .logo-animation {
+                width: 100px;
+                height: 100px;
+                font-size: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <!-- Launch Animation Overlay -->
+    <div class="launch-animation" id="launchAnimation">
+        <div class="animation-content">
+            <div class="logo-animation">🚀</div>
+            <h2 class="animation-text" id="animationAppName">Launching Application</h2>
+            <p class="animation-subtext">Preparing your experience...</p>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+        </div>
+        <div class="particles" id="particlesContainer"></div>
+    </div>
+
+    <!-- Dummy App Page -->
+    <div class="dummy-app" id="dummyApp">
+        <div class="app-header">
+            <h1 class="app-header-title" id="dummyAppTitle">Application</h1>
+            <div class="app-header-actions">
+                <button class="app-header-btn">Dashboard</button>
+                <button class="app-header-btn">Settings</button>
+                <button class="app-header-btn">Help</button>
+            </div>
+            <button class="close-app-btn" onclick="closeDummyApp()">✕</button>
+        </div>
+
+        <div class="app-content">
+            <div class="app-welcome">
+                <h1>Welcome to Your Application</h1>
+                <p>This is a demonstration of the application loading experience. In a real implementation, this would be your actual application interface.</p>
+            </div>
+
+            <div class="app-dashboard">
+                <div class="dashboard-card">
+                    <div class="card-icon">📊</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Monitor performance metrics and track key indicators with our comprehensive analytics tools.</p>
+                    <button class="app-header-btn" style="color: #1a1f2e;">View Reports</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">⚙️</div>
+                    <h3>Configuration Center</h3>
+                    <p>Customize settings and preferences to tailor the application to your specific needs.</p>
+                    <button class="app-header-btn" style="color: #1a1f2e;">Configure</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">🤖</div>
+                    <h3>AI Assistant</h3>
+                    <p>Get intelligent recommendations and automated insights powered by our advanced AI.</p>
+                    <button class="app-header-btn" style="color: #1a1f2e;">Start Chat</button>
+                </div>
+            </div>
+
+            <div class="app-footer">
+                <p>© 2023 Carbonzeroed AI Applications. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="login-container">
+            <div class="login-header">
+                <div class="logo">
+                    <img src="./carbonzeroed_logo.jpg" alt="Company Logo" class="logo-img">
+                </div>
+                <h1 class="login-title">Welcome</h1>
+                <p class="login-subtitle">Access your AI application</p>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" class="form-input" placeholder="Enter your username" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">AI Library</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="usernameDisplay"></span>
+                    <button class="nav-button" id="adminBtn" onclick="showAdminPanel()" style="display: none;">Admin
+                        Panel</button>
+                    <button class="nav-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Apps Sidebar -->
+                <div class="apps-sidebar">
+                    <h2 class="sidebar-title">Applications</h2>
+                    <div class="apps-list" id="appsList">
+                        <!-- Apps will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- App Preview Panel -->
+                <div class="app-preview" id="appPreview">
+                    <div class="preview-placeholder">
+                        <div class="preview-placeholder-icon">📱</div>
+                        <div class="preview-placeholder-text">Select an App</div>
+                        <div class="preview-placeholder-subtext">Choose an application from the sidebar to view details
+                            and preview</div>
+                    </div>
+
+                    <!-- Dynamic preview content will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Admin Panel</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="adminAvatar"></div>
+                    <span id="adminUsernameDisplay"></span>
+                    <button class="nav-button" onclick="showDashboard()">Back to Apps</button>
+                    <button class="nav-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+
+            <div class="admin-content">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="showAdminTab('sites')">App Management</button>
+                    <button class="admin-tab" onclick="showAdminTab('users')">User Management</button>
+                </div>
+
+                <!-- Site Management Section -->
+                <div id="sitesSection" class="admin-section active">
+                    <div class="section-header">
+                        <h3 style="color: black; font-weight: 700;">App Management</h3>
+                        <button class="add-app-btn" onclick="toggleAddAppForm()">
+                            <span id="addAppBtnText">Add New App</span>
+                        </button>
+                    </div>
+
+                    <!-- Add App Form -->
+                    <div id="addAppForm" class="add-app-form" style="display: none;">
+                        <h4 style="margin-bottom: 20px; color: black; font-weight: 700;">Add New Application</h4>
+
+                        <div class="form-row app-form">
+                            <div>
+                                <label class="form-label">App Title</label>
+                                <input type="text" id="newAppTitle" class="form-input" placeholder="e.g., ChatGPT">
+                            </div>
+                            <div>
+                                <label class="form-label">Logo Emoji</label>
+                                <input type="text" id="newAppLogo" class="form-input" placeholder="e.g., 🤖">
+                            </div>
+                            <div>
+                                <label class="form-label">Category</label>
+                                <input type="text" id="newAppCategory" class="form-input" placeholder="e.g., AI Tools">
+                            </div>
+                        </div>
+
+                        <div class="form-row app-form-full">
+                            <div>
+                                <label class="form-label">Description</label>
+                                <input type="text" id="newAppDescription" class="form-input"
+                                    placeholder="Brief description of the app">
+                            </div>
+                            <div>
+                                <label class="form-label">App URL</label>
+                                <input type="url" id="newAppUrl" class="form-input" placeholder="https://...">
+                            </div>
+                        </div>
+
+                        <div class="form-row app-key-row">
+                            <div>
+                                <label class="form-label">Access Key</label>
+                                <input type="text" id="newAppKey" class="form-input"
+                                    placeholder="Unique access key for this app" readonly>
+                            </div>
+                            <button type="button" class="generate-key-btn" onclick="generateAccessKey()">Generate
+                                Key</button>
+                        </div>
+
+                        <div style="display: flex; gap: 15px; margin-top: 15px;">
+                            <button class="login-btn" onclick="addNewApp()" style="width: auto; padding: 12px 24px;">Add
+                                App</button>
+                        </div>
+                    </div>
+
+                    <div class="sites-grid" id="adminSitesGrid">
+                        <!-- Sites overview will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- User Management Section -->
+                <div id="usersSection" class="admin-section">
+                    <!-- In the User Management Section -->
+                    <div class="add-user-form">
+                        <h3 style="margin-bottom: 20px; color: black; font-weight: 700;">Add New User</h3>
+                        <div class="form-row three-column">
+                            <div>
+                                <label class="form-label">Username</label>
+                                <input type="text" id="newUsername" class="form-input" placeholder="Username">
+                            </div>
+                            <div>
+                                <label class="form-label">Password</label>
+                                <input type="password" id="newPassword" class="form-input" placeholder="Password">
+                            </div>
+                            <div>
+                                <label class="form-label">User Key</label>
+                                <input type="text" id="newUserKey" class="form-input" placeholder="Unique user key">
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <button class="login-btn" onclick="addNewUser()"
+                                style="width: auto; padding: 12px 24px;">Add User</button>
+                        </div>
+                    </div>
+
+                    <div class="user-management-grid" id="userManagementGrid">
+                        <!-- User cards will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock user database with their accessible sites and user keys
+        let users = {
+            'admin': {
+                password: 'admin123',
+                userKey: 'admin_uk_a1b2c3d4',
+                isAdmin: true,
+                sites: ['carbon-impact', 'digital-twin', 'ai-assistant']
+            },
+            'john.doe': {
+                password: 'password123',
+                userKey: 'joh_uk_e5f6g7h8',
+                isAdmin: false,
+                sites: ['carbon-impact', 'ai-assistant']
+            },
+            'jane.smith': {
+                password: 'secure456',
+                userKey: 'jan_uk_i9j0k1l2',
+                isAdmin: false,
+                sites: ['digital-twin']
+            },
+            'demo': {
+                password: 'demo',
+                userKey: 'dem_uk_m3n4o5p6',
+                isAdmin: false,
+                sites: ['carbon-impact', 'digital-twin', 'ai-assistant']
+            }
+        };
+
+        // Apps with individual access keys and video content
+        let apps = {
+            'carbon-impact': {
+                title: 'Carbon Impact Assessment',
+                description: 'Analyze and assess carbon footprint and environmental impact metrics',
+                logo: '🌱',
+                category: 'Operations',
+                url: 'https://carbon-assessment.carbonzeroed.com',
+                accessKey: 'cia_ak_7f8e9d2c',
+                videoUrl: 'https://www.youtube.com/embed/g18N2Xli3fA', // Demo video
+                features: [
+                    'Real-time carbon footprint tracking',
+                    'Environmental impact analysis',
+                    'Sustainability reporting dashboard',
+                    'Carbon offset recommendations',
+                    'Integration with existing systems'
+                ],
+                detailedDescription: 'Our Carbon Impact Assessment tool provides comprehensive analysis of your organization\'s environmental footprint. Track emissions, analyze impact patterns, and generate detailed sustainability reports to support your green initiatives.'
+            },
+            'digital-twin': {
+                title: 'Digital Twin',
+                description: 'Create and manage digital representations of physical systems for optimization',
+                logo: '🔗',
+                category: 'IT',
+                url: 'https://digital-twin.carbonzeroed.com',
+                accessKey: 'dt_ak_4a5b6c7d',
+                videoUrl: 'https://www.youtube.com/embed/g18N2Xli3fA', // Demo video
+                features: [
+                    'Real-time system monitoring',
+                    '3D visualization and modeling',
+                    'Predictive maintenance alerts',
+                    'Performance optimization',
+                    'IoT device integration'
+                ],
+                detailedDescription: 'Build comprehensive digital twins of your physical assets and systems. Monitor performance in real-time, predict maintenance needs, and optimize operations through advanced simulation capabilities.'
+            },
+            'ai-assistant': {
+                title: 'AI Assistant Hub',
+                description: 'Intelligent virtual assistant for task automation and decision support',
+                logo: '🤖',
+                category: 'AI Tools',
+                url: 'https://ai-assistant.carbonzeroed.com',
+                accessKey: 'aia_ak_9x8y7z6w',
+                videoUrl: 'https://www.youtube.com/embed/g18N2Xli3fA', // Demo video
+                features: [
+                    'Natural language processing',
+                    'Task automation workflows',
+                    'Intelligent recommendations',
+                    'Multi-language support',
+                    'Integration with business tools'
+                ],
+                detailedDescription: 'Leverage advanced AI capabilities to streamline your workflows. Our intelligent assistant can help with task automation, provide insights, and support decision-making across your organization.'
+            }
+        };
+
+        let currentUser = null;
+        let currentView = 'dashboard';
+        let selectedApp = null;
+
+        // Generate unique access key for new apps
+        function generateAccessKey() {
+            const prefix = document.getElementById('newAppTitle').value.toLowerCase().substring(0, 3) || 'app';
+            const randomStr = Math.random().toString(36).substring(2, 10);
+            const accessKey = `${prefix}_ak_${randomStr}`;
+            document.getElementById('newAppKey').value = accessKey;
+        }
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            login(username, password);
+        });
+
+        function login(username, password) {
+            const user = users[username];
+            if (user && user.password === password) {
+                currentUser = { username, ...user };
+                showDashboard();
+            } else {
+                showMessage('error', 'Invalid username or password');
+            }
+        }
+
+        function showMessage(type, message) {
+            const messageDiv = document.getElementById(type === 'error' ? 'errorMessage' : 'successMessage');
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 4000);
+        }
+
+        function showDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            currentView = 'dashboard';
+
+            // Update user info
+            document.getElementById('usernameDisplay').textContent = currentUser.username;
+            document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+
+            // Show admin button if user is admin
+            const adminBtn = document.getElementById('adminBtn');
+            if (currentUser.isAdmin) {
+                adminBtn.style.display = 'block';
+            } else {
+                adminBtn.style.display = 'none';
+            }
+
+            // Load user's accessible apps
+            loadUserApps();
+            
+            // Clear selected app initially
+            selectedApp = null;
+            
+            // Use setTimeout to ensure DOM is ready before showing first app preview
+            setTimeout(() => {
+                if (currentUser.sites.length > 0) {
+                    const firstAppId = currentUser.sites[0];
+                    selectedApp = firstAppId;
+                    showAppPreview(firstAppId);
+                }
+            }, 100);
+        }
+
+        function loadUserApps() {
+            const appsList = document.getElementById('appsList');
+            appsList.innerHTML = '';
+
+            currentUser.sites.forEach((appId, index) => {
+                const app = apps[appId];
+                if (app) {
+                    const appCard = createCompactAppCard(appId, app);
+                    appsList.appendChild(appCard);
+                    
+                    // Set first app as selected (visual state only)
+                    if (index === 0) {
+                        appCard.classList.add('selected');
+                    }
+                }
+            });
+        }
+
+        function createCompactAppCard(appId, app) {
+            const card = document.createElement('div');
+            card.className = 'app-card-compact';
+            card.onclick = () => selectApp(appId);
+
+            card.innerHTML = `
+                <div class="app-card-header">
+                    <div class="app-logo-small">${app.logo}</div>
+                    <div class="app-info">
+                        <div class="app-title-small">${app.title}</div>
+                        <div class="app-category-small">${app.category}</div>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function selectApp(appId) {
+            // Remove previous selection
+            document.querySelectorAll('.app-card-compact').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Add selection to clicked card
+            event.currentTarget.classList.add('selected');
+
+            selectedApp = appId;
+            showAppPreview(appId);
+        }
+
+        function showAppPreview(appId) {
+            const previewContainer = document.getElementById('appPreview');
+            
+            if (!appId) {
+                previewContainer.innerHTML = `
+                    <div class="preview-placeholder">
+                        <div class="preview-placeholder-icon">📱</div>
+                        <div class="preview-placeholder-text">Select an App</div>
+                        <div class="preview-placeholder-subtext">Choose an application from the sidebar to view details and preview</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const app = apps[appId];
+            if (!app) return;
+
+            const featuresHtml = app.features.map(feature => 
+                `<div class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <span>${feature}</span>
+                </div>`
+            ).join('');
+
+            previewContainer.innerHTML = `
+                <div class="preview-content active">
+                    <div class="app-details">
+                        <div class="app-logo-large">${app.logo}</div>
+                        <div class="app-meta">
+                            <h2 class="app-title-large">${app.title}</h2>
+                            <div class="app-category-large">${app.category}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="app-description-large">${app.detailedDescription}</div>
+                    
+                    <div class="app-features">
+                        <h3 class="features-title">Key Features</h3>
+                        ${featuresHtml}
+                    </div>
+                    
+                    <div class="app-video-container">
+                        <iframe class="app-video" 
+                                src="${app.videoUrl}" 
+                                title="${app.title} Preview"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <div class="app-actions">
+                        <button class="launch-btn" onclick="launchApplication('${appId}')">
+                            Launch Application →
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+function launchApplication(appId) {
+    const app = apps[appId];
+    if (!app) return;
+    
+    // Show the app name in the animation
+    document.getElementById('animationAppName').textContent = `Launching ${app.title}`;
+    
+    // Show the launch animation
+    const animation = document.getElementById('launchAnimation');
+    animation.classList.add('active');
+    
+    // Create floating particles
+    createParticles();
+    
+    // Animate the progress bar
+    const progressBar = document.getElementById('loadingProgress');
+    progressBar.style.width = '0%';
+    
+    // Start the loading animation
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 2;
+        progressBar.style.width = `${progress}%`;
+        
+        if (progress >= 100) {
+            clearInterval(interval);
+            
+            // After animation completes, open the app in new tab
+            setTimeout(() => {
+                animation.classList.remove('active');
+                
+                // Construct URL with parameters
+                const launchUrl = `NewLaunchPage.html?userKey=${encodeURIComponent(currentUser.userKey)}&accessKey=${encodeURIComponent(app.accessKey)}&appId=${encodeURIComponent(appId)}`;
+                
+                // Open in new tab
+                window.open(launchUrl, '_blank', 'noopener,noreferrer');
+                
+                console.log(`🚀 Launched ${app.title} in new tab`);
+                console.log(`User Key: ${currentUser.userKey}`);
+                console.log(`Access Key: ${app.accessKey}`);
+                console.log(`Launch URL: ${launchUrl}`);
+            }, 500);
+        }
+    }, 60);
+}
+
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            container.innerHTML = '';
+            
+            // Create 30 particles
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 5 and 15px
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        function showDummyApp(appId) {
+            const app = apps[appId];
+            if (!app) return;
+            
+            // Update the dummy app title
+            document.getElementById('dummyAppTitle').textContent = app.title;
+            
+            // Show the dummy app
+            document.getElementById('dummyApp').style.display = 'block';
+        }
+
+        function closeDummyApp() {
+            // Hide the dummy app
+            document.getElementById('dummyApp').style.display = 'none';
+        }
+
+        function showAdminPanel() {
+            if (!currentUser.isAdmin) return;
+
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            currentView = 'admin';
+
+            // Update admin user info
+            document.getElementById('adminUsernameDisplay').textContent = currentUser.username;
+            document.getElementById('adminAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+
+            loadAdminContent();
+        }
+
+        function loadAdminContent() {
+            loadUserManagement();
+            loadSiteManagement();
+        }
+
+        function showAdminTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Show/hide sections
+            document.querySelectorAll('.admin-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(tabName + 'Section').classList.add('active');
+        }
+
+        function toggleAddAppForm() {
+            const form = document.getElementById('addAppForm');
+            const btnText = document.getElementById('addAppBtnText');
+
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+                btnText.textContent = '❌ Cancel';
+                // Auto-generate a key when form opens
+                generateAccessKey();
+            } else {
+                form.style.display = 'none';
+                btnText.textContent = '➕ Add New App';
+                // Clear form
+                document.getElementById('newAppTitle').value = '';
+                document.getElementById('newAppLogo').value = '';
+                document.getElementById('newAppCategory').value = '';
+                document.getElementById('newAppDescription').value = '';
+                document.getElementById('newAppUrl').value = '';
+                document.getElementById('newAppKey').value = '';
+            }
+        }
+
+        function clearAddAppForm() {
+            document.getElementById('newAppTitle').value = '';
+            document.getElementById('newAppLogo').value = '';
+            document.getElementById('newAppCategory').value = '';
+            document.getElementById('newAppDescription').value = '';
+            document.getElementById('newAppUrl').value = '';
+            document.getElementById('newAppKey').value = '';
+        }
+
+        function addNewApp() {
+            const title = document.getElementById('newAppTitle').value.trim();
+            const logo = document.getElementById('newAppLogo').value.trim();
+            const category = document.getElementById('newAppCategory').value.trim();
+            const description = document.getElementById('newAppDescription').value.trim();
+            const url = document.getElementById('newAppUrl').value.trim();
+            const accessKey = document.getElementById('newAppKey').value.trim();
+
+            if (!title || !logo || !category || !description || !url || !accessKey) {
+                showMessage('error', 'Please fill in all fields and generate an access key');
+                return;
+            }
+
+            try {
+                new URL(url);
+            } catch (e) {
+                showMessage('error', 'Please enter a valid URL');
+                return;
+            }
+
+            const appId = title.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+            if (apps[appId]) {
+                showMessage('error', 'An app with this name already exists');
+                return;
+            }
+
+            const existingKey = Object.values(apps).find(app => app.accessKey === accessKey);
+            if (existingKey) {
+                showMessage('error', 'This access key already exists. Please generate a new one.');
+                return;
+            }
+
+            // Add new app with demo video
+            apps[appId] = {
+                title: title,
+                description: description,
+                detailedDescription: description + ' - Enhanced functionality for improved productivity.',
+                logo: logo,
+                category: category,
+                url: url,
+                accessKey: accessKey,
+                videoUrl: 'https://www.youtube.com/embed/g18N2Xli3fA', // Demo video
+                features: [
+                    'User-friendly interface',
+                    'Real-time data processing',
+                    'Advanced analytics',
+                    'Integration capabilities',
+                    'Mobile-responsive design'
+                ]
+            };
+
+            toggleAddAppForm();
+            loadSiteManagement();
+            loadUserManagement();
+            showMessage('success', `App "${title}" added successfully with access key: ${accessKey}`);
+        }
+
+        function deleteApp(appId) {
+            if (!confirm(`Are you sure you want to delete "${apps[appId].title}"? This will remove access for all users.`)) {
+                return;
+            }
+
+            // Remove app from all users
+            Object.keys(users).forEach(username => {
+                const userSites = users[username].sites;
+                const index = userSites.indexOf(appId);
+                if (index > -1) {
+                    userSites.splice(index, 1);
+                }
+            });
+
+            delete apps[appId];
+            loadSiteManagement();
+            loadUserManagement();
+            showMessage('success', 'App deleted successfully');
+        }
+
+        function loadUserManagement() {
+            const grid = document.getElementById('userManagementGrid');
+            grid.innerHTML = '';
+
+            Object.keys(users).forEach(username => {
+                const user = users[username];
+                const userCard = createUserManagementCard(username, user);
+                grid.appendChild(userCard);
+            });
+        }
+
+        function createUserManagementCard(username, user) {
+            const card = document.createElement('div');
+            card.className = 'user-card';
+
+            const sitesHtml = Object.keys(apps).map(appId => {
+                const app = apps[appId];
+                const hasAccess = user.sites.includes(appId);
+                return `
+                    <div class="permission-item">
+                        <div>
+                            <span>${app.logo} ${app.title}</span>
+                            <div style="font-size: 11px; color: #666; margin-top: 2px;">🔑 ${app.accessKey}</div>
+                        </div>
+                        <div class="permission-toggle ${hasAccess ? 'active' : ''}" 
+                             onclick="toggleUserAccess('${username}', '${appId}')"></div>
+                    </div>
+                `;
+            }).join('');
+
+            card.innerHTML = `
+                <div class="user-card-header">
+                    <div>
+                        <div class="user-name">${username}</div>
+                        <div class="user-key-display">👤 ${user.userKey}</div>
+                        ${user.isAdmin ? '<div style="color: #70CF7A; font-size: 12px; font-weight: 600; margin-top: 5px;">ADMIN</div>' : ''}
+                    </div>
+                </div>
+                <div class="site-permissions">
+                    ${sitesHtml}
+                </div>
+            `;
+
+            return card;
+        }
+
+        function toggleUserAccess(username, appId) {
+            const user = users[username];
+            const appIndex = user.sites.indexOf(appId);
+
+            if (appIndex > -1) {
+                user.sites.splice(appIndex, 1);
+            } else {
+                user.sites.push(appId);
+            }
+
+            loadUserManagement();
+            showMessage('success', `Updated ${apps[appId].title} access for ${username}`);
+        }
+
+        function addNewUser() {
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value.trim();
+            const userKey = document.getElementById('newUserKey').value.trim();
+
+            if (!username || !password || !userKey) {
+                showMessage('error', 'Please fill in all fields including user key');
+                return;
+            }
+
+            if (users[username]) {
+                showMessage('error', 'Username already exists');
+                return;
+            }
+
+            const existingUserKey = Object.values(users).find(user => user.userKey === userKey);
+            if (existingUserKey) {
+                showMessage('error', 'This user key already exists. Please use a different one.');
+                return;
+            }
+
+            users[username] = {
+                password: password,
+                userKey: userKey,
+                isAdmin: false,
+                sites: []
+            };
+
+            // Clear form
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('newUserKey').value = '';
+
+            loadUserManagement();
+            showMessage('success', `User ${username} created successfully with user key: ${userKey}`);
+        }
+
+        function loadSiteManagement() {
+            const grid = document.getElementById('adminSitesGrid');
+            grid.innerHTML = '';
+
+            Object.keys(apps).forEach(appId => {
+                const app = apps[appId];
+                const siteCard = createAdminSiteCard(appId, app);
+                grid.appendChild(siteCard);
+            });
+        }
+
+        function createAdminSiteCard(appId, app) {
+            const card = document.createElement('div');
+            card.className = 'site-card';
+
+            const userCount = Object.values(users).filter(user => user.sites.includes(appId)).length;
+            const totalUsers = Object.keys(users).length;
+            const accessPercentage = totalUsers > 0 ? Math.round((userCount / totalUsers) * 100) : 0;
+
+            card.innerHTML = `
+                <div class="site-logo">${app.logo}</div>
+                <h3 class="site-title">${app.title}</h3>
+                <p class="site-description">${app.description}</p>
+                <div class="site-meta">
+                    <span class="site-category">${app.category}</span>
+                    <span class="site-url">${userCount}/${totalUsers} users</span>
+                </div>
+                <div class="access-key">🔑 ${app.accessKey}</div>
+                <div style="margin-top: 20px; padding: 15px; background: rgba(112, 207, 122, 0.1); border-radius: 12px; border: 1px solid rgba(112, 207, 122, 0.2);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-size: 14px; color: #666; font-weight: 600;">Access Rate</span>
+                        <span style="font-size: 16px; color: #43d270; font-weight: 700;">${accessPercentage}%</span>
+                    </div>
+                    <div style="width: 100%; height: 8px; background: #EBEDFC; border-radius: 10px; overflow: hidden;">
+                        <div style="width: ${accessPercentage}%; height: 100%; background: linear-gradient(135deg, #70CF7A, #43d270); transition: width 0.5s ease;"></div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(248, 249, 250, 0.8); border-radius: 8px;">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 5px;">App URL:</div>
+                    <div style="font-size: 12px; color: #333; word-break: break-all;">${app.url}</div>
+                </div>
+                <button class="delete-btn" onclick="deleteApp('${appId}')" style="width: 100%; margin-top: 15px;">
+                    🗑️ Delete App
+                </button>
+            `;
+
+            return card;
+        }
+
+        function logout() {
+            currentUser = null;
+            selectedApp = null;
+            currentView = 'login';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('loginForm').reset();
+
+            const addAppForm = document.getElementById('addAppForm');
+            const addAppBtnText = document.getElementById('addAppBtnText');
+            if (addAppForm && addAppBtnText) {
+                addAppForm.style.display = 'none';
+                addAppBtnText.textContent = 'Add New App';
+            }
+        }
+
+        // Demo credentials info
+        console.log('🚀 Demo Credentials:');
+        console.log('Username: demo, Password: demo');
+        console.log('Username: admin, Password: admin123 (Admin Access)');
+        console.log('Username: john.doe, Password: password123');
+        console.log('Username: jane.smith, Password: secure456');
+        console.log('');
+        console.log('🌟 New Features:');
+        console.log('- Apps display in single column sidebar');
+        console.log('- Click any app card to see video preview and details');
+        console.log('- 30-second demo videos for each application');
+        console.log('- Detailed descriptions and feature lists');
+        console.log('- Responsive design for mobile and desktop');
+        console.log('- Modern launch animation with progress indicator');
+        console.log('- Dummy application page for demonstration');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Launcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #EBEDFC 0%, #ffffff 50%, #EBEDFC 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-delay: -1s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -3s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        /* Launch Animation Styles */
+        .launch-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            pointer-events: all;
+            transition: opacity 0.5s ease;
+        }
+
+        .launch-animation.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .animation-content {
+            text-align: center;
+            color: white;
+        }
+
+        .logo-animation {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 60px;
+            position: relative;
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(112, 207, 122, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 30px rgba(112, 207, 122, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(112, 207, 122, 0);
+            }
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin: 30px auto;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 10px;
+            transition: width 3s ease;
+        }
+
+        .animation-text {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .animation-subtext {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particle-float 5s linear infinite;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Application Interface Styles */
+        .app-container {
+            opacity: 0;
+            transition: opacity 1s ease;
+            min-height: 100vh;
+        }
+
+        .app-container.visible {
+            opacity: 1;
+        }
+
+        .app-header {
+            background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-header-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .app-header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .app-header-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .app-header-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .app-content {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .app-welcome {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .app-welcome h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: #1a1f2e;
+            background: linear-gradient(135deg, #1a1f2e, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .app-welcome p {
+            font-size: 18px;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .app-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            border-color: #70CF7A;
+        }
+
+        .dashboard-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #1a1f2e;
+            font-weight: 700;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .dashboard-card .card-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #70CF7A;
+        }
+
+        .card-btn {
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(112, 207, 122, 0.3);
+        }
+
+        .card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(112, 207, 122, 0.4);
+        }
+
+        .app-footer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(248, 249, 250, 0.8);
+            margin-top: 50px;
+            border-top: 1px solid #EBEDFC;
+        }
+
+        .auth-info {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+
+        .auth-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .auth-info h3 {
+            color: #1a1f2e;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .auth-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(235, 237, 252, 0.8);
+        }
+
+        .auth-item:last-child {
+            border-bottom: none;
+        }
+
+        .auth-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .auth-value {
+            font-family: 'Courier New', monospace;
+            background: rgba(112, 207, 122, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #43d270;
+            border: 1px solid rgba(112, 207, 122, 0.3);
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(112, 207, 122, 0.1);
+            color: #43d270;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #43d270;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-content {
+                padding: 20px;
+            }
+
+            .app-welcome h1 {
+                font-size: 28px;
+            }
+
+            .app-welcome p {
+                font-size: 16px;
+            }
+
+            .app-dashboard {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .animation-text {
+                font-size: 24px;
+            }
+
+            .logo-animation {
+                width: 100px;
+                height: 100px;
+                font-size: 50px;
+            }
+
+            .loading-bar {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <!-- Launch Animation Overlay -->
+    <div class="launch-animation" id="launchAnimation">
+        <div class="animation-content">
+            <div class="logo-animation" id="appLogoAnimation">🚀</div>
+            <h2 class="animation-text" id="animationAppName">Loading Application</h2>
+            <p class="animation-subtext">Authenticating and preparing your experience...</p>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+        </div>
+        <div class="particles" id="particlesContainer"></div>
+    </div>
+
+    <!-- Application Interface -->
+    <div class="app-container" id="appContainer">
+        <div class="app-header">
+            <h1 class="app-header-title" id="appTitle">Application Dashboard</h1>
+            <div class="app-header-actions">
+                <button class="app-header-btn" onclick="showDashboard()">Dashboard</button>
+                <button class="app-header-btn" onclick="showSettings()">Settings</button>
+                <button class="app-header-btn" onclick="showHelp()">Help</button>
+                <button class="app-header-btn" onclick="window.close()" style="background: rgba(244, 67, 54, 0.2); color: #f44336;">Close</button>
+            </div>
+        </div>
+
+        <div class="app-content">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>Connected & Authenticated</span>
+            </div>
+
+            <div class="auth-info">
+                <h3>🔐 Authentication Details</h3>
+                <div class="auth-item">
+                    <span class="auth-label">User Key:</span>
+                    <span class="auth-value" id="userKeyDisplay">Not Available</span>
+                </div>
+                <div class="auth-item">
+                    <span class="auth-label">Access Key:</span>
+                    <span class="auth-value" id="accessKeyDisplay">Not Available</span>
+                </div>
+                <div class="auth-item">
+                    <span class="auth-label">Session Status:</span>
+                    <span class="auth-value" style="background: rgba(76, 175, 80, 0.1); color: #4caf50;">Active</span>
+                </div>
+                <div class="auth-item">
+                    <span class="auth-label">Application:</span>
+                    <span class="auth-value" id="appNameDisplay">Unknown</span>
+                </div>
+            </div>
+
+            <div class="app-welcome">
+                <h1 id="welcomeTitle">Welcome to Your Application</h1>
+                <p id="welcomeDescription">You have been successfully authenticated and granted access to this application. All features are now available for your use.</p>
+            </div>
+
+            <div class="app-dashboard">
+                <div class="dashboard-card">
+                    <div class="card-icon">📊</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Monitor performance metrics and track key indicators with our comprehensive analytics tools.</p>
+                    <button class="card-btn" onclick="alert('Analytics feature would be implemented here')">View Reports</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">⚙️</div>
+                    <h3>Configuration Center</h3>
+                    <p>Customize settings and preferences to tailor the application to your specific needs.</p>
+                    <button class="card-btn" onclick="alert('Configuration feature would be implemented here')">Configure</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">🤖</div>
+                    <h3>AI Assistant</h3>
+                    <p>Get intelligent recommendations and automated insights powered by our advanced AI.</p>
+                    <button class="card-btn" onclick="alert('AI Assistant feature would be implemented here')">Start Chat</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">📈</div>
+                    <h3>Real-time Monitoring</h3>
+                    <p>Track live data and system performance with our advanced monitoring capabilities.</p>
+                    <button class="card-btn" onclick="alert('Monitoring feature would be implemented here')">View Live Data</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">🔒</div>
+                    <h3>Security Center</h3>
+                    <p>Manage access controls, audit logs, and security settings for your organization.</p>
+                    <button class="card-btn" onclick="alert('Security feature would be implemented here')">Manage Security</button>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">🔗</div>
+                    <h3>Integration Hub</h3>
+                    <p>Connect with external services and manage API integrations seamlessly.</p>
+                    <button class="card-btn" onclick="alert('Integration feature would be implemented here')">View Integrations</button>
+                </div>
+            </div>
+
+            <div class="app-footer">
+                <p>© 2024 Carbonzeroed AI Applications. Secure application environment.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application data mapping
+        const appData = {
+            'carbon-impact': {
+                title: 'Carbon Impact Assessment',
+                logo: '🌱',
+                description: 'Analyze and assess carbon footprint and environmental impact metrics with advanced sustainability tools.'
+            },
+            'digital-twin': {
+                title: 'Digital Twin Platform',
+                logo: '🔗',
+                description: 'Create and manage digital representations of physical systems for optimization and monitoring.'
+            },
+            'ai-assistant': {
+                title: 'AI Assistant Hub',
+                logo: '🤖',
+                description: 'Intelligent virtual assistant for task automation and decision support across your organization.'
+            }
+        };
+
+        // Extract URL parameters
+        function getUrlParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                userKey: urlParams.get('userKey'),
+                accessKey: urlParams.get('accessKey'),
+                appId: urlParams.get('appId')
+            };
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            container.innerHTML = '';
+            
+            // Create 30 particles
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 5 and 15px
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize the application
+        function initializeApp() {
+            const params = getUrlParameters();
+            
+            // Create particles
+            createParticles();
+            
+            // Get app data
+            const app = appData[params.appId] || {
+                title: 'Unknown Application',
+                logo: '❓',
+                description: 'Application details not found.'
+            };
+
+            // Update animation with app info
+            document.getElementById('appLogoAnimation').textContent = app.logo;
+            document.getElementById('animationAppName').textContent = `Loading ${app.title}`;
+            
+            // Start loading animation
+            const progressBar = document.getElementById('loadingProgress');
+            let progress = 0;
+            
+            const loadingInterval = setInterval(() => {
+                progress += 2;
+                progressBar.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(loadingInterval);
+                    
+                    // Hide animation and show app
+                    setTimeout(() => {
+                        document.getElementById('launchAnimation').classList.add('hidden');
+                        document.getElementById('appContainer').classList.add('visible');
+                        
+                        // Populate app information
+                        populateAppInfo(params, app);
+                    }, 500);
+                }
+            }, 60);
+        }
+
+        // Populate application information
+        function populateAppInfo(params, app) {
+            // Update authentication details
+            document.getElementById('userKeyDisplay').textContent = params.userKey || 'Not Provided';
+            document.getElementById('accessKeyDisplay').textContent = params.accessKey || 'Not Provided';
+            document.getElementById('appNameDisplay').textContent = app.title;
+            
+            // Update app interface
+            document.getElementById('appTitle').textContent = app.title;
+            document.getElementById('welcomeTitle').textContent = `Welcome to ${app.title}`;
+            document.getElementById('welcomeDescription').textContent = app.description;
+        }
+
+        // Navigation functions
+        function showDashboard() {
+            alert('Dashboard view would be implemented here');
+        }
+
+        function showSettings() {
+            alert('Settings panel would be implemented here');
+        }
+
+        function showHelp() {
+            alert('Help documentation would be implemented here');
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', initializeApp);
+
+        // Console info for debugging
+        console.log('🚀 Application Launch Page Loaded');
+        console.log('URL Parameters:', getUrlParameters());
+    </script>
+</body>
+
+</html>
