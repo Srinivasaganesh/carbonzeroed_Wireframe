@@ -347,7 +347,6 @@
             color: rgba(255, 255, 255, 0.9);
             z-index: 1;
             position: relative;
-            display: none;
         }
 
         .feature-item {
@@ -729,7 +728,69 @@
             background: #ef4444;
         }
 
-        /* Responsive design */
+        /* Responsive design for laptops */
+        @media (max-width: 1440px) and (min-width: 1025px) {
+            .branding-section {
+                padding: 45px;
+            }
+            
+            .login-section {
+                padding: 45px;
+            }
+            
+            .brand-title {
+                font-size: 44px;
+            }
+            
+            .brand-subtitle {
+                font-size: 18px;
+            }
+            
+            .main-logo {
+                width: 110px;
+                height: 110px;
+                font-size: 55px;
+            }
+            
+            .sustainability-visual {
+                width: 280px;
+                height: 180px;
+            }
+            
+            .earth-ecosystem {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .earth {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .login-form-container {
+                max-width: 380px;
+            }
+            
+            .login-title {
+                font-size: 28px;
+            }
+            
+            .login-subtitle {
+                font-size: 15px;
+            }
+            
+            .form-input {
+                padding: 16px 20px;
+                padding-left: 50px;
+                font-size: 15px;
+            }
+            
+            .feature-item {
+                font-size: 15px;
+                margin-bottom: 16px;
+            }
+        }
+
         @media (max-width: 1024px) {
             .login-container {
                 flex-direction: column;
