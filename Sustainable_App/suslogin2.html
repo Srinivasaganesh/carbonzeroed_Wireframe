@@ -97,6 +97,7 @@
             align-items: center;
             padding: 40px 30px;
             position: relative;
+            background: white;
             /* background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%); */
             backdrop-filter: blur(20px);
             /* border-right: 1px solid rgba(16, 185, 129, 0.1); */
@@ -196,25 +197,6 @@
             50% { opacity: 1; }
         }
 
-        /* Sustainability GIF container */
-        .sustainability-visual {
-            width: 320px;
-            height: 280px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid rgba(16, 185, 129, 0.2);
-            margin-bottom: 30px;
-            box-shadow: 
-                0 20px 40px rgba(16, 185, 129, 0.1),
-                0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-            animation: visualPulse 4s ease-in-out infinite;
-        }
-
         @keyframes visualPulse {
             0%, 100% { 
                 transform: scale(1);
@@ -224,14 +206,6 @@
                 transform: scale(1.02);
                 box-shadow: 0 25px 50px rgba(16, 185, 129, 0.2);
             }
-        }
-
-        .sustainability-gif {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 14px;
-            filter: brightness(1.1) contrast(1.05);
         }
 
         .features-list {
@@ -320,7 +294,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(16, 185, 129, 0.02) 100%);
+            /* background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(16, 185, 129, 0.02) 100%); */
+            background: white;
             pointer-events: none;
         }
 
@@ -918,6 +893,66 @@
                 margin-top: 20px;
             }
         }
+
+        /* Sustainability GIF container — bigger on desktop but responsive */
+.sustainability-visual {
+    width: 420px;            /* increased from 320px */
+    height: 360px;           /* increased from 280px */
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(16, 185, 129, 0.18);
+    margin-bottom: 30px;
+    box-shadow:
+        0 24px 48px rgba(16, 185, 129, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    animation: visualPulse 4s ease-in-out infinite;
+}
+
+/* Make the image scale without cropping and keep it centered */
+.sustainability-gif {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;      /* ensures the full GIF is visible, scales properly */
+    border-radius: 12px;
+    filter: brightness(1.05) contrast(1.02);
+    transition: transform 0.4s ease;
+}
+
+/* Optional hover scale for desktop */
+.sustainability-visual:hover .sustainability-gif {
+    transform: scale(1.02);
+}
+
+/* Laptop-specific responsive design */
+@media (max-width: 1366px) and (min-width: 1024px) {
+    .sustainability-visual {
+        width: 360px;        /* slightly reduced for smaller laptops */
+        height: 300px;
+    }
+}
+
+/* Standard responsive design (stacked layout) */
+@media (max-width: 1024px) {
+    .sustainability-visual {
+        width: 320px;        /* fallback for smaller screens */
+        height: 220px;
+    }
+}
+
+/* Tablet and mobile */
+@media (max-width: 768px) {
+    .sustainability-visual {
+        width: 280px;
+        height: 200px;
+        margin-bottom: 20px;
+    }
+}
+
     </style>
 </head>
 <body>
