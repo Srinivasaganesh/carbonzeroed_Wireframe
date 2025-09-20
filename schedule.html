@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruitment Pipeline Overview</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 20px;
+            background-color: #f5f7fa;
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            padding: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            min-width: 1400px;
+        }
+        
+        th {
+            background: #f8fafc;
+            color: #2d3748;
+            font-weight: 600;
+            padding: 10px 6px;
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            font-size: 11px;
+            line-height: 1.2;
+        }
+        
+        th:first-child {
+            text-align: left;
+            min-width: 200px;
+            position: sticky;
+            left: 0;
+            background: #f1f5f9;
+            z-index: 11;
+        }
+        
+        th:nth-child(2) {
+            min-width: 80px;
+        }
+        
+        td {
+            padding: 8px 6px;
+            border-bottom: 1px solid #e2e8f0;
+            border-right: 1px solid #e2e8f0;
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        td:first-child {
+            text-align: left;
+            font-weight: 500;
+            background: #fafbfc;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            border-right: 2px solid #e2e8f0;
+        }
+        
+        tr:hover {
+            background-color: #f7fafc;
+        }
+        
+        tr:hover td:first-child {
+            background-color: #f1f5f9;
+        }
+        
+        .number-cell {
+            font-weight: 500;
+        }
+        
+        .zero {
+            color: #a0aec0;
+        }
+        
+        .low {
+            color: #f56565;
+        }
+        
+        .medium {
+            color: #ed8936;
+        }
+        
+        .high {
+            color: #38a169;
+        }
+        
+        .position-name {
+            color: #2d3748;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+        
+        .date-cell {
+            font-size: 10px;
+            color: #4a5568;
+        }
+        
+        .pipeline-stage {
+            background: linear-gradient(90deg, #e2e8f0 0%, #cbd5e0 100%);
+        }
+        
+        .outcome-stage {
+            background: linear-gradient(90deg, #fef5e7 0%, #fed7aa 100%);
+        }
+        
+        .summary-row {
+            background: #f7fafc;
+            font-weight: 600;
+            border-top: 2px solid #4299e1;
+        }
+        
+        .summary-row td:first-child {
+            background: #edf2f7;
+            color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Recruitment Pipeline Overview</h1>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Open Date</th>
+                        <th>Open Positions</th>
+                        <th class="pipeline-stage">Application Received</th>
+                        <th class="pipeline-stage">Pre-Screening</th>
+                        <th class="pipeline-stage">Pre-Screening Recommended</th>
+                        <th class="pipeline-stage">Technical</th>
+                        <th class="pipeline-stage">Technical Recommended</th>
+                        <th class="pipeline-stage">Leadership</th>
+                        <th class="pipeline-stage">Leadership Recommended</th>
+                        <th class="pipeline-stage">HR</th>
+                        <th class="pipeline-stage">HR Recommended</th>
+                        <th class="outcome-stage">Offered</th>
+                        <th class="outcome-stage">Joined</th>
+                        <th class="outcome-stage">Offered - Didn't Join</th>
+                        <th class="outcome-stage">Offered Rejected</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="position-name">Senior Data Engineer - IICS</td>
+                        <td class="date-cell">30/04/2025</td>
+                        <td class="number-cell">2</td>
+                        <td class="number-cell high">27</td>
+                        <td class="number-cell medium">11</td>
+                        <td class="number-cell medium">7</td>
+                        <td class="number-cell medium">12</td>
+                        <td class="number-cell medium">6</td>
+                        <td class="number-cell medium">5</td>
+                        <td class="number-cell low">3</td>
+                        <td class="number-cell low">2</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                    </tr>
+                    <tr>
+                        <td class="position-name">Senior Data Engineer - DBT & Snowflake</td>
+                        <td class="date-cell">27/05/2025</td>
+                        <td class="number-cell">2</td>
+                        <td class="number-cell high">46</td>
+                        <td class="number-cell high">28</td>
+                        <td class="number-cell high">20</td>
+                        <td class="number-cell high">19</td>
+                        <td class="number-cell low">4</td>
+                        <td class="number-cell low">3</td>
+                        <td class="number-cell low">3</td>
+                        <td class="number-cell low">3</td>
+                        <td class="number-cell low">3</td>
+                        <td class="number-cell low">2</td>
+                        <td class="number-cell low">1</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                    </tr>
+                    <tr>
+                        <td class="position-name">Senior Data Engineer - Azure</td>
+                        <td class="date-cell">27/05/2025</td>
+                        <td class="number-cell">2</td>
+                        <td class="number-cell high">22</td>
+                        <td class="number-cell medium">16</td>
+                        <td class="number-cell medium">11</td>
+                        <td class="number-cell medium">8</td>
+                        <td class="number-cell low">4</td>
+                        <td class="number-cell medium">6</td>
+                        <td class="number-cell medium">5</td>
+                        <td class="number-cell low">4</td>
+                        <td class="number-cell low">3</td>
+                        <td class="number-cell low">1</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell low">1</td>
+                        <td class="number-cell low">1</td>
+                    </tr>
+                    <tr>
+                        <td class="position-name">Tableau Administrator</td>
+                        <td class="date-cell">24/07/2025</td>
+                        <td class="number-cell">1</td>
+                        <td class="number-cell high">22</td>
+                        <td class="number-cell high">19</td>
+                        <td class="number-cell high">17</td>
+                        <td class="number-cell medium">10</td>
+                        <td class="number-cell low">3</td>
+                        <td class="number-cell low">3</td>
+                        <td class="number-cell low">1</td>
+                        <td class="number-cell low">1</td>
+                        <td class="number-cell low">1</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell low">1</td>
+                        <td class="number-cell zero">0</td>
+                    </tr>
+                    <tr>
+                        <td class="position-name">Delivery Manager</td>
+                        <td class="date-cell">02/09/2025</td>
+                        <td class="number-cell">1</td>
+                        <td class="number-cell medium">5</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell low">3</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                    </tr>
+                    <tr>
+                        <td class="position-name">Social Media Marketing</td>
+                        <td class="date-cell">15/09/2025</td>
+                        <td class="number-cell">1</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                    </tr>
+                    <tr>
+                        <td class="position-name">Senior QA Analyst</td>
+                        <td class="date-cell">15/09/2025</td>
+                        <td class="number-cell">1</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                    </tr>
+                    <tr>
+                        <td class="position-name">QA Lead</td>
+                        <td class="date-cell">15/09/2025</td>
+                        <td class="number-cell">1</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                    </tr>
+                    <tr>
+                        <td class="position-name">DevOps Lead</td>
+                        <td class="date-cell">16/09/2025</td>
+                        <td class="number-cell">1</td>
+                        <td class="number-cell low">2</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                    </tr>
+                    <tr>
+                        <td class="position-name">Senior Data Engineer - Azure</td>
+                        <td class="date-cell">17/09/2025</td>
+                        <td class="number-cell">4</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                    </tr>
+                    <tr>
+                        <td class="position-name">Data Visualization Specialist (IBM Cognos Analytics)</td>
+                        <td class="date-cell">17/09/2025</td>
+                        <td class="number-cell">1</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                        <td class="number-cell zero">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

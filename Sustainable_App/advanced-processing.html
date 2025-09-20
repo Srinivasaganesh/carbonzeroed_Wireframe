@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SustainIQ - Advanced Processing</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #06402B 0%, #0a5d35 50%, #0f7a40 100%);
+            color: white;
+            padding: 0;
+            position: relative;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="50" r="0.3" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="90" r="0.4" fill="rgba(255,255,255,0.08)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .logo-section {
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #0f7a40, #06402B);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(6, 64, 43, 0.3);
+        }
+
+        .nav-section {
+            padding: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-header {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 20px 15px;
+            margin-top: 20px;
+        }
+
+        .nav-header:first-child {
+            margin-top: 0;
+        }
+
+        .nav-item {
+            margin: 4px 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #d1fae5;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        .nav-link:hover::before {
+            transform: scaleY(1);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 20px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .sub-nav {
+            margin-left: 20px;
+            margin-top: 8px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sub-nav-item {
+            margin: 2px 0;
+        }
+
+        .sub-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sub-nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sub-nav-link.active {
+            color: #d1fae5;
+            background: rgba(209, 250, 229, 0.1);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            background: linear-gradient(135deg, #06402B, #0f7a40);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f3f4f6;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .content-area {
+            flex: 1;
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            overflow-y: auto;
+            position: relative;
+            padding: 30px;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Card Styling */
+        .interface-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .interface-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .interface-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .interface-description {
+            font-size: 16px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .progress-step.completed::after {
+            background: #06402B;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .step-circle.active {
+            background: #06402B;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .step-circle.completed {
+            background: #06402B;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .step-circle.active + .step-label,
+        .step-circle.completed + .step-label {
+            color: #06402B;
+            font-weight: 600;
+        }
+
+        /* API Status Display */
+        .api-status {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .api-status h4 {
+            margin-bottom: 15px;
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        .api-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #e5e7eb;
+        }
+
+        .api-item.loading {
+            border-left-color: #fbbf24;
+        }
+
+        .api-item.success {
+            border-left-color: #06402B;
+        }
+
+        .api-item.error {
+            border-left-color: #ef4444;
+        }
+
+        .api-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .api-status-text {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .api-status-text.loading {
+            color: #fbbf24;
+        }
+
+        .api-status-text.success {
+            color: #06402B;
+        }
+
+        .api-status-text.error {
+            color: #ef4444;
+        }
+
+        /* File Drop Zone */
+        .file-drop-zone {
+            border: 3px dashed #d1d5db;
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .file-drop-zone::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(6, 64, 43, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .file-drop-zone:hover {
+            border-color: #06402B;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .file-drop-zone:hover::before {
+            opacity: 1;
+        }
+
+        .file-drop-zone.dragover {
+            border-color: #0a5d35;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            transform: scale(1.02);
+        }
+
+        .drop-icon {
+            font-size: 64px;
+            color: #9ca3af;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .file-drop-zone:hover .drop-icon {
+            color: #06402B;
+            transform: scale(1.1);
+        }
+
+        .drop-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .drop-subtext {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Files Preview */
+        .files-preview {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .file-item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .file-item:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #06402B, #0a5d35);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-right: 16px;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .file-details {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Categories Section */
+        .categories-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .categories-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .categories-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .categories-description {
+            font-size: 16px;
+            color: #6b7280;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
+        .category-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #06402B, #0a5d35);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 16px;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .category-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .category-textarea:focus {
+            outline: none;
+            border-color: #06402B;
+            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
+        }
+
+        .category-textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Submit Section */
+        .submit-section {
+            display: none;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            color: white;
+            border: none;
+            padding: 18px 48px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(6, 64, 43, 0.3);
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(6, 64, 43, 0.4);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Status Messages */
+        .status-message {
+            margin-top: 20px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .status-success {
+            background: rgba(6, 64, 43, 0.1);
+            border: 1px solid rgba(6, 64, 43, 0.3);
+            color: #06402B;
+        }
+
+        .status-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #991b1b;
+        }
+
+        .status-info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #1e40af;
+        }
+
+        /* HTML Actions Section */
+        .html-actions-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #bbf7d0;
+            border-radius: 16px;
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .html-actions-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .html-actions-title {
+            color: #06402B;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .html-actions-subtitle {
+            color: #059669;
+            font-size: 14px;
+        }
+
+        .html-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .html-action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .html-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .html-action-btn.preview {
+            color: #3b82f6;
+            border: 1px solid #93c5fd;
+        }
+
+        .html-action-btn.open {
+            color: #06402B;
+            border: 1px solid #bbf7d0;
+        }
+
+        .html-action-btn.download {
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        .html-action-btn.copy {
+            color: #8b5cf6;
+            border: 1px solid #c4b5fd;
+        }
+
+        /* API Response Display */
+        .response-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+
+        .response-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .response-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-button {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: #f9fafb;
+            border-color: #06402B;
+        }
+
+        .response-container {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .response-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .response-tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .response-tab:first-child {
+            border-radius: 16px 0 0 0;
+        }
+
+        .response-tab.active {
+            color: #06402B;
+            border-bottom-color: #06402B;
+            background: #ffffff;
+        }
+
+        .response-content {
+            padding: 25px;
+        }
+
+        .response-panel {
+            display: none;
+        }
+
+        .response-panel.active {
+            display: block;
+        }
+
+        .response-raw {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .response-formatted {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #06402B;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+            
+            .nav-text {
+                display: none;
+            }
+            
+            .sub-nav {
+                display: none;
+            }
+            
+            .content-area {
+                padding: 15px;
+            }
+            
+            .interface-card {
+                padding: 30px 20px;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .progress-step::after {
+                display: none;
+            }
+
+            .html-actions {
+                flex-direction: column;
+            }
+
+            .html-action-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-section">
+                <a href="Home.html" class="logo">
+                    <div class="logo-icon">🌱</div>
+                    <span>SustainIQ</span>
+                </a>
+            </div>
+
+            <nav class="nav-section">
+                <div class="nav-header">Data Intelligence</div>
+                
+                <!-- Data Extraction -->
+                <div class="nav-item">
+                    <a href="advanced-processing.html" class="nav-link active">
+                        <i class="nav-icon fas fa-upload"></i>
+                        <span class="nav-text">Data Extraction</span>
+                    </a>
+                    <div class="sub-nav">
+                        <div class="sub-nav-item">
+                            <a href="advanced-processing.html" class="sub-nav-link active">Advanced Processing</a>
+                        </div>
+                        <div class="sub-nav-item">
+                            <a href="custom-agent.html" class="sub-nav-link">Custom Agent</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-header">Data Management</div>
+                
+                <!-- Data Verification -->
+                <div class="nav-item">
+                    <a href="verification.html" class="nav-link">
+                        <i class="nav-icon fas fa-check-circle"></i>
+                        <span class="nav-text">Data Verification</span>
+                    </a>
+                </div>
+
+                <div class="nav-header">Analysis Modules</div>
+
+                <!-- Emission Analysis -->
+                <div class="nav-item">
+                    <a href="dataset-choice.html" class="nav-link">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <span class="nav-text">Emission Analysis</span>
+                    </a>
+                    <div class="sub-nav">
+                        <div class="sub-nav-item">
+                            <a href="dataset-choice.html" class="sub-nav-link">Dataset Choice</a>
+                        </div>
+                        <div class="sub-nav-item">
+                            <a href="emission-calculation.html" class="sub-nav-link">Emission Calculation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-header">Reporting</div>
+
+                <!-- Report Generation -->
+                <div class="nav-item">
+                    <a href="reporting.html" class="nav-link">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <span class="nav-text">Sustainability Reporting</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="header">
+                <h1 class="header-title">Sustainability Intelligence Platform</h1>
+                <div class="header-actions">
+                    <div class="status-badge">
+                        <div class="status-dot"></div>
+                        <span>System Online</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div class="interface-card">
+                    <div class="interface-header">
+                        <h2 class="interface-title">Advanced Processing Pipeline</h2>
+                        <p class="interface-description">Smart sequential processing with intelligent HTML rendering and multiple fallback systems</p>
+                    </div>
+
+                    <!-- Progress Tracker -->
+                    <div class="progress-section" id="progressSection">
+                        <div class="progress-steps">
+                            <div class="progress-step" id="step1">
+                                <div class="step-circle">1</div>
+                                <div class="step-label">File Upload</div>
+                            </div>
+                            <div class="progress-step" id="step2">
+                                <div class="step-circle">2</div>
+                                <div class="step-label">Parallel Processing</div>
+                            </div>
+                            <div class="progress-step" id="step3">
+                                <div class="step-circle">3</div>
+                                <div class="step-label">Smart Extraction</div>
+                            </div>
+                        </div>
+
+                        <!-- API Status Display -->
+                        <div class="api-status" id="apiStatus">
+                            <h4>API Processing Status</h4>
+                            <div class="api-item" id="webhook1">
+                                <span class="api-name">Processing Agent 1 (Energy_Utilities)</span>
+                                <span class="api-status-text">Waiting...</span>
+                            </div>
+                            <div class="api-item" id="webhook2">
+                                <span class="api-name">Processing Agent 2 (water_land)</span>
+                                <span class="api-status-text">Waiting...</span>
+                            </div>
+                            <div class="api-item" id="webhook3">
+                                <span class="api-name">Processing Agent 3 (Fuels_and_Combustion)</span>
+                                <span class="api-status-text">Waiting...</span>
+                            </div>
+                            <div class="api-item" id="webhook4">
+                                <span class="api-name">Processing Agent 4 (Mobility)</span>
+                                <span class="api-status-text">Waiting...</span>
+                            </div>
+                            <div class="api-item" id="webhook5">
+                                <span class="api-name">Processing Agent 5 (Procurement_and_waste)</span>
+                                <span class="api-status-text">Waiting...</span>
+                            </div>
+                            <div class="api-item" id="extraction">
+                                <span class="api-name">Smart Extraction API</span>
+                                <span class="api-status-text">Waiting for all webhooks...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="advancedUploadForm">
+                        <div class="file-drop-zone" id="advancedDropZone">
+                            <input type="file" id="advancedFileInput" class="file-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.jpg,.png">
+                            <div class="drop-icon">📄</div>
+                            <div class="drop-text">Drop files here or click to browse</div>
+                            <div class="drop-subtext">Supports PDF, Word, Excel, CSV, and image files</div>
+                        </div>
+
+                        <div id="advancedFilesPreview" class="files-preview">
+                            <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Selected Files</h3>
+                            <div id="advancedFilesGrid" class="files-grid"></div>
+                            <div id="advancedFilenames" style="margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 8px;">
+                                <h4 style="color: #06402B; margin-bottom: 10px;">Filenames for extraction (sent only if all webhooks succeed):</h4>
+                                <div id="advancedFilenamesList" style="font-family: monospace; color: #374151;"></div>
+                            </div>
+                        </div>
+
+                        <div id="advancedCategoriesSection" class="categories-section">
+                            <div class="categories-header">
+                                <h3 class="categories-title">Sustainability Categories</h3>
+                                <p class="categories-description">Optional: Provide additional context for each sustainability category</p>
+                            </div>
+
+                            <div class="categories-grid">
+                                <div class="category-card">
+                                    <div class="category-header">
+                                        <div class="category-icon" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">⚡</div>
+                                        <div class="category-title">Energy & Utilities</div>
+                                    </div>
+                                    <textarea class="category-textarea" name="energy_utilities" placeholder="Describe energy consumption, utility usage, power generation, renewable energy initiatives..."></textarea>
+                                </div>
+
+                                <div class="category-card">
+                                    <div class="category-header">
+                                        <div class="category-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">💧</div>
+                                        <div class="category-title">Water & Land Use</div>
+                                    </div>
+                                    <textarea class="category-textarea" name="water_land" placeholder="Document water consumption, land usage, irrigation, conservation efforts..."></textarea>
+                                </div>
+
+                                <div class="category-card">
+                                    <div class="category-header">
+                                        <div class="category-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">🔥</div>
+                                        <div class="category-title">Fuels & Combustion</div>
+                                    </div>
+                                    <textarea class="category-textarea" name="fuels_combustion" placeholder="Report fuel usage, combustion processes, emissions, heating systems..."></textarea>
+                                </div>
+
+                                <div class="category-card">
+                                    <div class="category-header">
+                                        <div class="category-icon" style="background: linear-gradient(135deg, #06402B, #0a5d35);">🚗</div>
+                                        <div class="category-title">Mobility</div>
+                                    </div>
+                                    <textarea class="category-textarea" name="mobility" placeholder="Detail transportation, vehicle usage, travel patterns, logistics..."></textarea>
+                                </div>
+
+                                <div class="category-card">
+                                    <div class="category-header">
+                                        <div class="category-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">♻️</div>
+                                        <div class="category-title">Procurement, Waste & Maintenance</div>
+                                    </div>
+                                    <textarea class="category-textarea" name="procurement_waste" placeholder="Describe procurement processes, waste management, maintenance activities..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="advancedSubmitSection" class="submit-section">
+                            <button type="submit" class="submit-button" id="advancedSubmitButton">
+                                Start Advanced Processing
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="advancedStatusMessage" class="status-message"></div>
+
+                    <!-- Persistent HTML Actions Section -->
+                    <div id="advancedHtmlActionsSection" class="html-actions-section">
+                        <div class="html-actions-header">
+                            <div class="html-actions-title">HTML Report Ready</div>
+                            <div class="html-actions-subtitle">Choose how you want to view or save your results</div>
+                        </div>
+                        <div id="advancedHtmlActions" class="html-actions">
+                            <!-- Buttons will be added here -->
+                        </div>
+                    </div>
+
+                    <!-- API Response Display -->
+                    <div id="advancedResponseSection" class="response-section">
+                        <div class="response-header">
+                            <h3 class="response-title">Processing Results</h3>
+                            <div class="response-controls">
+                                <button class="control-button" onclick="copyAdvancedResponse()">Copy</button>
+                                <button class="control-button" onclick="clearAdvancedResponse()">Clear</button>
+                            </div>
+                        </div>
+                        <div class="response-container">
+                            <div class="response-tabs">
+                                <div class="response-tab active" onclick="switchAdvancedTab(event, 'advanced-formatted')">Results</div>
+                                <div class="response-tab" onclick="switchAdvancedTab(event, 'advanced-raw')">Raw Data</div>
+                            </div>
+                            <div class="response-content">
+                                <div id="advanced-formatted" class="response-panel active">
+                                    <div id="advancedResponseFormatted" class="response-formatted">
+                                        No results yet. Start processing to see results here.
+                                    </div>
+                                </div>
+                                <div id="advanced-raw" class="response-panel">
+                                    <div id="advancedResponseRaw" class="response-raw">
+                                        No results yet. Start processing to see raw data here.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hardcoded webhook URLs for advanced processing
+        const WEBHOOK_URLS = [
+            'http://localhost:5678/webhook/Energy_Utilities',
+            'http://localhost:5678/webhook/Water_land_Use',
+            'http://localhost:5678/webhook/Fuels_and_Combustion',
+            'http://localhost:5678/webhook/Mobility',
+            'http://localhost:5678/webhook/Procurement_and_waste'
+        ];
+
+        const EXTRACTION_WEBHOOK_URL = 'http://localhost:5678/webhook/extraction';
+
+        // Store global processing results and HTML data
+        let processingResults = {
+            uploadedFilenames: [],
+            webhookResponses: [],
+            extractionResult: null,
+            htmlData: null
+        };
+
+        // Utility Functions
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#06402B' : '#ef4444'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text == null ? '' : String(text);
+            return div.innerHTML;
+        }
+
+        function updateProgressStep(stepNumber, status) {
+            const step = document.getElementById(`step${stepNumber}`);
+            if (!step) return;
+            
+            const circle = step.querySelector('.step-circle');
+            circle.classList.remove('active', 'completed');
+            
+            if (status === 'active') {
+                circle.classList.add('active');
+            } else if (status === 'completed') {
+                circle.classList.add('completed');
+                circle.innerHTML = '✓';
+            }
+            
+            // Mark previous steps as completed
+            if (status === 'active' || status === 'completed') {
+                for (let i = 1; i < stepNumber; i++) {
+                    const prevStep = document.getElementById(`step${i}`);
+                    if (prevStep) {
+                        const prevCircle = prevStep.querySelector('.step-circle');
+                        prevCircle.classList.remove('active');
+                        prevCircle.classList.add('completed');
+                        prevCircle.innerHTML = '✓';
+                        prevStep.classList.add('completed');
+                    }
+                }
+            }
+        }
+
+        function updateApiStatus(apiId, status, message = '') {
+            const apiElement = document.getElementById(apiId);
+            if (!apiElement) return;
+            
+            const statusText = apiElement.querySelector('.api-status-text');
+            apiElement.classList.remove('loading', 'success', 'error');
+            statusText.classList.remove('loading', 'success', 'error');
+            
+            apiElement.classList.add(status);
+            statusText.classList.add(status);
+            
+            switch(status) {
+                case 'loading':
+                    statusText.textContent = 'Processing...';
+                    break;
+                case 'success':
+                    statusText.textContent = message || 'Success';
+                    break;
+                case 'error':
+                    statusText.textContent = message || 'Failed';
+                    break;
+            }
+        }
+
+        // File Handling Functions
+        function setupFileDrop() {
+            const dropZone = document.getElementById('advancedDropZone');
+            const fileInput = document.getElementById('advancedFileInput');
+
+            dropZone.addEventListener('click', () => fileInput.click());
+            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+            dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                fileInput.files = e.dataTransfer.files;
+                handleFileSelection();
+            });
+            fileInput.addEventListener('change', handleFileSelection);
+        }
+
+        function handleFileSelection() {
+            const fileInput = document.getElementById('advancedFileInput');
+            if (fileInput.files.length === 0) return;
+            
+            const grid = document.getElementById('advancedFilesGrid');
+            grid.innerHTML = '';
+            processingResults.uploadedFilenames = [];
+            
+            Array.from(fileInput.files).forEach((file, index) => {
+                const fileItem = createFileItem(file, index);
+                grid.appendChild(fileItem);
+                processingResults.uploadedFilenames.push(file.name);
+            });
+
+            // Display filenames
+            const filenamesList = document.getElementById('advancedFilenamesList');
+            if (filenamesList) {
+                filenamesList.innerHTML = processingResults.uploadedFilenames
+                    .map(name => `• ${name}`)
+                    .join('<br>');
+            }
+            updateProgressStep(1, 'completed');
+
+            document.getElementById('advancedFilesPreview').style.display = 'block';
+            document.getElementById('advancedCategoriesSection').style.display = 'block';
+            document.getElementById('advancedSubmitSection').style.display = 'block';
+        }
+
+        function createFileItem(file, index) {
+            const div = document.createElement('div');
+            div.className = 'file-item';
+            const iconMap = { pdf: '📄', word: '📝', document: '📝', excel: '📊', spreadsheet: '📊', image: '🖼️', csv: '📈' };
+            const type = Object.keys(iconMap).find(key => file.type.includes(key)) || 'default';
+            const size = (file.size / 1024 / 1024).toFixed(2);
+            div.innerHTML = `
+                <div class="file-icon">${iconMap[type] || '📄'}</div>
+                <div class="file-info">
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-details">${size} MB • ${file.type || 'Unknown'}</div>
+                </div>
+            `;
+            return div;
+        }
+
+        // API Functions
+        async function callApi(url, formData, apiId) {
+            try {
+                updateApiStatus(apiId, 'loading');
+                const response = await fetch(url, { method: 'POST', body: formData });
+
+                let responseData;
+                const contentType = response.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    responseData = await response.json();
+                } else {
+                    responseData = await response.text();
+                }
+
+                if (response.ok) {
+                    updateApiStatus(apiId, 'success', `Completed (${response.status})`);
+                    return { success: true, data: responseData, url: url, status: response.status };
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                updateApiStatus(apiId, 'error', `Error: ${error.message}`);
+                return { success: false, error: error.message, url: url };
+            }
+        }
+
+        async function callExtractionApi(filenames, categoryData = {}) {
+            try {
+                updateApiStatus('extraction', 'loading');
+                
+                const formData = new FormData();
+                formData.append('filenames', JSON.stringify(filenames));
+                formData.append('extraction_type', 'advanced_processing');
+                
+                Object.entries(categoryData).forEach(([key, value]) => {
+                    if (value) formData.append(key, value);
+                });
+                
+                const response = await fetch(EXTRACTION_WEBHOOK_URL, { method: 'POST', body: formData });
+
+                let responseData;
+                const contentType = response.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    responseData = await response.json();
+                } else {
+                    responseData = await response.text();
+                }
+
+                if (response.ok) {
+                    updateApiStatus('extraction', 'success', 'Extraction completed');
+                    return { success: true, data: responseData, message: 'Extraction completed successfully' };
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                updateApiStatus('extraction', 'error', `Error: ${error.message}`);
+                return { success: false, error: error.message, message: 'Extraction failed' };
+            }
+        }
+
+        // HTML Processing Functions
+        function extractHtmlContent(responseData) {
+            if (typeof responseData === 'string' && responseData.trim().toLowerCase().includes('<!doctype html>')) {
+                return responseData;
+            }
+
+            if (typeof responseData === 'object' && responseData !== null) {
+                const htmlProperties = ['html', 'content', 'data', 'result', 'output', 'report'];
+                for (const prop of htmlProperties) {
+                    const potentialHtml = responseData[prop];
+                    if (typeof potentialHtml === 'string' && potentialHtml.trim().toLowerCase().includes('<!doctype html>')) {
+                        return potentialHtml;
+                    }
+                }
+            }
+            return null;
+        }
+
+        function openHtmlInNewTab(responseData) {
+            try {
+                let htmlContent = extractHtmlContent(responseData);
+                
+                if (!htmlContent) {
+                    htmlContent = `
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Extraction Result</title>
+                            <style>
+                                body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+                                .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                                pre { background: #f8f9fa; padding: 15px; border-radius: 4px; overflow-x: auto; white-space: pre-wrap; }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="container">
+                                <h1>Extraction Result</h1>
+                                <pre>${escapeHtml(typeof responseData === 'string' ? responseData : JSON.stringify(responseData, null, 2))}</pre>
+                            </div>
+                        </body>
+                        </html>
+                    `;
+                }
+                
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const newTab = window.open(url, '_blank');
+                
+                if (newTab) {
+                    newTab.onload = () => URL.revokeObjectURL(url);
+                    showToast('HTML report opened in new tab!');
+                    return true;
+                } else {
+                    throw new Error('Popup blocked or failed to open');
+                }
+                
+            } catch (error) {
+                console.error('Primary method failed, using fallback:', error);
+                showHtmlInModal(responseData);
+                return false;
+            }
+        }
+
+        function showHtmlInModal(responseData) {
+            let htmlContent = extractHtmlContent(responseData);
+            if (!htmlContent) {
+                htmlContent = `<pre>${escapeHtml(JSON.stringify(responseData, null, 2))}</pre>`;
+            }
+            
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0, 0, 0, 0.8); z-index: 10000;
+                display: flex; justify-content: center; align-items: center;
+            `;
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: white; width: 90%; height: 90%; border-radius: 10px;
+                overflow: hidden; position: relative;
+            `;
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.textContent = '× Close';
+            closeBtn.style.cssText = `
+                position: absolute; top: 10px; right: 10px; z-index: 10001;
+                background: #ef4444; color: white; border: none; padding: 10px 15px;
+                border-radius: 5px; cursor: pointer;
+            `;
+            
+            const iframe = document.createElement('iframe');
+            iframe.style.cssText = 'width: 100%; height: 100%; border: none;';
+            iframe.srcdoc = htmlContent;
+            
+            modalContent.appendChild(closeBtn);
+            modalContent.appendChild(iframe);
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+            
+            const closeModal = () => document.body.removeChild(modal);
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+            
+            showToast('HTML report displayed in modal');
+        }
+
+        function showHtmlActionButtons(responseData) {
+            processingResults.htmlData = responseData;
+            
+            const htmlActionsSection = document.getElementById('advancedHtmlActionsSection');
+            const htmlActionsContainer = document.getElementById('advancedHtmlActions');
+            
+            htmlActionsContainer.innerHTML = '';
+            
+            const buttons = [
+                { text: '👁️ Preview HTML', class: 'preview', action: () => showHtmlInModal(responseData) },
+                { text: '🔗 Open in New Tab', class: 'open', action: () => openHtmlInNewTab(responseData) },
+                { text: '💾 Download HTML', class: 'download', action: () => downloadHtml(responseData) },
+                { text: '📋 Copy HTML', class: 'copy', action: () => copyHtmlToClipboard(responseData) }
+            ];
+            
+            buttons.forEach(buttonConfig => {
+                const button = document.createElement('button');
+                button.className = `html-action-btn ${buttonConfig.class}`;
+                button.textContent = buttonConfig.text;
+                button.addEventListener('click', buttonConfig.action);
+                htmlActionsContainer.appendChild(button);
+            });
+            
+            htmlActionsSection.style.display = 'block';
+        }
+
+        function hideHtmlActionButtons() {
+            const htmlActionsSection = document.getElementById('advancedHtmlActionsSection');
+            htmlActionsSection.style.display = 'none';
+            processingResults.htmlData = null;
+        }
+
+        function downloadHtml(responseData) {
+            try {
+                let htmlContent = extractHtmlContent(responseData);
+                if (!htmlContent) {
+                    htmlContent = `
+                        <!DOCTYPE html>
+                        <html><head><title>Extraction Result</title></head>
+                        <body><pre>${escapeHtml(JSON.stringify(responseData, null, 2))}</pre></body></html>
+                    `;
+                }
+                
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `extraction_result_${new Date().getTime()}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                showToast('HTML file downloaded successfully!');
+            } catch (error) {
+                showToast('Download failed: ' + error.message, 'error');
+            }
+        }
+
+        function copyHtmlToClipboard(responseData) {
+            try {
+                let htmlContent = extractHtmlContent(responseData);
+                if (!htmlContent) {
+                    htmlContent = JSON.stringify(responseData, null, 2);
+                }
+                
+                navigator.clipboard.writeText(htmlContent).then(() => {
+                    showToast('HTML content copied to clipboard!');
+                }).catch(() => {
+                    showToast('Copy failed - please try manual copy', 'error');
+                });
+            } catch (error) {
+                showToast('Copy failed: ' + error.message, 'error');
+            }
+        }
+
+        function showAdvancedStatus(message, type) {
+            const statusEl = document.getElementById('advancedStatusMessage');
+            statusEl.textContent = message;
+            statusEl.className = `status-message status-${type}`;
+            statusEl.style.display = 'block';
+            
+            if (type !== 'info' && type !== 'success') {
+                setTimeout(() => {
+                    if (statusEl.textContent === message) statusEl.style.display = 'none';
+                }, 8000);
+            } else if (type === 'success' && !processingResults.htmlData) {
+                setTimeout(() => {
+                    if (statusEl.textContent === message) statusEl.style.display = 'none';
+                }, 8000);
+            }
+        }
+
+        function displayAdvancedResults() {
+            const responseSection = document.getElementById('advancedResponseSection');
+            const responseFormatted = document.getElementById('advancedResponseFormatted');
+            const responseRaw = document.getElementById('advancedResponseRaw');
+            
+            responseSection.style.display = 'block';
+            
+            let formattedHtml = '<div style="font-family: inherit;">';
+            
+            formattedHtml += '<h4 style="color: #06402B; margin-bottom: 15px;">Uploaded Files</h4>';
+            formattedHtml += '<div style="margin-bottom: 20px; background: #f0fdf4; padding: 15px; border-radius: 8px;">';
+            processingResults.uploadedFilenames.forEach(filename => {
+                formattedHtml += `<div style="margin: 5px 0;">📄 ${filename}</div>`;
+            });
+            formattedHtml += '</div>';
+            
+            formattedHtml += '<h4 style="color: #06402B; margin-bottom: 15px;">Processing Webhook Results</h4>';
+            formattedHtml += '<div style="margin-bottom: 20px;">';
+            processingResults.webhookResponses.forEach((result, index) => {
+                const status = result.success ? '✅' : '❌';
+                const statusColor = result.success ? '#06402B' : '#ef4444';
+                formattedHtml += `
+                    <div style="margin: 10px 0; padding: 10px; background: #f8fafc; border-radius: 8px; border-left: 4px solid ${statusColor};">
+                        <strong>${status} Webhook ${index + 1} (${result.url.split('/').pop()}):</strong> 
+                        ${result.success ? `Success (Status: ${result.status})` : `Failed - ${result.error}`}
+                    </div>
+                `;
+            });
+            formattedHtml += '</div>';
+            
+            if (processingResults.extractionResult) {
+                formattedHtml += '<h4 style="color: #06402B; margin-bottom: 15px;">Smart Extraction Result</h4>';
+                if (processingResults.extractionResult.success) {
+                    formattedHtml += '<div style="color: #06402B; font-weight: 600; margin-bottom: 10px;">✅ Extraction Successful</div>';
+                    formattedHtml += '<div style="background: #f0fdf4; padding: 15px; border-radius: 8px; margin: 10px 0;">';
+                    formattedHtml += '<div style="margin-bottom: 10px; font-weight: 600;">HTML rendering options available above</div>';
+                    const data = processingResults.extractionResult.data;
+                    const snippet = typeof data === 'string' ? data.substring(0, 500) + (data.length > 500 ? '...' : '') : JSON.stringify(data, null, 2);
+                    formattedHtml += `<pre style="white-space: pre-wrap; font-family: inherit; margin: 0; max-height: 200px; overflow-y: auto;">${escapeHtml(snippet)}</pre>`;
+                    formattedHtml += '</div>';
+                } else {
+                    formattedHtml += '<div style="color: #ef4444; font-weight: 600;">❌ Extraction Failed</div>';
+                    formattedHtml += `<div style="margin: 10px 0; color: #ef4444;">${processingResults.extractionResult.error || 'Unknown error'}</div>`;
+                }
+            } else {
+                formattedHtml += '<h4 style="color: #ef4444; margin-bottom: 15px;">Smart Extraction Result</h4>';
+                formattedHtml += '<div style="color: #ef4444; font-weight: 600;">❌ Extraction not triggered (not all webhooks successful)</div>';
+            }
+            formattedHtml += '</div>';
+            
+            responseFormatted.innerHTML = formattedHtml;
+            responseRaw.textContent = JSON.stringify(processingResults, null, 2);
+        }
+
+        // Form Handler
+        document.getElementById('advancedUploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const files = Array.from(document.getElementById('advancedFileInput').files);
+            if (files.length === 0) {
+                showAdvancedStatus('Please select at least one file!', 'error');
+                return;
+            }
+
+            const submitButton = document.getElementById('advancedSubmitButton');
+            
+            try {
+                processingResults.webhookResponses = [];
+                processingResults.extractionResult = null;
+                hideHtmlActionButtons();
+                
+                submitButton.innerHTML = '<span class="loading-spinner"></span>Processing...';
+                submitButton.disabled = true;
+                
+                document.getElementById('progressSection').style.display = 'block';
+                document.getElementById('apiStatus').style.display = 'block';
+                
+                updateProgressStep(2, 'active');
+                showAdvancedStatus('Starting parallel processing of 5 webhooks...', 'info');
+
+                const formData = new FormData();
+                
+                files.forEach((file, index) => {
+                    formData.append(`file_${index}`, file);
+                    formData.append(`filename_${index}`, file.name);
+                });
+                
+                const textareas = document.querySelectorAll('#advancedCategoriesSection .category-textarea');
+                const categoryData = {};
+                textareas.forEach(textarea => {
+                    if (textarea.value.trim()) {
+                        formData.append(textarea.name, textarea.value.trim());
+                        categoryData[textarea.name] = textarea.value.trim();
+                    }
+                });
+                
+                formData.append('file_count', files.length.toString());
+                formData.append('timestamp', new Date().toISOString());
+
+                const webhookPromises = WEBHOOK_URLS.map((url, index) => 
+                    callApi(url, formData, `webhook${index + 1}`)
+                );
+                
+                const webhookResults = await Promise.all(webhookPromises);
+                processingResults.webhookResponses = webhookResults;
+                
+                updateProgressStep(2, 'completed');
+                
+                const successfulWebhooks = webhookResults.filter(result => result.success).length;
+                const totalWebhooks = webhookResults.length;
+                
+                if (successfulWebhooks === totalWebhooks) {
+                    updateProgressStep(3, 'active');
+                    showAdvancedStatus(`All ${totalWebhooks} webhooks successful! Starting smart extraction...`, 'info');
+                    
+                    const extractionResult = await callExtractionApi(processingResults.uploadedFilenames, categoryData);
+                    processingResults.extractionResult = extractionResult;
+                    
+                    updateProgressStep(3, 'completed');
+                    
+                    if (extractionResult.success) {
+                        showAdvancedStatus('Processing completed successfully!', 'success');
+                        showHtmlActionButtons(extractionResult.data);
+                        openHtmlInNewTab(extractionResult.data);
+                    } else {
+                        showAdvancedStatus(`All webhooks successful but extraction failed: ${extractionResult.error}`, 'error');
+                    }
+                } else {
+                    showAdvancedStatus(`Only ${successfulWebhooks}/${totalWebhooks} webhooks successful. Extraction not triggered (requires all webhooks to succeed).`, 'error');
+                    updateApiStatus('extraction', 'error', 'Skipped (not all webhooks successful)');
+                }
+                
+                displayAdvancedResults();
+                
+            } catch (error) {
+                showAdvancedStatus(`Processing failed: ${error.message}`, 'error');
+                console.error('Processing error:', error);
+            } finally {
+                submitButton.innerHTML = 'Start Advanced Processing';
+                submitButton.disabled = false;
+            }
+        });
+
+        function switchAdvancedTab(event, tabId) {
+            const container = event.target.closest('.response-container');
+            container.querySelectorAll('.response-tab').forEach(tab => tab.classList.remove('active'));
+            container.querySelectorAll('.response-panel').forEach(panel => panel.classList.remove('active'));
+            event.target.classList.add('active');
+            container.querySelector(`#${tabId}`).classList.add('active');
+        }
+
+        function copyAdvancedResponse() {
+            const textToCopy = JSON.stringify(processingResults, null, 2);
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast('Results copied to clipboard!');
+            });
+        }
+
+        function clearAdvancedResponse() {
+            document.getElementById('advancedResponseSection').style.display = 'none';
+            hideHtmlActionButtons();
+            processingResults.webhookResponses = [];
+            processingResults.extractionResult = null;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupFileDrop();
+            showToast('Advanced Processing loaded successfully');
+        });
+    </script>
+</body>
+</html>

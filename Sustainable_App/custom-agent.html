@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SustainIQ - Custom Agent</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #06402B 0%, #0a5d35 50%, #0f7a40 100%);
+            color: white;
+            padding: 0;
+            position: relative;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="50" r="0.3" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="90" r="0.4" fill="rgba(255,255,255,0.08)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .logo-section {
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #0f7a40, #06402B);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(6, 64, 43, 0.3);
+        }
+
+        .nav-section {
+            padding: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-header {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 20px 15px;
+            margin-top: 20px;
+        }
+
+        .nav-header:first-child {
+            margin-top: 0;
+        }
+
+        .nav-item {
+            margin: 4px 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #d1fae5;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        .nav-link:hover::before {
+            transform: scaleY(1);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 20px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .sub-nav {
+            margin-left: 20px;
+            margin-top: 8px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sub-nav-item {
+            margin: 2px 0;
+        }
+
+        .sub-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sub-nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sub-nav-link.active {
+            color: #d1fae5;
+            background: rgba(209, 250, 229, 0.1);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            background: linear-gradient(135deg, #06402B, #0f7a40);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f3f4f6;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .content-area {
+            flex: 1;
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            overflow-y: auto;
+            position: relative;
+            padding: 30px;
+        }
+
+        /* Card Styling */
+        .interface-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .interface-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .interface-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .interface-description {
+            font-size: 16px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* Forms and Controls */
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .form-col {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: #ffffff;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #06402B;
+            box-shadow: 0 0 0 3px rgba(6, 64, 43, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        /* Webhook Configuration */
+        .webhook-config {
+            background: rgba(6, 64, 43, 0.05);
+            border: 1px solid rgba(6, 64, 43, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .webhook-config h3 {
+            color: #06402B;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .webhook-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+
+        .webhook-input:focus {
+            outline: none;
+            border-color: #06402B;
+            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(6, 64, 43, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(6, 64, 43, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+            transform: translateY(-1px);
+        }
+
+        .btn.loading {
+            position: relative;
+            pointer-events: none;
+            opacity: .85;
+        }
+
+        .btn.loading:after {
+            content: '';
+            position: absolute;
+            right: 10px;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.7);
+            border-top-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Collapsible Sections */
+        details {
+            margin-bottom: 1.5rem;
+        }
+
+        details summary {
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0.75rem 0;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+
+        details[open] summary {
+            color: #06402B;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .form-col {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+            
+            .nav-text {
+                display: none;
+            }
+            
+            .sub-nav {
+                display: none;
+            }
+            
+            .content-area {
+                padding: 15px;
+            }
+            
+            .interface-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-section">
+                <a href="Home.html" class="logo">
+                    <div class="logo-icon">🌱</div>
+                    <span>SustainIQ</span>
+                </a>
+            </div>
+
+            <nav class="nav-section">
+                <div class="nav-header">Data Intelligence</div>
+                
+                <!-- Data Extraction -->
+                <div class="nav-item">
+                    <a href="advanced-processing.html" class="nav-link active">
+                        <i class="nav-icon fas fa-upload"></i>
+                        <span class="nav-text">Data Extraction</span>
+                    </a>
+                    <div class="sub-nav">
+                        <div class="sub-nav-item">
+                            <a href="advanced-processing.html" class="sub-nav-link">Advanced Processing</a>
+                        </div>
+                        <div class="sub-nav-item">
+                            <a href="custom-agent.html" class="sub-nav-link active">Custom Agent</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-header">Data Management</div>
+                
+                <!-- Data Verification -->
+                <div class="nav-item">
+                    <a href="verification.html" class="nav-link">
+                        <i class="nav-icon fas fa-check-circle"></i>
+                        <span class="nav-text">Data Verification</span>
+                    </a>
+                </div>
+
+                <div class="nav-header">Analysis Modules</div>
+
+                <!-- Emission Analysis -->
+                <div class="nav-item">
+                    <a href="dataset-choice.html" class="nav-link">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <span class="nav-text">Emission Analysis</span>
+                    </a>
+                    <div class="sub-nav">
+                        <div class="sub-nav-item">
+                            <a href="dataset-choice.html" class="sub-nav-link">Dataset Choice</a>
+                        </div>
+                        <div class="sub-nav-item">
+                            <a href="emission-calculation.html" class="sub-nav-link">Emission Calculation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-header">Reporting</div>
+
+                <!-- Report Generation -->
+                <div class="nav-item">
+                    <a href="reporting.html" class="nav-link">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <span class="nav-text">Sustainability Reporting</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="header">
+                <h1 class="header-title">Sustainability Intelligence Platform</h1>
+                <div class="header-actions">
+                    <div class="status-badge">
+                        <div class="status-dot"></div>
+                        <span>System Online</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div class="interface-card">
+                    <div class="interface-header">
+                        <h2 class="interface-title">Custom Agent Wizard</h2>
+                        <p class="interface-description">Create and deploy custom AI agents for automated data extraction workflows</p>
+                    </div>
+                    
+                    <!-- Agent Configuration -->
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">Agent Name</label>
+                                <input type="text" id="agentName" class="form-input" placeholder="e.g., Packaging Waste Extractor">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Webhook Path</label>
+                                <input type="text" id="agentPath" class="form-input" placeholder="custom-agents/packaging-waste">
+                                <div class="form-hint">Auto-generated from agent name</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Target Database Table</label>
+                                <input type="text" id="dbTable" class="form-input" placeholder="sustainability_records" value="sustainability_records">
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label class="form-label">n8n Base URL</label>
+                                <input type="text" id="n8nBaseUrl" class="form-input" value="http://localhost:5678">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">n8n API Key</label>
+                                <input type="text" id="n8nApiKey" class="form-input" placeholder="Your n8n API key" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMmUwN2QxNy04NDJkLTQyZWEtYjQxYS00NDA5NDcxOGJiNWMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzU3NTg0NTMzfQ.YSM83QVKL_9c7sdIMTdla_u5PscKf-2zuGttNL6IXsI">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Insert into Database?</label>
+                                <select id="insertToggle" class="form-input form-select">
+                                    <option value="yes" selected>Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MIME Types -->
+                    <div class="form-group">
+                        <label class="form-label">Accepted MIME Types</label>
+                        <input type="text" id="mimeTypes" class="form-input" value="application/pdf,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+                        <div class="form-hint">Comma-separated list of MIME types the agent should accept</div>
+                    </div>
+
+                    <!-- Document Tool Prompt -->
+                    <div class="form-group">
+                        <label class="form-label">Document Tool Prompt</label>
+                        <textarea id="documentPrompt" class="form-input form-textarea" placeholder="Enter the instructions for the document tool here...">Extract sustainability data including carbon emissions, energy consumption, waste generation, and travel data from the provided document. Focus on numerical values, dates, locations, and categorical information needed for environmental impact calculations.</textarea>
+                        <div class="form-hint">Define what data the agent should extract from documents</div>
+                    </div>
+
+                    <!-- Credentials Section -->
+                    <div class="webhook-config">
+                        <h3>AI Service Credentials</h3>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Google Gemini Credentials (ID | Name)</label>
+                                    <input type="text" id="geminiCreds" class="form-input" value="KIq58RKFRUPil9Kz | Google Gemini(PaLM) Api account">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Azure OpenAI Credentials (ID | Name)</label>
+                                    <input type="text" id="azureCreds" class="form-input" value="oY1NeqDGxOWYRSi1 | Azure Open AI account">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible Sections -->
+                    <details open>
+                        <summary>Output JSON Schema</summary>
+                        <div class="form-group">
+                            <textarea id="jsonSchema" class="form-input" style="font-family: 'Monaco', 'Menlo', monospace; min-height: 200px;">{ 
+  "items": [
+    {
+      "category": null,
+      "date": null,
+      "service_type": null,
+      "fuel_type": null,
+      "material": null,
+      "waste_type": null,
+      "recharge_type": null,
+      "origin": null,
+      "destination": null,
+      "class_of_travel": null,
+      "no_of_passengers": null,
+      "trip_mode": null,
+      "vehicle_model": null,
+      "vehicle_make": null,
+      "site": null,
+      "account_type": null,
+      "consumption": null,
+      "unit": null,
+      "amount_spent": null,
+      "scope": null,
+      "file_name": null
+    }
+  ]
+}</textarea>
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>System & User Defaults</summary>
+                        <div class="form-group">
+                            <label class="form-label">System Message</label>
+                            <textarea id="systemMessage" class="form-input form-textarea">You are a sustainability data extraction agent.
+Always return valid JSON only, no markdown, no commentary.
+Follow your agent-specific instructions strictly.
+Do not extract data outside your agent's assigned categories.
+Ignore all unrelated data even if similar fields exist elsewhere.
+If no relevant information is found, return: { "items": [] }</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">User Message Template</label>
+                            <textarea id="userMessage" class="form-input form-textarea">You are a carbon-data extraction agent. Your sole task is to extract fields that are potentially required to calculate a carbon footprint from any document.
+Do not normalize values. Return exactly as found.
+Be layout-robust (merged cells, multiple pages/sheets, rotated headers, multilingual).</textarea>
+                        </div>
+                    </details>
+
+                    <!-- Action Buttons -->
+                    <div class="form-row" style="margin-top: 2rem;">
+                        <button type="button" class="btn btn-primary" id="createAgentBtn" onclick="createCustomAgent()">
+                            <i class="fas fa-magic"></i>
+                            Create & Activate Workflow
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="previewJsonBtn" onclick="previewWorkflowJson()">
+                            <i class="fas fa-eye"></i>
+                            Preview Workflow JSON
+                        </button>
+                    </div>
+
+                    <!-- Results -->
+                    <div id="agentResults" style="margin-top: 2rem;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Utility Functions
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#06402B' : '#ef4444'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text == null ? '' : String(text);
+            return div.innerHTML;
+        }
+
+        function slugify(text) {
+            return text.toLowerCase()
+                      .replace(/[^a-z0-9]+/g, '-')
+                      .replace(/(^-|-$)/g, '');
+        }
+
+        function updateAgentPath() {
+            const name = document.getElementById('agentName').value.trim();
+            const pathInput = document.getElementById('agentPath');
+            
+            if (name && !pathInput.dataset.userModified) {
+                pathInput.value = 'custom-agents/' + slugify(name);
+            }
+        }
+
+        document.getElementById('agentPath').addEventListener('input', function() {
+            this.dataset.userModified = 'true';
+        });
+
+        document.getElementById('agentName').addEventListener('input', updateAgentPath);
+
+        function parseCredentialPair(credString) {
+            const [id, name] = (credString || '').split('|').map(x => x.trim());
+            return { id, name };
+        }
+
+        function generateNodeId(prefix) {
+            return prefix + '-' + Math.random().toString(36).slice(2, 10);
+        }
+
+        function generateFanOutCode(mimeTypes) {
+            return `
+const TARGET_BIN_KEY = 'pdf';
+const ACCEPT = new Set('${mimeTypes}'.split(',').map(s=>s.trim()).filter(Boolean));
+const out = [];
+for (const item of $input.all()) {
+  const bin = item.binary || {};
+  const baseJson = item.json || {};
+  for (const [key,file] of Object.entries(bin)) {
+    if (file?.mimeType && ACCEPT.size && !ACCEPT.has(file.mimeType)) continue;
+    out.push({ 
+      json: { 
+        ...baseJson, 
+        originalBinaryKey: key, 
+        originalFileName: file?.fileName || null, 
+        originalMimeType: file?.mimeType || null 
+      }, 
+      binary: { [TARGET_BIN_KEY]: file } 
+    });
+  }
+}
+return out;
+            `.trim();
+        }
+
+        function generateJsonScrubberCode() {
+            return `
+// Extract JSON from LLM output
+const inputItems = $input.all();
+const outputItems = [];
+for (const item of inputItems) {
+  try {
+    let s = item.json.output || item.json.text || item.json.content || JSON.stringify(item.json);
+    s = s.replace(/\\\`\\\`\\\`json\\s*\\n?/gi,'').replace(/\\\`\\\`\\\`\\s*$/gi,'').trim();
+    const a = s.indexOf('{'); const b = s.lastIndexOf('}');
+    if(a!==-1 && b!==-1 && b>a) s = s.substring(a,b+1);
+    outputItems.push({ json: JSON.parse(s) });
+  } catch (e) {
+    outputItems.push({ json: { items: [], _error: 'JSON parse failed: '+e.message } });
+  }
+}
+return outputItems;
+            `.trim();
+        }
+
+        function generateFinalJsonMapperCode() {
+            return `
+// AFTER Merge/Agent
+const inputs = $input.all();
+const rows = [];
+const seen = new Set();
+function isAllNull(obj){ return Object.values(obj).every(v=>v===null||v===undefined||v===''); }
+function pushRecord(rec){
+  if(!rec || typeof rec!=='object') return;
+  const normalized = Object.assign({}, rec);
+  // normalize file_name -> filename
+  if('file_name' in normalized && !('filename' in normalized)) normalized.filename = normalized.file_name;
+  if(isAllNull(normalized)) return;
+  const key = JSON.stringify(normalized);
+  if(seen.has(key)) return; seen.add(key);
+  rows.push(normalized);
+}
+for(const it of inputs){
+  const j = it.json;
+  if(Array.isArray(j?.items)){ for(const r of j.items) pushRecord(r); continue; }
+  if(Array.isArray(j)){ for(const group of j){ if(Array.isArray(group?.items)) for(const r of group.items) pushRecord(r); } continue; }
+  if(j && typeof j==='object'){ pushRecord(j); }
+}
+return rows.map(r=>({json:r}));
+            `.trim();
+        }
+
+        function generateWorkflowJson() {
+            const name = document.getElementById('agentName').value.trim();
+            const path = document.getElementById('agentPath').value.replace(/^\/+|\/+$/g, '');
+            const table = document.getElementById('dbTable').value.trim();
+            const insertToDb = document.getElementById('insertToggle').value === 'yes';
+            const mimeTypes = document.getElementById('mimeTypes').value;
+            const docPrompt = document.getElementById('documentPrompt').value;
+            const systemMessage = document.getElementById('systemMessage').value;
+            const userMessage = document.getElementById('userMessage').value;
+            
+            if (!name) throw new Error('Agent name is required');
+            if (!docPrompt) throw new Error('Document tool prompt is required');
+
+            let schema;
+            try {
+                schema = JSON.parse(document.getElementById('jsonSchema').value);
+            } catch (e) {
+                throw new Error('Invalid JSON schema: ' + e.message);
+            }
+
+            const { id: geminiId, name: geminiName } = parseCredentialPair(document.getElementById('geminiCreds').value);
+            const { id: azureId, name: azureName } = parseCredentialPair(document.getElementById('azureCreds').value);
+
+            // Generate all node IDs
+            const webhookId = generateNodeId('wh');
+            const fanOutId = generateNodeId('fan');
+            const uploadId = generateNodeId('up');
+            const agentId = generateNodeId('agent');
+            const azureChatId = generateNodeId('azure');
+            const toolId = generateNodeId('tool');
+            const jsonId = generateNodeId('json');
+            const finalId = generateNodeId('final');
+            const insertId = generateNodeId('sql');
+            const outputTextId = generateNodeId('txt');
+            const codeId = generateNodeId('ok');
+            const respondId = generateNodeId('resp');
+
+            const nodes = [
+                {
+                    id: webhookId,
+                    type: "n8n-nodes-base.webhook",
+                    typeVersion: 2.1,
+                    position: [-2160, 64],
+                    name: "Webhook",
+                    parameters: {
+                        httpMethod: "POST",
+                        path: path,
+                        responseMode: "responseNode",
+                        options: {
+                            allowedOrigins: "http://localhost:8080",
+                            binaryPropertyName: "data",
+                            rawBody: false
+                        }
+                    }
+                },
+                {
+                    id: fanOutId,
+                    type: "n8n-nodes-base.code",
+                    typeVersion: 2,
+                    position: [-1824, 64],
+                    name: "Multiple_Files_Extraction",
+                    parameters: {
+                        jsCode: generateFanOutCode(mimeTypes)
+                    }
+                },
+                {
+                    id: uploadId,
+                    type: "@n8n/n8n-nodes-langchain.googleGemini",
+                    typeVersion: 1,
+                    position: [-1504, 64],
+                    name: "Upload a file",
+                    parameters: {
+                        resource: "file",
+                        inputType: "binary",
+                        binaryPropertyName: "=pdf"
+                    },
+                    credentials: {
+                        googlePalmApi: {
+                            id: geminiId,
+                            name: geminiName
+                        }
+                    }
+                },
+                {
+                    id: agentId,
+                    type: "@n8n/n8n-nodes-langchain.agent",
+                    typeVersion: 2.1,
+                    position: [-1184, 64],
+                    name: name,
+                    parameters: {
+                        promptType: "define",
+                        text: `={{ $json.fileUri }}\\n\\n${userMessage}`,
+                        options: {
+                            systemMessage: systemMessage
+                        }
+                    }
+                },
+                {
+                    id: azureChatId,
+                    type: "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+                    typeVersion: 1,
+                    position: [-1184, 304],
+                    name: "Azure OpenAI Chat Model",
+                    parameters: {
+                        model: "o4-mini",
+                        options: {}
+                    },
+                    credentials: {
+                        azureOpenAiApi: {
+                            id: azureId,
+                            name: azureName
+                        }
+                    }
+                },
+                {
+                    id: toolId,
+                    type: "@n8n/n8n-nodes-langchain.googleGeminiTool",
+                    typeVersion: 1,
+                    position: [-1184, 464],
+                    name: "Analyze document (tool)",
+                    parameters: {
+                        resource: "document",
+                        modelId: {
+                            "__rl": true,
+                            "value": "models/gemini-2.5-pro",
+                            "mode": "list",
+                            "cachedResultName": "models/gemini-2.5-pro"
+                        },
+                        text: docPrompt,
+                        documentUrls: "={{ $json.fileUri }}",
+                        options: {}
+                    },
+                    credentials: {
+                        googlePalmApi: {
+                            id: geminiId,
+                            name: geminiName
+                        }
+                    }
+                },
+                {
+                    id: jsonId,
+                    type: "n8n-nodes-base.code",
+                    typeVersion: 2,
+                    position: [-768, 64],
+                    name: "JSON",
+                    parameters: {
+                        jsCode: generateJsonScrubberCode()
+                    }
+                },
+                {
+                    id: finalId,
+                    type: "n8n-nodes-base.code",
+                    typeVersion: 2,
+                    position: [-432, 64],
+                    name: "Final_JSON",
+                    parameters: {
+                        jsCode: generateFinalJsonMapperCode()
+                    }
+                },
+                {
+                    id: outputTextId,
+                    type: "n8n-nodes-base.code",
+                    typeVersion: 2,
+                    position: [-144, -112],
+                    name: "Output_Text",
+                    parameters: {
+                        jsCode: `const items=$input.all().map(i=>i.json);return [{json:{output:JSON.stringify(items,null,2)}}];`
+                    }
+                },
+                {
+                    id: codeId,
+                    type: "n8n-nodes-base.code",
+                    typeVersion: 2,
+                    position: [112, -112],
+                    name: "Code",
+                    parameters: {
+                        jsCode: `console.log("success"); return [{ json:{ output: "success" } }];`
+                    }
+                },
+                {
+                    id: respondId,
+                    type: "n8n-nodes-base.respondToWebhook",
+                    typeVersion: 1.4,
+                    position: [416, -112],
+                    name: "Respond to Webhook",
+                    parameters: {
+                        respondWith: "text",
+                        responseBody: "={{ $json.output }}",
+                        options: {
+                            responseCode: 200
+                        }
+                    }
+                }
+            ];
+            
+            if (insertToDb) {
+                nodes.push({
+                    id: insertId,
+                    type: "n8n-nodes-base.mySql",
+                    typeVersion: 2.5,
+                    position: [-64, 272],
+                    name: "Insert rows in a table",
+                    parameters: {
+                        table: table || "sustainability_records",
+                        options: {
+                            detailedOutput: true
+                        }
+                    },
+                    credentials: {
+                        mySql: {
+                            id: "1J7io0mDCBiP2OHd",
+                            name: "MySQL account"
+                        }
+                    }
+                });
+            }
+
+            const connections = {};
+            connections[`Webhook`] = { main: [[{ node: "Multiple_Files_Extraction", type: "main", index: 0 }]] };
+            connections[`Multiple_Files_Extraction`] = { main: [[{ node: "Upload a file", type: "main", index: 0 }]] };
+            connections[`Upload a file`] = { main: [[{ node: name, type: "main", index: 0 }]] };
+            connections[`Azure OpenAI Chat Model`] = { ai_languageModel: [[{ node: name, type: "ai_languageModel", index: 0 }]] };
+            connections[`Analyze document (tool)`] = { ai_tool: [[{ node: name, type: "ai_tool", index: 0 }]] };
+            connections[name] = { main: [[{ node: "JSON", type: "main", index: 0 }]] };
+            connections[`JSON`] = { main: [[{ node: "Final_JSON", type: "main", index: 0 }]] };
+            
+            if (insertToDb) {
+                connections[`Final_JSON`] = { main: [[{ node: "Output_Text", type: "main", index: 0 }, { node: "Insert rows in a table", type: "main", index: 0 }]] };
+            } else {
+                connections[`Final_JSON`] = { main: [[{ node: "Output_Text", type: "main", index: 0 }]] };
+            }
+            
+            connections[`Output_Text`] = { main: [[{ node: "Code", type: "main", index: 0 }]] };
+            connections[`Code`] = { main: [[{ node: "Respond to Webhook", type: "main", index: 0 }]] };
+
+            return {
+                name: `Custom Agent – ${name}`,
+                settings: {},
+                nodes,
+                connections
+            };
+        }
+
+        async function createCustomAgent() {
+            const btn = document.getElementById('createAgentBtn');
+            const results = document.getElementById('agentResults');
+            
+            try {
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Workflow...';
+                
+                const workflowData = generateWorkflowJson();
+                const apiKey = document.getElementById('n8nApiKey').value.trim();
+                
+                if (!apiKey) {
+                    throw new Error('n8n API key is required');
+                }
+
+                const createResponse = await fetch('/api/v1/workflows', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-N8N-API-KEY': apiKey
+                    },
+                    body: JSON.stringify(workflowData)
+                });
+
+                if (!createResponse.ok) {
+                    const errorText = await createResponse.text();
+                    throw new Error(`Failed to create workflow: ${errorText}`);
+                }
+
+                const createResult = await createResponse.json();
+                const workflowId = createResult.id || createResult?.data?.id || createResult?.data?.workflow?.id;
+                
+                if (!workflowId) {
+                    throw new Error('Could not determine workflow ID');
+                }
+
+                const activateResponse = await fetch(`/api/v1/workflows/${workflowId}/activate`, {
+                    method: 'POST',
+                    headers: {
+                        'X-N8N-API-KEY': apiKey
+                    }
+                });
+
+                if (!activateResponse.ok) {
+                    const errorText = await activateResponse.text();
+                    throw new Error(`Failed to activate workflow: ${errorText}`);
+                }
+
+                const path = document.getElementById('agentPath').value.replace(/^\/+|\/+$/g, '');
+                const baseUrl = document.getElementById('n8nBaseUrl').value.replace(/\/+$/, '');
+                const prodUrl = `${baseUrl}/webhook/${path}`;
+                const testUrl = `${baseUrl}/webhook-test/${path}`;
+
+                results.innerHTML = `
+                    <div style="background: #ffffff; border-radius: 12px; padding: 30px; border: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <h3 style="color: #06402B; font-size: 24px; font-weight: 700; margin-bottom: 10px;">Workflow Created Successfully!</h3>
+                            <p style="color: #6b7280;">Your custom agent is now active and ready to process documents.</p>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                            <div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="font-weight: 600; color: #374151; margin-bottom: 8px; display: block;">Workflow ID</label>
+                                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 14px; border: 1px solid #e5e7eb;">${workflowId}</div>
+                                </div>
+                                <div>
+                                    <label style="font-weight: 600; color: #374151; margin-bottom: 8px; display: block;">Production Webhook URL</label>
+                                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 14px; border: 1px solid #e5e7eb; word-break: break-all;">${prodUrl}</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="margin-bottom: 20px;">
+                                    <label style="font-weight: 600; color: #374151; margin-bottom: 8px; display: block;">Test Webhook URL</label>
+                                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 14px; border: 1px solid #e5e7eb; word-break: break-all;">${testUrl}</div>
+                                </div>
+                                <div>
+                                    <label style="font-weight: 600; color: #374151; margin-bottom: 8px; display: block;">Test Command</label>
+                                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px; border: 1px solid #e5e7eb; word-break: break-all;">curl -X POST ${testUrl} \\<br>&nbsp;&nbsp;-H "Authorization: Bearer devtoken123" \\<br>&nbsp;&nbsp;-F "file=@/path/to/your.pdf"</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                showToast('Custom agent workflow created and activated successfully!');
+
+            } catch (error) {
+                console.error('Create agent error:', error);
+                showToast('Failed to create agent: ' + error.message, 'error');
+                results.innerHTML = `
+                    <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; padding: 20px;">
+                        <div style="color: #dc2626; display: flex; align-items: center;">
+                            <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
+                            <strong>Error:</strong> ${error.message}
+                        </div>
+                    </div>
+                `;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-magic"></i> Create & Activate Workflow';
+            }
+        }
+
+        function previewWorkflowJson() {
+            const results = document.getElementById('agentResults');
+            
+            try {
+                const workflowData = generateWorkflowJson();
+                results.innerHTML = `
+                    <div style="background: #ffffff; border-radius: 12px; padding: 30px; border: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <h3 style="color: #06402B; font-size: 24px; font-weight: 700;">Workflow JSON Preview</h3>
+                        </div>
+                        <div style="background: #1f2937; color: #f9fafb; border-radius: 8px; padding: 20px; font-family: 'Monaco', 'Menlo', monospace; font-size: 13px; line-height: 1.5; overflow: auto; max-height: 500px;">
+                            ${escapeHtml(JSON.stringify(workflowData, null, 2))}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `
+                    <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; padding: 20px;">
+                        <div style="color: #dc2626; display: flex; align-items: center;">
+                            <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
+                            <strong>Error:</strong> ${error.message}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateAgentPath();
+            showToast('Custom Agent Wizard loaded successfully');
+        });
+    </script>
+</body>
+</html>

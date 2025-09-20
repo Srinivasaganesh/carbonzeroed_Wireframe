@@ -1,0 +1,778 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SustainIQ - Unified Intelligence Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="sustainable.css">
+    <script src="sustainable.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-section">
+                <div class="logo" onclick="showInterface('welcome')">
+                    <div class="logo-icon">🌱</div>
+                    <span>SustainIQ</span>
+                </div>
+            </div>
+
+            <nav class="nav-section">
+                <div class="nav-header">Data Intelligence</div>
+                
+                <!-- Data Extraction -->
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="extraction">
+                        <i class="nav-icon fas fa-upload"></i>
+                        <span class="nav-text">Data Extraction</span>
+                    </a>
+                    <div class="sub-nav">
+                        <div class="sub-nav-item">
+                            <a href="#" class="sub-nav-link" data-subsection="advanced-processing">Advanced Processing</a>
+                        </div>
+                        <div class="sub-nav-item">
+                            <a href="#" class="sub-nav-link" data-subsection="custom-agent">Custom Agent</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-header">Data Management</div>
+                
+                <!-- Data Verification -->
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="verification">
+                        <i class="nav-icon fas fa-check-circle"></i>
+                        <span class="nav-text">Data Verification</span>
+                    </a>
+                </div>
+
+                <div class="nav-header">Analysis Modules</div>
+
+                <!-- Emission Analysis -->
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="emission">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <span class="nav-text">Emission Analysis</span>
+                    </a>
+                    <div class="sub-nav">
+                        <div class="sub-nav-item">
+                            <a href="#" class="sub-nav-link" data-subsection="dataset-choice">Dataset Choice</a>
+                        </div>
+                        <div class="sub-nav-item">
+                            <a href="#" class="sub-nav-link" data-subsection="emission-calculation">Emission Calculation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-header">Reporting</div>
+
+                <!-- Report Generation -->
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="reporting">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <span class="nav-text">Sustainability Reporting</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="header">
+                <h1 class="header-title">Sustainability Intelligence Platform</h1>
+                <div class="header-actions">
+                    <div class="status-badge">
+                        <div class="status-dot"></div>
+                        <span>System Online</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <!-- Welcome Screen -->
+                <div id="welcome-screen" class="interface-section active">
+                    <div class="welcome-screen">
+                        <div class="welcome-icon">🌱</div>
+                        <h1 class="welcome-title">Welcome to SustainIQ</h1>
+                        <p class="welcome-subtitle">
+                            Your comprehensive sustainability intelligence platform with advanced data extraction, 
+                            verification, emission analysis, and automated reporting capabilities.
+                        </p>
+                        
+                        <div class="features-grid">
+                            <div class="feature-card" onclick="showInterface('advanced-processing')">
+                                <div class="feature-icon">📊</div>
+                                <div class="feature-title">Advanced Processing</div>
+                                <div class="feature-description">Smart sequential processing with intelligent HTML rendering</div>
+                            </div>
+                            <div class="feature-card" onclick="showInterface('custom-agent')">
+                                <div class="feature-icon">🤖</div>
+                                <div class="feature-title">Custom Agent</div>
+                                <div class="feature-description">Create AI agents for automated data extraction</div>
+                            </div>
+                            <div class="feature-card" onclick="showInterface('verification')">
+                                <div class="feature-icon">✅</div>
+                                <div class="feature-title">Data Verification</div>
+                                <div class="feature-description">Verify and validate sustainability data</div>
+                            </div>
+                            <div class="feature-card" onclick="showInterface('dataset-choice')">
+                                <div class="feature-icon">📈</div>
+                                <div class="feature-title">Emission Analysis</div>
+                                <div class="feature-description">Calculate and analyze carbon emissions</div>
+                            </div>
+                            <div class="feature-card" onclick="showInterface('reporting')">
+                                <div class="feature-icon">📄</div>
+                                <div class="feature-title">Sustainability Reports</div>
+                                <div class="feature-description">Generate comprehensive sustainability reports</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Processing Interface -->
+                <div id="advanced-processing-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Advanced Processing Pipeline</h2>
+                            <p class="interface-description">Smart sequential processing with intelligent HTML rendering and multiple fallback systems</p>
+                        </div>
+
+                        <!-- Progress Tracker -->
+                        <div class="progress-section" id="progressSection">
+                            <div class="progress-steps">
+                                <div class="progress-step" id="step1">
+                                    <div class="step-circle">1</div>
+                                    <div class="step-label">File Upload</div>
+                                </div>
+                                <div class="progress-step" id="step2">
+                                    <div class="step-circle">2</div>
+                                    <div class="step-label">Parallel Processing</div>
+                                </div>
+                                <div class="progress-step" id="step3">
+                                    <div class="step-circle">3</div>
+                                    <div class="step-label">Smart Extraction</div>
+                                </div>
+                            </div>
+
+                            <!-- API Status Display -->
+                            <div class="api-status" id="apiStatus">
+                                <h4>API Processing Status</h4>
+                                <div class="api-item" id="webhook1">
+                                    <span class="api-name">Processing Agent 1 (Energy_Utilities)</span>
+                                    <span class="api-status-text">Waiting...</span>
+                                </div>
+                                <div class="api-item" id="webhook2">
+                                    <span class="api-name">Processing Agent 2 (water_land)</span>
+                                    <span class="api-status-text">Waiting...</span>
+                                </div>
+                                <div class="api-item" id="webhook3">
+                                    <span class="api-name">Processing Agent 3 (Fuels_and_Combustion)</span>
+                                    <span class="api-status-text">Waiting...</span>
+                                </div>
+                                <div class="api-item" id="webhook4">
+                                    <span class="api-name">Processing Agent 4 (Mobility)</span>
+                                    <span class="api-status-text">Waiting...</span>
+                                </div>
+                                <div class="api-item" id="webhook5">
+                                    <span class="api-name">Processing Agent 5 (Procurement_and_waste)</span>
+                                    <span class="api-status-text">Waiting...</span>
+                                </div>
+                                <div class="api-item" id="extraction">
+                                    <span class="api-name">Smart Extraction API</span>
+                                    <span class="api-status-text">Waiting for all webhooks...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="advancedUploadForm">
+                            <div class="file-drop-zone" id="advancedDropZone">
+                                <input type="file" id="advancedFileInput" class="file-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.jpg,.png">
+                                <div class="drop-icon">📄</div>
+                                <div class="drop-text">Drop files here or click to browse</div>
+                                <div class="drop-subtext">Supports PDF, Word, Excel, CSV, and image files</div>
+                            </div>
+
+                            <div id="advancedFilesPreview" class="files-preview">
+                                <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Selected Files</h3>
+                                <div id="advancedFilesGrid" class="files-grid"></div>
+                                <div id="advancedFilenames" style="margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 8px;">
+                                    <h4 style="color: #06402B; margin-bottom: 10px;">Filenames for extraction (sent only if all webhooks succeed):</h4>
+                                    <div id="advancedFilenamesList" style="font-family: monospace; color: #374151;"></div>
+                                </div>
+                            </div>
+
+                            <div id="advancedCategoriesSection" class="categories-section">
+                                <div class="categories-header">
+                                    <h3 class="categories-title">Sustainability Categories</h3>
+                                    <p class="categories-description">Optional: Provide additional context for each sustainability category</p>
+                                </div>
+
+                                <div class="categories-grid">
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <div class="category-icon" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">⚡</div>
+                                            <div class="category-title">Energy & Utilities</div>
+                                        </div>
+                                        <textarea class="category-textarea" name="energy_utilities" placeholder="Describe energy consumption, utility usage, power generation, renewable energy initiatives..."></textarea>
+                                    </div>
+
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <div class="category-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">💧</div>
+                                            <div class="category-title">Water & Land Use</div>
+                                        </div>
+                                        <textarea class="category-textarea" name="water_land" placeholder="Document water consumption, land usage, irrigation, conservation efforts..."></textarea>
+                                    </div>
+
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <div class="category-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">🔥</div>
+                                            <div class="category-title">Fuels & Combustion</div>
+                                        </div>
+                                        <textarea class="category-textarea" name="fuels_combustion" placeholder="Report fuel usage, combustion processes, emissions, heating systems..."></textarea>
+                                    </div>
+
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <div class="category-icon" style="background: linear-gradient(135deg, #06402B, #0a5d35);">🚗</div>
+                                            <div class="category-title">Mobility</div>
+                                        </div>
+                                        <textarea class="category-textarea" name="mobility" placeholder="Detail transportation, vehicle usage, travel patterns, logistics..."></textarea>
+                                    </div>
+
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <div class="category-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">♻️</div>
+                                            <div class="category-title">Procurement, Waste & Maintenance</div>
+                                        </div>
+                                        <textarea class="category-textarea" name="procurement_waste" placeholder="Describe procurement processes, waste management, maintenance activities..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="advancedSubmitSection" class="submit-section">
+                                <button type="submit" class="submit-button" id="advancedSubmitButton">
+                                    Start Advanced Processing
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="advancedStatusMessage" class="status-message"></div>
+
+                        <!-- Persistent HTML Actions Section -->
+                        <div id="advancedHtmlActionsSection" class="html-actions-section">
+                            <div class="html-actions-header">
+                                <div class="html-actions-title">HTML Report Ready</div>
+                                <div class="html-actions-subtitle">Choose how you want to view or save your results</div>
+                            </div>
+                            <div id="advancedHtmlActions" class="html-actions">
+                                <!-- Buttons will be added here -->
+                            </div>
+                        </div>
+
+                        <!-- API Response Display -->
+                        <div id="advancedResponseSection" class="response-section">
+                            <div class="response-header">
+                                <h3 class="response-title">Processing Results</h3>
+                                <div class="response-controls">
+                                    <button class="control-button" onclick="copyAdvancedResponse()">Copy</button>
+                                    <button class="control-button" onclick="clearAdvancedResponse()">Clear</button>
+                                </div>
+                            </div>
+                            <div class="response-container">
+                                <div class="response-tabs">
+                                    <div class="response-tab active" onclick="switchAdvancedTab(event, 'advanced-formatted')">Results</div>
+                                    <div class="response-tab" onclick="switchAdvancedTab(event, 'advanced-raw')">Raw Data</div>
+                                </div>
+                                <div class="response-content">
+                                    <div id="advanced-formatted" class="response-panel active">
+                                        <div id="advancedResponseFormatted" class="response-formatted">
+                                            No results yet. Start processing to see results here.
+                                        </div>
+                                    </div>
+                                    <div id="advanced-raw" class="response-panel">
+                                        <div id="advancedResponseRaw" class="response-raw">
+                                            No results yet. Start processing to see raw data here.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Agent Interface -->
+                <div id="custom-agent-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Custom Agent Wizard</h2>
+                            <p class="interface-description">Create and deploy custom AI agents for automated data extraction workflows</p>
+                        </div>
+                        
+                        <!-- Agent Configuration -->
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Agent Name</label>
+                                    <input type="text" id="agentName" class="form-input" placeholder="e.g., Packaging Waste Extractor">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Webhook Path</label>
+                                    <input type="text" id="agentPath" class="form-input" placeholder="custom-agents/packaging-waste">
+                                    <div class="form-hint">Auto-generated from agent name</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Target Database Table</label>
+                                    <input type="text" id="dbTable" class="form-input" placeholder="sustainability_records" value="sustainability_records">
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">n8n Base URL</label>
+                                    <input type="text" id="n8nBaseUrl" class="form-input" value="http://localhost:5678">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">n8n API Key</label>
+                                    <input type="text" id="n8nApiKey" class="form-input" placeholder="Your n8n API key" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMmUwN2QxNy04NDJkLTQyZWEtYjQxYS00NDA5NDcxOGJiNWMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzU3NTg0NTMzfQ.YSM83QVKL_9c7sdIMTdla_u5PscKf-2zuGttNL6IXsI">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Insert into Database?</label>
+                                    <select id="insertToggle" class="form-input form-select">
+                                        <option value="yes" selected>Yes</option>
+                                        <option value="no">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MIME Types -->
+                        <div class="form-group">
+                            <label class="form-label">Accepted MIME Types</label>
+                            <input type="text" id="mimeTypes" class="form-input" value="application/pdf,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+                            <div class="form-hint">Comma-separated list of MIME types the agent should accept</div>
+                        </div>
+
+                        <!-- Document Tool Prompt -->
+                        <div class="form-group">
+                            <label class="form-label">Document Tool Prompt</label>
+                            <textarea id="documentPrompt" class="form-input form-textarea" placeholder="Enter the instructions for the document tool here...">Extract sustainability data including carbon emissions, energy consumption, waste generation, and travel data from the provided document. Focus on numerical values, dates, locations, and categorical information needed for environmental impact calculations.</textarea>
+                            <div class="form-hint">Define what data the agent should extract from documents</div>
+                        </div>
+
+                        <!-- Credentials Section -->
+                        <div class="webhook-config">
+                            <h3>AI Service Credentials</h3>
+                            <div class="form-row">
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label">Google Gemini Credentials (ID | Name)</label>
+                                        <input type="text" id="geminiCreds" class="form-input" value="KIq58RKFRUPil9Kz | Google Gemini(PaLM) Api account">
+                                    </div>
+                                </div>
+                                <div class="form-col">
+                                    <div class="form-group">
+                                        <label class="form-label">Azure OpenAI Credentials (ID | Name)</label>
+                                        <input type="text" id="azureCreds" class="form-input" value="oY1NeqDGxOWYRSi1 | Azure Open AI account">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Collapsible Sections -->
+                        <details open>
+                            <summary style="cursor: pointer; font-weight: 600; padding: 0.75rem 0; color: #374151; border-bottom: 1px solid #e5e7eb; margin-bottom: 1rem;">Output JSON Schema</summary>
+                            <div class="form-group">
+                                <textarea id="jsonSchema" class="form-input" style="font-family: 'Monaco', 'Menlo', monospace; min-height: 200px;">{ 
+  "items": [
+    {
+      "category": null,
+      "date": null,
+      "service_type": null,
+      "fuel_type": null,
+      "material": null,
+      "waste_type": null,
+      "recharge_type": null,
+      "origin": null,
+      "destination": null,
+      "class_of_travel": null,
+      "no_of_passengers": null,
+      "trip_mode": null,
+      "vehicle_model": null,
+      "vehicle_make": null,
+      "site": null,
+      "account_type": null,
+      "consumption": null,
+      "unit": null,
+      "amount_spent": null,
+      "scope": null,
+      "file_name": null
+    }
+  ]
+}</textarea>
+                            </div>
+                        </details>
+
+                        <details>
+                            <summary style="cursor: pointer; font-weight: 600; padding: 0.75rem 0; color: #374151; border-bottom: 1px solid #e5e7eb; margin-bottom: 1rem;">System & User Defaults</summary>
+                            <div class="form-group">
+                                <label class="form-label">System Message</label>
+                                <textarea id="systemMessage" class="form-input form-textarea">You are a sustainability data extraction agent.
+Always return valid JSON only, no markdown, no commentary.
+Follow your agent-specific instructions strictly.
+Do not extract data outside your agent's assigned categories.
+Ignore all unrelated data even if similar fields exist elsewhere.
+If no relevant information is found, return: { "items": [] }</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">User Message Template</label>
+                                <textarea id="userMessage" class="form-input form-textarea">You are a carbon-data extraction agent. Your sole task is to extract fields that are potentially required to calculate a carbon footprint from any document.
+Do not normalize values. Return exactly as found.
+Be layout-robust (merged cells, multiple pages/sheets, rotated headers, multilingual).</textarea>
+                            </div>
+                        </details>
+
+                        <!-- Action Buttons -->
+                        <div class="form-row" style="margin-top: 2rem;">
+                            <button type="button" class="btn btn-primary" id="createAgentBtn" onclick="createCustomAgent()">
+                                <i class="fas fa-magic"></i>
+                                Create & Activate Workflow
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="previewJsonBtn" onclick="previewWorkflowJson()">
+                                <i class="fas fa-eye"></i>
+                                Preview Workflow JSON
+                            </button>
+                        </div>
+
+                        <!-- Results -->
+                        <div id="agentResults" style="margin-top: 2rem;"></div>
+                    </div>
+                </div>
+
+                <!-- Data Verification Interface -->
+                <div id="verification-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Data Verification</h2>
+                            <p class="interface-description">Verify and validate sustainability data for accuracy and compliance</p>
+                        </div>
+                        
+                        <!-- Controls -->
+                        <div class="controls-section">
+                            <div class="connection-status">
+                                <div class="status-label">Database Connection Status</div>
+                                <div class="status-text" id="connectionStatus">Ready to connect to database</div>
+                            </div>
+                            <div class="form-row" style="margin: 0; flex: 1; max-width: 600px;">
+                                <div class="form-col">
+                                    <input type="text" id="webhookUrl" class="form-input" placeholder="Enter n8n webhook URL" value="http://localhost:5678/webhook/data-verification">
+                                </div>
+                                <button type="button" class="btn btn-primary" id="loadDataBtn" onclick="loadVerificationData()">
+                                    <i class="fas fa-database"></i>
+                                    Load Database Records
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Loading -->
+                        <div id="loadingContainer" class="loading-container">
+                            <div>
+                                <div class="spinner"></div>
+                                <div class="loading-text">Loading database records...</div>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div id="dataTableContainer" class="table-container">
+                            <div class="table-wrapper">
+                                <table id="dataTable" class="data-table">
+                                    <thead id="tableHeader"></thead>
+                                    <tbody id="tableBody"></tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="pagination-controls">
+                                <div class="pagination-info">
+                                    <span id="recordsInfo">Showing 0 of 0 records</span>
+                                </div>
+                                <div class="pagination-buttons">
+                                    <button onclick="goToFirstPage()" id="firstPageBtn">
+                                        <i class="fas fa-angle-double-left"></i>
+                                    </button>
+                                    <button onclick="goToPreviousPage()" id="prevPageBtn">
+                                        <i class="fas fa-angle-left"></i>
+                                    </button>
+                                    <span id="pageIndicator" class="page-indicator">1 / 1</span>
+                                    <button onclick="goToNextPage()" id="nextPageBtn">
+                                        <i class="fas fa-angle-right"></i>
+                                    </button>
+                                    <button onclick="goToLastPage()" id="lastPageBtn">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </button>
+                                </div>
+                                <div class="page-size-controls">
+                                    <label for="pageSizeSelect">Rows per page:</label>
+                                    <select id="pageSizeSelect" class="form-input form-select" onchange="changePageSize(this.value)" style="width: auto; min-width: 80px;">
+                                        <option value="10">10</option>
+                                        <option value="25" selected>25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dataset Choice Interface -->
+                <div id="dataset-choice-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Emission Factor Dataset Upload</h2>
+                            <p class="interface-description">Upload an emission factor dataset to begin the analysis and calculation process.</p>
+                        </div>
+
+                        <!-- Step 1: Upload Dataset -->
+                        <div class="webhook-config">
+                            <h3>Dataset Upload Webhook</h3>
+                            <input type="text" class="webhook-input" id="datasetWebhookUrl" placeholder="Enter your dataset upload webhook URL here..." />
+                        </div>
+
+                        <form id="datasetUploadForm">
+                            <div class="file-drop-zone" id="datasetDropZone">
+                                <input type="file" id="datasetFileInput" class="file-input" accept=".csv,.xls,.xlsx">
+                                <div class="drop-icon">📊</div>
+                                <div class="drop-text">Drop your dataset file here or click to browse</div>
+                                <div class="drop-subtext">Supports CSV, XLS, and XLSX files</div>
+                            </div>
+
+                            <div id="datasetFilesPreview" class="files-preview">
+                                <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Selected Dataset</h3>
+                                <div id="datasetFilesGrid" class="files-grid"></div>
+                            </div>
+
+                            <div id="datasetSubmitSection" class="submit-section">
+                                <button type="submit" class="submit-button" id="datasetSubmitButton">Upload Dataset</button>
+                            </div>
+                        </form>
+
+                        <div id="datasetStatusMessage" class="status-message"></div>
+
+                        <div id="datasetResponseSection" class="response-section">
+                            <div class="response-header">
+                                <h3 class="response-title">Dataset Upload Response</h3>
+                                <div class="response-controls">
+                                    <button class="control-button" onclick="copyResponse('dataset')">Copy</button>
+                                    <button class="control-button" onclick="clearResponse('datasetResponseSection')">Clear</button>
+                                </div>
+                            </div>
+                            <div class="response-container">
+                                <div class="response-tabs">
+                                    <div class="response-tab active" data-type="dataset" onclick="switchTab(event, 'dataset-formatted')">Formatted</div>
+                                    <div class="response-tab" data-type="dataset" onclick="switchTab(event, 'dataset-raw')">Raw JSON</div>
+                                    <div class="response-tab" data-type="dataset" onclick="switchTab(event, 'dataset-meta')">Metadata</div>
+                                </div>
+                                <div class="response-content">
+                                    <div id="dataset-formatted" class="response-panel active">
+                                        <div id="datasetResponseFormatted" class="response-formatted">Waiting for dataset upload...</div>
+                                    </div>
+                                    <div id="dataset-raw" class="response-panel">
+                                        <pre id="datasetResponseRaw" class="response-raw">Waiting for dataset upload...</pre>
+                                    </div>
+                                    <div id="dataset-meta" class="response-panel">
+                                        <div id="datasetResponseMeta" class="response-meta">
+                                            <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value" id="datasetMetaStatus">-</span></div>
+                                            <div class="meta-item"><span class="meta-label">Time</span><span class="meta-value" id="datasetMetaTime">-</span></div>
+                                            <div class="meta-item"><span class="meta-label">Type</span><span class="meta-value" id="datasetMetaType">-</span></div>
+                                            <div class="meta-item"><span class="meta-label">Size</span><span class="meta-value" id="datasetMetaSize">-</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Calculate Emission Factor -->
+                        <div id="emissionCalculationSection" style="display: none; margin-top: 40px; border-top: 1px solid #e5e7eb; padding-top: 40px;">
+                            <div class="interface-header">
+                                <h3 class="categories-title">Emission Factor Calculation</h3>
+                                <p class="categories-description">Dataset successfully processed. You can now proceed with the calculation.</p>
+                            </div>
+                            <div class="submit-section" style="display: block;">
+                                <button type="button" class="submit-button" id="calculateEmissionButton">
+                                    Calculate Emission Factor
+                                </button>
+                            </div>
+
+                            <div id="calculationStatusMessage" class="status-message"></div>
+
+                            <div id="calculationResponseSection" class="response-section">
+                                <div class="response-header">
+                                    <h3 class="response-title">Calculation Response</h3>
+                                    <div class="response-controls">
+                                        <button class="control-button" onclick="copyResponse('calculation')">Copy</button>
+                                        <button class="control-button" onclick="clearResponse('calculationResponseSection')">Clear</button>
+                                    </div>
+                                </div>
+                                <div class="response-container">
+                                    <div class="response-tabs">
+                                        <div class="response-tab active" data-type="calculation" onclick="switchTab(event, 'calculation-formatted')">Formatted</div>
+                                        <div class="response-tab" data-type="calculation" onclick="switchTab(event, 'calculation-raw')">Raw JSON</div>
+                                        <div class="response-tab" data-type="calculation" onclick="switchTab(event, 'calculation-meta')">Metadata</div>
+                                    </div>
+                                    <div class="response-content">
+                                        <div id="calculation-formatted" class="response-panel active">
+                                            <div id="calculationResponseFormatted" class="response-formatted">Waiting for calculation to be triggered...</div>
+                                        </div>
+                                        <div id="calculation-raw" class="response-panel">
+                                            <pre id="calculationResponseRaw" class="response-raw">Waiting for calculation to be triggered...</pre>
+                                        </div>
+                                        <div id="calculation-meta" class="response-panel">
+                                            <div id="calculationResponseMeta" class="response-meta">
+                                                <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value" id="calculationMetaStatus">-</span></div>
+                                                <div class="meta-item"><span class="meta-label">Time</span><span class="meta-value" id="calculationMetaTime">-</span></div>
+                                                <div class="meta-item"><span class="meta-label">Type</span><span class="meta-value" id="calculationMetaType">-</span></div>
+                                                <div class="meta-item"><span class="meta-label">Size</span><span class="meta-value" id="calculationMetaSize">-</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emission Calculation Interface -->
+                <div id="emission-calculation-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Emission Analysis Prompts</h2>
+                            <p class="interface-description">Configure AI prompts for emission analysis and calculations</p>
+                        </div>
+
+                        <div class="webhook-config">
+                            <h3>Emission Analysis Webhook</h3>
+                            <input type="text" class="webhook-input" id="emissionWebhookUrl" 
+                                   value="http://localhost:5678/webhook/457366eb-f988-4d3c-a301-9d2f0df8f3a6" 
+                                   placeholder="Enter emission analysis webhook URL..." />
+                            <small style="color: #6b7280; font-size: 12px; margin-top: 8px; display: block;">
+                                Configure webhook endpoint for emission analysis and prompt processing
+                            </small>
+                        </div>
+
+                        <div style="margin-top: 30px;">
+                            <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Prompt Configuration</h3>
+                            
+                            <div class="category-card" style="margin-bottom: 20px;">
+                                <div class="category-header">
+                                    <div class="category-icon" style="background: linear-gradient(135deg, #06402B, #0a5d35);">🌡️</div>
+                                    <div class="category-title">Emission Calculation Prompts</div>
+                                </div>
+                                <textarea class="category-textarea" id="emissionPrompts" placeholder="Configure AI prompts for emission factor calculations, carbon footprint analysis, and GHG reporting..."></textarea>
+                            </div>
+
+                            <div class="submit-section" style="display: block; margin-top: 30px;">
+                                <button type="button" class="submit-button" onclick="submitEmissionPrompts()">
+                                    Update Emission Prompts
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="emissionStatusMessage" class="status-message"></div>
+
+                        <!-- API Response Display for Emission Prompts -->
+                        <div id="emissionResponseSection" class="response-section">
+                            <div class="response-header">
+                                <h3 class="response-title">Emission Prompts API Response</h3>
+                                <div class="response-controls">
+                                    <button class="control-button" onclick="copyResponse('emission')">Copy</button>
+                                    <button class="control-button" onclick="clearResponse('emissionResponseSection')">Clear</button>
+                                </div>
+                            </div>
+                            <div class="response-container">
+                                <div class="response-tabs">
+                                    <div class="response-tab active" data-type="emission" onclick="switchTab(event, 'emission-formatted')">Formatted</div>
+                                    <div class="response-tab" data-type="emission" onclick="switchTab(event, 'emission-raw')">Raw JSON</div>
+                                    <div class="response-tab" data-type="emission" onclick="switchTab(event, 'emission-meta')">Metadata</div>
+                                </div>
+                                <div class="response-content">
+                                    <div id="emission-formatted" class="response-panel active">
+                                        <div id="emissionResponseFormatted" class="response-formatted">
+                                            No response yet. Submit emission prompts to see the API response here.
+                                        </div>
+                                    </div>
+                                    <div id="emission-raw" class="response-panel">
+                                        <pre id="emissionResponseRaw" class="response-raw">
+                                            No response yet. Submit emission prompts to see the raw API response here.
+                                        </pre>
+                                    </div>
+                                    <div id="emission-meta" class="response-panel">
+                                        <div id="emissionResponseMeta" class="response-meta">
+                                            <div class="meta-item">
+                                                <span class="meta-label">Status</span>
+                                                <span class="meta-value" id="emissionMetaStatus">-</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="meta-label">Response Time</span>
+                                                <span class="meta-value" id="emissionMetaTime">-</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="meta-label">Content Type</span>
+                                                <span class="meta-value" id="emissionMetaType">-</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="meta-label">Size</span>
+                                                <span class="meta-value" id="emissionMetaSize">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sustainability Reporting Interface -->
+                <div id="reporting-interface" class="interface-section">
+				  <div class="interface-card">
+					<div class="interface-header">
+					  <h2 class="interface-title">Sustainability Reporting</h2>
+					  <p class="interface-description">Generate comprehensive sustainability reports and compliance documentation</p>
+					</div>
+
+					<div class="webhook-config">
+					  <h3>n8n Webhook URL</h3>
+					  <input id="n8nWebhookUrl" class="webhook-input" value="/report/generate" />
+					  <div class="form-hint">
+						Leave as <code>/report/generate</code> to use the new proxy.  
+						(Advanced: set to <code>/webhook/report</code> or a full n8n URL if you need direct access.)
+					  </div>
+					</div>
+
+					<div class="form-row" style="margin-top: 8px;">
+					  <button id="btnGenerateReport" class="btn btn-primary">
+						<i class="fas fa-play"></i> Generate Report
+					  </button>
+					  <button id="btnDownloadReport" class="btn btn-secondary" disabled>
+						<i class="fas fa-download"></i> Download
+					  </button>
+					</div>
+
+					<div id="reportStatus" class="status-message" style="display:none;"></div>
+
+					<div class="interface-card" style="padding:0; margin-top:16px;">
+					  <iframe id="reportIframe" style="width:100%; height:700px; border:0; display:none;"></iframe>
+					  <div id="reportEmptyState" style="padding:40px; text-align:center; color:#6b7280;">
+						<i class="fas fa-file-alt" style="font-size:40px; margin-bottom:12px;"></i>
+						<div>Your report will appear here.</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

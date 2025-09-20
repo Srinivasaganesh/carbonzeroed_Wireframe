@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Schedule</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 20px;
+            background-color: #f5f7fa;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            padding: 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        th {
+            background: #f8fafc;
+            color: #2d3748;
+            font-weight: 600;
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+        
+        tr:hover {
+            background-color: #f7fafc;
+        }
+        
+        .status-completed {
+            background-color: #10b981;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            text-align: center;
+            display: inline-block;
+            min-width: 60px;
+        }
+        
+        .status-pending {
+            background-color: #f59e0b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            text-align: center;
+            display: inline-block;
+            min-width: 60px;
+        }
+        
+        .jd-id {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 11px;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .skills {
+            font-size: 11px;
+            color: #4a5568;
+            line-height: 1.3;
+        }
+        
+        .interviewer-names {
+            font-size: 11px;
+            color: #2d3748;
+            line-height: 1.3;
+        }
+        
+        .type-technical {
+            color: #3182ce;
+            font-weight: 500;
+        }
+        
+        .type-initial {
+            color: #38a169;
+            font-weight: 500;
+        }
+        
+        .type-leadership {
+            color: #d69e2e;
+            font-weight: 500;
+        }
+        
+        .candidate-name {
+            font-weight: 500;
+            color: #2d3748;
+        }
+        
+        .date-time {
+            white-space: nowrap;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Interview Schedule</h1>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>JD ID</th>
+                        <th>Job Position</th>
+                        <th>Role</th>
+                        <th>Skills</th>
+                        <th>Candidate Name</th>
+                        <th>Interviewer Name</th>
+                        <th>Type</th>
+                        <th>Interview Date</th>
+                        <th>Interview Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="jd-id">JD20250902-1127</span></td>
+                        <td>Delivery Manager</td>
+                        <td>Managerial</td>
+                        <td class="skills">Project Management, AI Tools, Business Intelligence Concepts, Scrum Master</td>
+                        <td class="candidate-name">Arshad Ahmed Syed</td>
+                        <td class="interviewer-names">Alafia Yusuf Fidvi, Arjunan Krishnaswami</td>
+                        <td><span class="type-technical">Technical</span></td>
+                        <td class="date-time">18/09/2025</td>
+                        <td class="date-time">12:00 PM - 1:00 PM</td>
+                        <td><span class="status-completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jd-id">JD20250527-1124</span></td>
+                        <td>Senior Data Engineer - Azure</td>
+                        <td>Data Engineering</td>
+                        <td class="skills">ADF, Databricks</td>
+                        <td class="candidate-name">Rajasekhar G</td>
+                        <td class="interviewer-names">Seethalakshmi Subramanian</td>
+                        <td><span class="type-initial">Initial Discussion</span></td>
+                        <td class="date-time">18/09/2025</td>
+                        <td class="date-time">3:30 PM - 3:50 PM</td>
+                        <td><span class="status-completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jd-id">JD20250724-1126</span></td>
+                        <td>Tableau Administrator</td>
+                        <td>Tableau Administrator</td>
+                        <td class="skills">Tableau Admin</td>
+                        <td class="candidate-name">Rajkumar</td>
+                        <td class="interviewer-names">Swati Venkatesh</td>
+                        <td><span class="type-initial">Initial Discussion</span></td>
+                        <td class="date-time">18/09/2025</td>
+                        <td class="date-time">4:00 PM - 4:20 PM</td>
+                        <td><span class="status-completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jd-id">JD20250902-1127</span></td>
+                        <td>Delivery Manager</td>
+                        <td>Managerial</td>
+                        <td class="skills">Project Management, AI Tools, Business Intelligence Concepts, Scrum Master</td>
+                        <td class="candidate-name">Deepakh M S</td>
+                        <td class="interviewer-names">Arjunan Krishnaswami, Meena Palaniappan</td>
+                        <td><span class="type-technical">Technical</span></td>
+                        <td class="date-time">18/09/2025</td>
+                        <td class="date-time">3:00 PM - 4:00 PM</td>
+                        <td><span class="status-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jd-id">JD20250527-1124</span></td>
+                        <td>Senior Data Engineer - Azure</td>
+                        <td>Data Engineering</td>
+                        <td class="skills">ADF, Databricks</td>
+                        <td class="candidate-name">Meera V Sheik</td>
+                        <td class="interviewer-names">Swati Venkatesh</td>
+                        <td><span class="type-initial">Initial Discussion</span></td>
+                        <td class="date-time">19/09/2025</td>
+                        <td class="date-time">2:30 PM - 2:50 PM</td>
+                        <td><span class="status-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jd-id">JD20250916-1131</span></td>
+                        <td>DevOps Lead</td>
+                        <td>DevOps - Lead</td>
+                        <td class="skills">Azure DevOps, Kubernetes, Terraform</td>
+                        <td class="candidate-name">Subramanian Ramalingam</td>
+                        <td class="interviewer-names">Swati Venkatesh</td>
+                        <td><span class="type-initial">Initial Discussion</span></td>
+                        <td class="date-time">19/09/2025</td>
+                        <td class="date-time">2:00 PM - 2:20 PM</td>
+                        <td><span class="status-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jd-id">JD20250916-1131</span></td>
+                        <td>DevOps Lead</td>
+                        <td>DevOps - Lead</td>
+                        <td class="skills">Azure DevOps, Kubernetes, Terraform</td>
+                        <td class="candidate-name">Shanmuk Srinivas</td>
+                        <td class="interviewer-names">Thinesh Kumar Subramaniyan</td>
+                        <td><span class="type-initial">Initial Discussion</span></td>
+                        <td class="date-time">19/09/2025</td>
+                        <td class="date-time">3:00 PM - 3:20 PM</td>
+                        <td><span class="status-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jd-id">JD20250902-1127</span></td>
+                        <td>Delivery Manager</td>
+                        <td>Managerial</td>
+                        <td class="skills">Project Management, AI Tools, Business Intelligence Concepts, Scrum Master</td>
+                        <td class="candidate-name">Dr. ABDUR RAHMAN</td>
+                        <td class="interviewer-names">Arjunan Krishnaswami, Janakiraman Ramanathan</td>
+                        <td><span class="type-technical">Technical</span></td>
+                        <td class="date-time">19/09/2025</td>
+                        <td class="date-time">12:00 PM - 1:00 PM</td>
+                        <td><span class="status-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jd-id">JD20250902-1127</span></td>
+                        <td>Delivery Manager</td>
+                        <td>Managerial</td>
+                        <td class="skills">Project Management, AI Tools, Business Intelligence Concepts, Scrum Master</td>
+                        <td class="candidate-name">Sanjay Soni</td>
+                        <td class="interviewer-names">Arjunan Krishnaswami, Janakiraman Ramanathan</td>
+                        <td><span class="type-technical">Technical</span></td>
+                        <td class="date-time">19/09/2025</td>
+                        <td class="date-time">3:00 PM - 4:00 PM</td>
+                        <td><span class="status-pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="jd-id">JD20250506-1120</span></td>
+                        <td>Sr. Tableau Developer</td>
+                        <td>PL/SQL & Tableau Developer</td>
+                        <td class="skills">Tableau</td>
+                        <td class="candidate-name">Gayathri Kannan</td>
+                        <td class="interviewer-names">Madhavan Sundarajan Sourirajan, Balaji Vindalacheruvu Subramanian</td>
+                        <td><span class="type-leadership">Leadership</span></td>
+                        <td class="date-time">19/09/2025</td>
+                        <td class="date-time">10:30 AM - 11:00 AM</td>
+                        <td><span class="status-pending">Pending</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SustainIQ - Emission Calculation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #06402B 0%, #0a5d35 50%, #0f7a40 100%);
+            color: white;
+            padding: 0;
+            position: relative;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="50" r="0.3" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="90" r="0.4" fill="rgba(255,255,255,0.08)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .logo-section {
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #0f7a40, #06402B);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(6, 64, 43, 0.3);
+        }
+
+        .nav-section {
+            padding: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-header {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 20px 15px;
+            margin-top: 20px;
+        }
+
+        .nav-header:first-child {
+            margin-top: 0;
+        }
+
+        .nav-item {
+            margin: 4px 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #d1fae5;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        .nav-link:hover::before {
+            transform: scaleY(1);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 20px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .sub-nav {
+            margin-left: 20px;
+            margin-top: 8px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sub-nav-item {
+            margin: 2px 0;
+        }
+
+        .sub-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sub-nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sub-nav-link.active {
+            color: #d1fae5;
+            background: rgba(209, 250, 229, 0.1);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            background: linear-gradient(135deg, #06402B, #0f7a40);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f3f4f6;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .content-area {
+            flex: 1;
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            overflow-y: auto;
+            position: relative;
+            padding: 30px;
+        }
+
+        /* Card Styling */
+        .interface-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .interface-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .interface-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .interface-description {
+            font-size: 16px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* Webhook Configuration */
+        .webhook-config {
+            background: rgba(6, 64, 43, 0.05);
+            border: 1px solid rgba(6, 64, 43, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .webhook-config h3 {
+            color: #06402B;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .webhook-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+
+        .webhook-input:focus {
+            outline: none;
+            border-color: #06402B;
+            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
+        }
+
+        /* Categories Section */
+        .categories-section {
+            margin-top: 30px;
+        }
+
+        .categories-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .categories-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .categories-description {
+            font-size: 16px;
+            color: #6b7280;
+        }
+
+        .category-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #06402B, #0a5d35);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 16px;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .category-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .category-textarea:focus {
+            outline: none;
+            border-color: #06402B;
+            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
+        }
+
+        .category-textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Submit Section */
+        .submit-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            color: white;
+            border: none;
+            padding: 18px 48px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(6, 64, 43, 0.3);
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(6, 64, 43, 0.4);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Status Messages */
+        .status-message {
+            margin-top: 20px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .status-success {
+            background: rgba(6, 64, 43, 0.1);
+            border: 1px solid rgba(6, 64, 43, 0.3);
+            color: #06402B;
+        }
+
+        .status-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #991b1b;
+        }
+
+        .status-info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #1e40af;
+        }
+
+        /* API Response Display */
+        .response-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+
+        .response-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .response-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-button {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: #f9fafb;
+            border-color: #06402B;
+        }
+
+        .response-container {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .response-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .response-tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .response-tab:first-child {
+            border-radius: 16px 0 0 0;
+        }
+
+        .response-tab.active {
+            color: #06402B;
+            border-bottom-color: #06402B;
+            background: #ffffff;
+        }
+
+        .response-content {
+            padding: 25px;
+        }
+
+        .response-panel {
+            display: none;
+        }
+
+        .response-panel.active {
+            display: block;
+        }
+
+        .response-raw {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .response-formatted {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .response-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            color: #1f2937;
+            font-weight: 500;
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #06402B;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+            
+            .nav-text {
+                display: none;
+            }
+            
+            .sub-nav {
+                display: none;
+            }
+            
+            .content-area {
+                padding: 15px;
+            }
+            
+            .interface-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo-section">
+                <a href="Home.html" class="logo">
+                    <div class="logo-icon">🌱</div>
+                    <span>SustainIQ</span>
+                </a>
+            </div>
+
+            <nav class="nav-section">
+                <div class="nav-header">Data Intelligence</div>
+                
+                <!-- Data Extraction -->
+                <div class="nav-item">
+                    <a href="advanced-processing.html" class="nav-link">
+                        <i class="nav-icon fas fa-upload"></i>
+                        <span class="nav-text">Data Extraction</span>
+                    </a>
+                    <div class="sub-nav">
+                        <div class="sub-nav-item">
+                            <a href="advanced-processing.html" class="sub-nav-link">Advanced Processing</a>
+                        </div>
+                        <div class="sub-nav-item">
+                            <a href="custom-agent.html" class="sub-nav-link">Custom Agent</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-header">Data Management</div>
+                
+                <!-- Data Verification -->
+                <div class="nav-item">
+                    <a href="verification.html" class="nav-link">
+                        <i class="nav-icon fas fa-check-circle"></i>
+                        <span class="nav-text">Data Verification</span>
+                    </a>
+                </div>
+
+                <div class="nav-header">Analysis Modules</div>
+
+                <!-- Emission Analysis -->
+                <div class="nav-item">
+                    <a href="dataset-choice.html" class="nav-link active">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <span class="nav-text">Emission Analysis</span>
+                    </a>
+                    <div class="sub-nav">
+                        <div class="sub-nav-item">
+                            <a href="dataset-choice.html" class="sub-nav-link">Dataset Choice</a>
+                        </div>
+                        <div class="sub-nav-item">
+                            <a href="emission-calculation.html" class="sub-nav-link active">Emission Calculation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-header">Reporting</div>
+
+                <!-- Report Generation -->
+                <div class="nav-item">
+                    <a href="reporting.html" class="nav-link">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <span class="nav-text">Sustainability Reporting</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="header">
+                <h1 class="header-title">Sustainability Intelligence Platform</h1>
+                <div class="header-actions">
+                    <div class="status-badge">
+                        <div class="status-dot"></div>
+                        <span>System Online</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-area">
+                <div class="interface-card">
+                    <div class="interface-header">
+                        <h2 class="interface-title">Emission Analysis Prompts</h2>
+                        <p class="interface-description">Configure AI prompts for emission analysis and calculations</p>
+                    </div>
+
+                    <div class="webhook-config">
+                        <h3>Emission Analysis Webhook</h3>
+                        <input type="text" class="webhook-input" id="emissionWebhookUrl" 
+                               value="http://localhost:5678/webhook/457366eb-f988-4d3c-a301-9d2f0df8f3a6" 
+                               placeholder="Enter emission analysis webhook URL..." />
+                        <div class="form-hint">
+                            Configure webhook endpoint for emission analysis and prompt processing
+                        </div>
+                    </div>
+
+                    <div class="categories-section">
+                        <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Prompt Configuration</h3>
+                        
+                        <div class="category-card">
+                            <div class="category-header">
+                                <div class="category-icon" style="background: linear-gradient(135deg, #06402B, #0a5d35);">🌡️</div>
+                                <div class="category-title">Emission Calculation Prompts</div>
+                            </div>
+                            <textarea class="category-textarea" id="emissionPrompts" placeholder="Configure AI prompts for emission factor calculations, carbon footprint analysis, and GHG reporting..."></textarea>
+                        </div>
+
+                        <div class="submit-section">
+                            <button type="button" class="submit-button" onclick="submitEmissionPrompts()">
+                                Update Emission Prompts
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="emissionStatusMessage" class="status-message"></div>
+
+                    <!-- API Response Display for Emission Prompts -->
+                    <div id="emissionResponseSection" class="response-section">
+                        <div class="response-header">
+                            <h3 class="response-title">Emission Prompts API Response</h3>
+                            <div class="response-controls">
+                                <button class="control-button" onclick="copyResponse('emission')">Copy</button>
+                                <button class="control-button" onclick="clearResponse('emissionResponseSection')">Clear</button>
+                            </div>
+                        </div>
+                        <div class="response-container">
+                            <div class="response-tabs">
+                                <div class="response-tab active" data-type="emission" onclick="switchTab(event, 'emission-formatted')">Formatted</div>
+                                <div class="response-tab" data-type="emission" onclick="switchTab(event, 'emission-raw')">Raw JSON</div>
+                                <div class="response-tab" data-type="emission" onclick="switchTab(event, 'emission-meta')">Metadata</div>
+                            </div>
+                            <div class="response-content">
+                                <div id="emission-formatted" class="response-panel active">
+                                    <div id="emissionResponseFormatted" class="response-formatted">
+                                        No response yet. Submit emission prompts to see the API response here.
+                                    </div>
+                                </div>
+                                <div id="emission-raw" class="response-panel">
+                                    <pre id="emissionResponseRaw" class="response-raw">
+                                        No response yet. Submit emission prompts to see the raw API response here.
+                                    </pre>
+                                </div>
+                                <div id="emission-meta" class="response-panel">
+                                    <div id="emissionResponseMeta" class="response-meta">
+                                        <div class="meta-item">
+                                            <span class="meta-label">Status</span>
+                                            <span class="meta-value" id="emissionMetaStatus">-</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <span class="meta-label">Response Time</span>
+                                            <span class="meta-value" id="emissionMetaTime">-</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <span class="meta-label">Content Type</span>
+                                            <span class="meta-value" id="emissionMetaType">-</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <span class="meta-label">Size</span>
+                                            <span class="meta-value" id="emissionMetaSize">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state variable
+        let apiResponses = {
+            emission: null
+        };
+
+        // Utility Functions
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#06402B' : '#ef4444'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Emission Prompts Function
+        async function submitEmissionPrompts() {
+            const webhookUrl = document.getElementById('emissionWebhookUrl').value.trim();
+            const prompts = document.getElementById('emissionPrompts').value.trim();
+            if (!webhookUrl) return showStatus('Please provide a webhook URL.', 'error', 'emissionStatusMessage');
+            if (!prompts) return showStatus('Please enter emission prompts.', 'error', 'emissionStatusMessage');
+            
+            showStatus('Updating...', 'info', 'emissionStatusMessage');
+            const startTime = Date.now();
+            
+            try {
+                const response = await fetch(webhookUrl, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ prompts }), 
+                    headers: {'Content-Type': 'application/json'} 
+                });
+                const responseData = await response.json();
+                displayApiResponse(responseData, 'emission', startTime);
+                showStatus('Updated successfully!', 'success', 'emissionStatusMessage');
+            } catch(e) {
+                displayApiResponse({success: false, error: e.message}, 'emission', startTime);
+                showStatus('Update failed!', 'error', 'emissionStatusMessage');
+            }
+        }
+
+        // Generic Status Function
+        function showStatus(message, type, elementId) {
+            const statusEl = document.getElementById(elementId);
+            if (!statusEl) return;
+            statusEl.textContent = message;
+            statusEl.className = `status-message status-${type}`;
+            statusEl.style.display = 'block';
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 5000);
+        }
+
+        // Response Handling Functions
+        function switchTab(event, tabId) {
+            const container = event.target.closest('.response-container');
+            container.querySelectorAll('.response-tab').forEach(tab => tab.classList.remove('active'));
+            container.querySelectorAll('.response-panel').forEach(panel => panel.classList.remove('active'));
+            event.target.classList.add('active');
+            container.querySelector(`#${tabId}`).classList.add('active');
+        }
+
+        function copyResponse(responseType) {
+            const textToCopy = apiResponses[responseType] ? JSON.stringify(apiResponses[responseType], null, 2) : '';
+            if (textToCopy) {
+                navigator.clipboard.writeText(textToCopy).then(() => showToast('Response copied to clipboard!'));
+            }
+        }
+
+        function clearResponse(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.style.display = 'none';
+            
+            let type;
+            if (sectionId === 'emissionResponseSection') type = 'emission';
+
+            if (type) {
+                apiResponses[type] = null;
+                resetResponseDisplay(type);
+            }
+        }
+
+        function resetResponseDisplay(type) {
+            document.getElementById(`${type}ResponseFormatted`).innerHTML = 'No response yet.';
+            document.getElementById(`${type}ResponseRaw`).textContent = 'No response yet.';
+            document.getElementById(`${type}MetaStatus`).textContent = '-';
+            document.getElementById(`${type}MetaTime`).textContent = '-';
+            document.getElementById(`${type}MetaType`).textContent = '-';
+            document.getElementById(`${type}MetaSize`).textContent = '-';
+        }
+
+        function displayApiResponse(responseData, type, startTime) {
+            const endTime = Date.now();
+            apiResponses[type] = responseData;
+            
+            document.getElementById(`${type}ResponseSection`).style.display = 'block';
+            document.getElementById(`${type}ResponseFormatted`).innerHTML = formatResponse(responseData);
+            document.getElementById(`${type}ResponseRaw`).textContent = JSON.stringify(responseData, null, 2);
+            document.getElementById(`${type}MetaStatus`).textContent = (responseData.success === true || responseData.output === 'success') ? 'Success' : 'Error';
+            document.getElementById(`${type}MetaTime`).textContent = `${endTime - startTime}ms`;
+            document.getElementById(`${type}MetaType`).textContent = 'application/json';
+            document.getElementById(`${type}MetaSize`).textContent = `${JSON.stringify(responseData).length} bytes`;
+        }
+
+        function formatResponse(data) {
+            if (!data) return 'No response data';
+            let html = '<div style="font-family: inherit;">';
+            const isSuccess = data.success === true || data.output === 'success';
+            html += `<div style="color: ${isSuccess ? '#059669' : '#dc2626'}; font-weight: 600; margin-bottom: 15px;">${isSuccess ? '✅ Success' : '❌ Error'}</div>`;
+            if (data.message) html += `<div style="margin-bottom: 15px;"><strong>Message:</strong> ${data.message}</div>`;
+            
+            html += '<pre style="white-space: pre-wrap; word-break: break-all; background: #f8fafc; padding: 15px; border-radius: 8px;">' + JSON.stringify(data, null, 2) + '</pre>';
+
+            if (data.error) html += `<div style="color: #dc2626; margin-bottom: 15px; margin-top: 15px;"><strong>Error:</strong> ${data.error}</div>`;
+            html += '</div>';
+            return html;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showToast('Emission Calculation loaded successfully');
+        });
+    </script>
+</body>
+</html>

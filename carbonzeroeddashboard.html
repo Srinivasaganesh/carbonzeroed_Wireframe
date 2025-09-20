@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbonzeroed - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #EBEDFC 0%, #ffffff 50%, #EBEDFC 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 10%;
+            animation-delay: -1s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -3s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+            margin: 0 auto;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 25px 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .dashboard-title {
+            color: black;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 8px 25px rgba(112, 207, 122, 0.3);
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #EBEDFC;
+            color: black;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            border-color: #70CF7A;
+            background: rgba(112, 207, 122, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border-color: #70CF7A;
+        }
+
+        /* Dashboard Split Layout */
+        .dashboard-content {
+            display: flex;
+            gap: 40px;
+            height: calc(100vh - 200px);
+        }
+
+        .apps-sidebar {
+            flex: 0 0 35%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            overflow-y: auto;
+            position: relative;
+            scrollbar-width: thin;
+        }
+
+        .apps-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .sidebar-title {
+            color: black;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .apps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .app-card-compact {
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card-compact:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #70CF7A;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .app-card-compact.selected {
+            border-color: #70CF7A;
+            background: rgba(112, 207, 122, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(112, 207, 122, 0.3);
+        }
+
+        .app-card-compact::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            transition: width 0.3s ease;
+        }
+
+        .app-card-compact.selected::before {
+            width: 4px;
+        }
+
+        .app-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .app-logo-small {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: #EBEDFC;
+            border: 2px solid rgba(112, 207, 122, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .app-card-compact:hover .app-logo-small {
+            transform: scale(1.1);
+            border-color: #70CF7A;
+        }
+
+        .app-info {
+            flex: 1;
+        }
+
+        .app-title-small {
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .app-category-small {
+            background: linear-gradient(135deg, #EBEDFC, #ffffff);
+            color: #666;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* App Preview Panel */
+        .app-preview {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(112, 207, 122, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+        }
+
+        .preview-content {
+            display: none;
+            padding: 40px;
+            height: 100%;
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+
+        .preview-content.active {
+            display: block;
+        }
+
+        .preview-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            text-align: center;
+            height: 100%;
+        }
+
+        .preview-placeholder-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .preview-placeholder-text {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .preview-placeholder-subtext {
+            font-size: 16px;
+            opacity: 0.7;
+        }
+
+        .app-video-container {
+            margin-bottom: 30px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .app-video {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            border-radius: 16px;
+        }
+
+        .app-details {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .app-logo-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            background: #EBEDFC;
+            border: 3px solid rgba(112, 207, 122, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-meta {
+            flex: 1;
+        }
+
+        .app-title-large {
+            color: black;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, black, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .app-category-large {
+            background: linear-gradient(135deg, #EBEDFC, #ffffff);
+            color: black;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+            border: 2px solid rgba(235, 237, 252, 0.8);
+        }
+
+        .app-description-large {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .app-features {
+            margin-bottom: 30px;
+        }
+
+        .features-title {
+            color: black;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .feature-icon {
+            color: #70CF7A;
+            font-weight: 700;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .launch-btn {
+            flex: 1;
+            padding: 18px 25px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(112, 207, 122, 0.3);
+        }
+
+        .launch-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(112, 207, 122, 0.4);
+        }
+
+        .info-btn {
+            padding: 18px 25px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #EBEDFC;
+            color: black;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .info-btn:hover {
+            border-color: #70CF7A;
+            background: rgba(112, 207, 122, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Launch Animation Styles */
+        .launch-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .launch-animation.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .animation-content {
+            text-align: center;
+            color: white;
+        }
+
+        .logo-animation {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            color: white;
+            font-size: 60px;
+            position: relative;
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(112, 207, 122, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 30px rgba(112, 207, 122, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(112, 207, 122, 0);
+            }
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin: 30px auto;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 10px;
+            transition: width 3s ease;
+        }
+
+        .animation-text {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .animation-subtext {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(135deg, #70CF7A, #43d270);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particle-float 5s linear infinite;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-content {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .apps-sidebar {
+                flex: none;
+                margin-bottom: 30px;
+            }
+
+            .apps-list {
+                flex-direction: row;
+                overflow-x: auto;
+                gap: 15px;
+                padding-bottom: 10px;
+            }
+
+            .app-card-compact {
+                flex: 0 0 250px;
+            }
+
+            .app-preview {
+                min-height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .dashboard-content {
+                gap: 20px;
+            }
+
+            .apps-sidebar {
+                padding: 20px;
+            }
+
+            .apps-list {
+                flex-direction: column;
+            }
+
+            .app-card-compact {
+                flex: none;
+            }
+
+            .preview-content {
+                padding: 20px;
+            }
+
+            .app-actions {
+                flex-direction: column;
+            }
+
+            .animation-text {
+                font-size: 24px;
+            }
+
+            .logo-animation {
+                width: 100px;
+                height: 100px;
+                font-size: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <!-- Launch Animation Overlay -->
+    <div class="launch-animation" id="launchAnimation">
+        <div class="animation-content">
+            <div class="logo-animation">🚀</div>
+            <h2 class="animation-text" id="animationAppName">Launching Application</h2>
+            <p class="animation-subtext">Preparing your experience...</p>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+        </div>
+        <div class="particles" id="particlesContainer"></div>
+    </div>
+
+    <div class="container">
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">AI Library</h1>
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <span id="usernameDisplay"></span>
+                    <a href="carbonzeroedadmin.html" class="nav-button" id="adminBtn" style="display: none;">Admin Panel</a>
+                    <button class="nav-button" onclick="logout()">Sign Out</button>
+                </div>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Apps Sidebar -->
+                <div class="apps-sidebar">
+                    <h2 class="sidebar-title">Applications</h2>
+                    <div class="apps-list" id="appsList">
+                        <!-- Apps will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- App Preview Panel -->
+                <div class="app-preview" id="appPreview">
+                    <div class="preview-placeholder">
+                        <div class="preview-placeholder-icon">📱</div>
+                        <div class="preview-placeholder-text">Select an App</div>
+                        <div class="preview-placeholder-subtext">Choose an application from the sidebar to view details and preview</div>
+                    </div>
+
+                    <!-- Dynamic preview content will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Apps with individual access keys and video content
+        let apps = {
+            'carbon-impact': {
+                title: 'Carbon Impact Assessment',
+                description: 'Analyze and assess carbon footprint and environmental impact metrics',
+                logo: '🌱',
+                category: 'Operations',
+                url: 'https://carbon-assessment.carbonzeroed.com',
+                accessKey: 'cia_ak_7f8e9d2c',
+                videoUrl: 'https://www.youtube.com/embed/g18N2Xli3fA',
+                features: [
+                    'Real-time carbon footprint tracking',
+                    'Environmental impact analysis',
+                    'Sustainability reporting dashboard',
+                    'Carbon offset recommendations',
+                    'Integration with existing systems'
+                ],
+                detailedDescription: 'Our Carbon Impact Assessment tool provides comprehensive analysis of your organization\'s environmental footprint. Track emissions, analyze impact patterns, and generate detailed sustainability reports to support your green initiatives.'
+            },
+            'digital-twin': {
+                title: 'Digital Twin',
+                description: 'Create and manage digital representations of physical systems for optimization',
+                logo: '🔗',
+                category: 'IT',
+                url: 'https://digital-twin.carbonzeroed.com',
+                accessKey: 'dt_ak_4a5b6c7d',
+                videoUrl: 'https://www.youtube.com/embed/g18N2Xli3fA',
+                features: [
+                    'Real-time system monitoring',
+                    '3D visualization and modeling',
+                    'Predictive maintenance alerts',
+                    'Performance optimization',
+                    'IoT device integration'
+                ],
+                detailedDescription: 'Build comprehensive digital twins of your physical assets and systems. Monitor performance in real-time, predict maintenance needs, and optimize operations through advanced simulation capabilities.'
+            }
+        };
+
+        let currentUser = null;
+        let selectedApp = null;
+
+        // Check if user is logged in
+        function checkAuth() {
+            const userData = localStorage.getItem('currentUser');
+            if (!userData) {
+                window.location.href = 'carbonzeroedlogin.html';
+                return;
+            }
+            currentUser = JSON.parse(userData);
+            initializeDashboard();
+        }
+
+        function initializeDashboard() {
+            // Update user info
+            document.getElementById('usernameDisplay').textContent = currentUser.username;
+            document.getElementById('userAvatar').textContent = currentUser.username.charAt(0).toUpperCase();
+
+            // Show admin button if user is admin
+            const adminBtn = document.getElementById('adminBtn');
+            if (currentUser.isAdmin) {
+                adminBtn.style.display = 'block';
+            } else {
+                adminBtn.style.display = 'none';
+            }
+
+            // Load user's accessible apps
+            loadUserApps();
+            
+            // Clear selected app initially
+            selectedApp = null;
+            
+            // Use setTimeout to ensure DOM is ready before showing first app preview
+            setTimeout(() => {
+                if (currentUser.sites.length > 0) {
+                    const firstAppId = currentUser.sites[0];
+                    selectedApp = firstAppId;
+                    showAppPreview(firstAppId);
+                }
+            }, 100);
+        }
+
+        function loadUserApps() {
+            const appsList = document.getElementById('appsList');
+            appsList.innerHTML = '';
+
+            currentUser.sites.forEach((appId, index) => {
+                const app = apps[appId];
+                if (app) {
+                    const appCard = createCompactAppCard(appId, app);
+                    appsList.appendChild(appCard);
+                    
+                    // Set first app as selected (visual state only)
+                    if (index === 0) {
+                        appCard.classList.add('selected');
+                    }
+                }
+            });
+        }
+
+        function createCompactAppCard(appId, app) {
+            const card = document.createElement('div');
+            card.className = 'app-card-compact';
+            card.onclick = () => selectApp(appId);
+
+            card.innerHTML = `
+                <div class="app-card-header">
+                    <div class="app-logo-small">${app.logo}</div>
+                    <div class="app-info">
+                        <div class="app-title-small">${app.title}</div>
+                        <div class="app-category-small">${app.category}</div>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function selectApp(appId) {
+            // Remove previous selection
+            document.querySelectorAll('.app-card-compact').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            // Add selection to clicked card
+            event.currentTarget.classList.add('selected');
+
+            selectedApp = appId;
+            showAppPreview(appId);
+        }
+
+        function showAppPreview(appId) {
+            const previewContainer = document.getElementById('appPreview');
+            
+            if (!appId) {
+                previewContainer.innerHTML = `
+                    <div class="preview-placeholder">
+                        <div class="preview-placeholder-icon">📱</div>
+                        <div class="preview-placeholder-text">Select an App</div>
+                        <div class="preview-placeholder-subtext">Choose an application from the sidebar to view details and preview</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const app = apps[appId];
+            if (!app) return;
+
+            const featuresHtml = app.features.map(feature => 
+                `<div class="feature-item">
+                    <span class="feature-icon">✓</span>
+                    <span>${feature}</span>
+                </div>`
+            ).join('');
+
+            previewContainer.innerHTML = `
+                <div class="preview-content active">
+                    <div class="app-details">
+                        <div class="app-logo-large">${app.logo}</div>
+                        <div class="app-meta">
+                            <h2 class="app-title-large">${app.title}</h2>
+                            <div class="app-category-large">${app.category}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="app-description-large">${app.detailedDescription}</div>
+                    
+                    <div class="app-features">
+                        <h3 class="features-title">Key Features</h3>
+                        ${featuresHtml}
+                    </div>
+                    
+                    <div class="app-video-container">
+                        <iframe class="app-video" 
+                                src="${app.videoUrl}" 
+                                title="${app.title} Preview"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+                    <div class="app-actions">
+                        <button class="launch-btn" onclick="launchApplication('${appId}')">
+                            Launch Application →
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function launchApplication(appId) {
+            const app = apps[appId];
+            if (!app) return;
+            
+            // Show the app name in the animation
+            document.getElementById('animationAppName').textContent = `Launching ${app.title}`;
+            
+            // Show the launch animation
+            const animation = document.getElementById('launchAnimation');
+            animation.classList.add('active');
+            
+            // Create floating particles
+            createParticles();
+            
+            // Animate the progress bar
+            const progressBar = document.getElementById('loadingProgress');
+            progressBar.style.width = '0%';
+            
+            // Start the loading animation
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 2;
+                progressBar.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    // After animation completes, open the app in new tab
+                    setTimeout(() => {
+                        animation.classList.remove('active');
+                        
+                        // Construct URL with parameters
+                        const launchUrl = `NewLaunchPage.html?userKey=${encodeURIComponent(currentUser.userKey)}&accessKey=${encodeURIComponent(app.accessKey)}&appId=${encodeURIComponent(appId)}`;
+                        
+                        // Open in new tab
+                        window.open(launchUrl, '_blank', 'noopener,noreferrer');
+                        
+                        console.log(`🚀 Launched ${app.title} in new tab`);
+                        console.log(`User Key: ${currentUser.userKey}`);
+                        console.log(`Access Key: ${app.accessKey}`);
+                        console.log(`Launch URL: ${launchUrl}`);
+                    }, 500);
+                }
+            }, 60);
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particlesContainer');
+            container.innerHTML = '';
+            
+            // Create 30 particles
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 5 and 15px
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'carbonzeroedlogin.html';
+        }
+
+        // Initialize dashboard on page load
+        window.onload = checkAuth;
+    </script>
+</body>
+
+</html>
