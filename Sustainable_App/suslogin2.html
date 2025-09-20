@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SustainIQ - Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%);
+            position: relative;
+        }
+
+        /* Animated background elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: linear-gradient(45deg, #10b981, #059669);
+            border-radius: 50%;
+            animation: floatUpDown 6s ease-in-out infinite;
+            opacity: 0.1;
+        }
+
+        .floating-element:nth-child(1) { 
+            width: 60px; height: 60px; left: 5%; top: 10%; 
+            animation-delay: 0s; animation-duration: 8s;
+        }
+        .floating-element:nth-child(2) { 
+            width: 80px; height: 80px; left: 85%; top: 20%; 
+            animation-delay: 1s; animation-duration: 10s;
+        }
+        .floating-element:nth-child(3) { 
+            width: 40px; height: 40px; left: 15%; top: 70%; 
+            animation-delay: 2s; animation-duration: 7s;
+        }
+        .floating-element:nth-child(4) { 
+            width: 70px; height: 70px; left: 75%; top: 80%; 
+            animation-delay: 3s; animation-duration: 9s;
+        }
+
+        @keyframes floatUpDown {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg); 
+                opacity: 0.1;
+            }
+            50% { 
+                transform: translateY(-30px) rotate(180deg); 
+                opacity: 0.2;
+            }
+        }
+
+        /* Geometric pattern overlay */
+        .pattern-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(16,185,129,0.03)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            z-index: 1;
+        }
+
+        /* Main container */
+        .login-container {
+            display: flex;
+            height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Left side - Branding and GIF */
+        .branding-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            position: relative;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .main-logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin: 0 auto 30px;
+            box-shadow: 
+                0 20px 40px rgba(16, 185, 129, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            animation: logoFloatWhite 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: logoShine 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloatWhite {
+            0%, 100% { 
+                transform: translateY(0px) scale(1); 
+                box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
+            }
+            50% { 
+                transform: translateY(-15px) scale(1.05); 
+                box-shadow: 0 30px 60px rgba(16, 185, 129, 0.25);
+            }
+        }
+
+        @keyframes logoShine {
+            0%, 100% { 
+                transform: translateX(-100%) translateY(-100%) rotate(45deg); 
+                opacity: 0;
+            }
+            50% { 
+                transform: translateX(0%) translateY(0%) rotate(45deg); 
+                opacity: 1;
+            }
+        }
+
+        .brand-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #10b981, #059669, #047857);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { 
+                filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.3));
+            }
+            100% { 
+                filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.6));
+            }
+        }
+
+        .brand-subtitle {
+            font-size: 18px;
+            color: #64748b;
+            font-weight: 400;
+            margin-bottom: 50px;
+            opacity: 0.8;
+            animation: subtitleFade 3s ease-in-out infinite;
+        }
+
+        @keyframes subtitleFade {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* Sustainability GIF container */
+        .sustainability-visual {
+            width: 350px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            margin-bottom: 40px;
+            box-shadow: 
+                0 25px 50px rgba(16, 185, 129, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+            animation: visualPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes visualPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 25px 50px rgba(16, 185, 129, 0.1);
+            }
+            50% { 
+                transform: scale(1.02);
+                box-shadow: 0 30px 60px rgba(16, 185, 129, 0.2);
+            }
+        }
+
+        .sustainability-gif {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 18px;
+            filter: brightness(1.1) contrast(1.05);
+        }
+
+        .features-list {
+            text-align: left;
+            color: #475569;
+            z-index: 1;
+            position: relative;
+            max-width: 350px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 16px;
+            opacity: 0;
+            animation: slideInLeftWhite 0.8s ease-out forwards;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1);
+        }
+
+        .feature-item:nth-child(1) { animation-delay: 0.2s; }
+        .feature-item:nth-child(2) { animation-delay: 0.4s; }
+        .feature-item:nth-child(3) { animation-delay: 0.6s; }
+        .feature-item:nth-child(4) { animation-delay: 0.8s; }
+
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 16px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes slideInLeftWhite {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Right side - Login Form */
+        .login-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+
+        .login-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(16, 185, 129, 0.02) 100%);
+            pointer-events: none;
+        }
+
+        .login-form-container {
+            width: 100%;
+            max-width: 420px;
+            z-index: 1;
+            position: relative;
+            animation: formSlideIn 1s ease-out;
+        }
+
+        @keyframes formSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleSlideDown 0.8s ease-out;
+        }
+
+        @keyframes titleSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-subtitle {
+            font-size: 16px;
+            color: #64748b;
+            font-weight: 400;
+            animation: subtitleSlideUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes subtitleSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group {
+            position: relative;
+            animation: inputSlideIn 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.3s; }
+        .form-group:nth-child(2) { animation-delay: 0.4s; }
+
+        @keyframes inputSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 18px 24px;
+            padding-left: 55px;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            font-size: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.9);
+            outline: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-input:focus {
+            border-color: #10b981;
+            box-shadow: 
+                0 0 0 4px rgba(16, 185, 129, 0.1),
+                0 10px 25px rgba(16, 185, 129, 0.1);
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 18px;
+            transition: all 0.4s ease;
+            margin-top: 18px;
+        }
+
+        .form-input:focus + .input-icon {
+            color: #10b981;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            margin-top: 18px;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .password-toggle:hover {
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            animation: optionsSlideIn 0.6s ease-out 0.5s both;
+        }
+
+        @keyframes optionsSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #64748b;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .remember-me:hover {
+            color: #10b981;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .checkbox:checked {
+            background: #10b981;
+            border-color: #10b981;
+            transform: scale(1.1);
+        }
+
+        .checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .forgot-password {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .forgot-password:hover {
+            color: #059669;
+            background: rgba(16, 185, 129, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 
+                0 10px 25px rgba(16, 185, 129, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+            animation: buttonSlideIn 0.6s ease-out 0.6s both;
+        }
+
+        @keyframes buttonSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 20px 40px rgba(16, 185, 129, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        .login-button:active {
+            transform: translateY(-1px);
+        }
+
+        .social-login {
+            margin-top: 35px;
+            text-align: center;
+            animation: socialSlideIn 0.6s ease-out 0.7s both;
+        }
+
+        @keyframes socialSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .social-divider {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .social-divider::before,
+        .social-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+        }
+
+        .social-divider span {
+            padding: 0 20px;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-button {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .social-button:hover {
+            border-color: #10b981;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .social-button.google { color: #ea4335; }
+        .social-button.microsoft { color: #00a1f1; }
+        .social-button.apple { color: #000000; }
+
+        .signup-link {
+            margin-top: 35px;
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+            animation: signupSlideIn 0.6s ease-out 0.8s both;
+        }
+
+        @keyframes signupSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .signup-link a {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .signup-link a:hover {
+            color: #059669;
+            background: rgba(16, 185, 129, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Loading animation */
+        .loading {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 24px;
+            margin: -12px 0 0 -12px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: loadingSpin 1s linear infinite;
+        }
+
+        @keyframes loadingSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 18px 24px;
+            background: #10b981;
+            color: white;
+            border-radius: 12px;
+            box-shadow: 
+                0 10px 25px rgba(16, 185, 129, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            font-weight: 500;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: #ef4444;
+            box-shadow: 
+                0 10px 25px rgba(239, 68, 68, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .login-container {
+                flex-direction: column;
+            }
+            
+            .branding-section {
+                padding: 40px;
+                min-height: 45vh;
+            }
+            
+            .login-section {
+                padding: 40px;
+                min-height: 55vh;
+            }
+            
+            .brand-title {
+                font-size: 40px;
+            }
+            
+            .main-logo {
+                width: 80px;
+                height: 80px;
+                font-size: 40px;
+            }
+            
+            .sustainability-visual {
+                width: 280px;
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .branding-section,
+            .login-section {
+                padding: 25px;
+            }
+            
+            .login-form-container {
+                max-width: 100%;
+            }
+            
+            .social-buttons {
+                flex-direction: column;
+            }
+            
+            .sustainability-visual {
+                width: 250px;
+                height: 180px;
+            }
+            
+            .brand-title {
+                font-size: 32px;
+            }
+            
+            .login-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="pattern-overlay"></div>
+
+    <div class="login-container">
+        <!-- Left side - Branding -->
+        <div class="branding-section">
+            <div class="logo-section">
+                <div class="main-logo">
+                    🌱
+                </div>
+                <h1 class="brand-title">SustainIQ</h1>
+                <p class="brand-subtitle">Intelligent Sustainability Platform</p>
+            </div>
+
+            <div class="sustainability-visual">
+                <img src="https://www.agrieuro.info/wp-content/uploads/2022/06/Sostenibilitabianca.gif" 
+                     alt="Sustainability Animation" 
+                     class="sustainability-gif"
+                     loading="lazy">
+            </div>
+
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <span>Advanced Data Analytics</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🤖</div>
+                    <span>AI-Powered Insights</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <span>Real-time ESG Monitoring</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🌍</div>
+                    <span>Global Compliance Standards</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right side - Login Form -->
+        <div class="login-section">
+            <div class="login-form-container">
+                <div class="login-header">
+                    <h2 class="login-title">Welcome Back</h2>
+                    <p class="login-subtitle">Sign in to your SustainIQ account</p>
+                </div>
+
+                <form class="login-form" id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            class="form-input" 
+                            placeholder="Enter your email address"
+                            required
+                        >
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            required
+                        >
+                        <i class="fas fa-lock input-icon"></i>
+                        <i class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" class="checkbox" id="remember">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="login-button" id="loginBtn">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="social-login">
+                    <div class="social-divider">
+                        <span>Or continue with</span>
+                    </div>
+                    <div class="social-buttons">
+                        <div class="social-button google" onclick="socialLogin('google')">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div class="social-button microsoft" onclick="socialLogin('microsoft')">
+                            <i class="fab fa-microsoft"></i>
+                        </div>
+                        <div class="social-button apple" onclick="socialLogin('apple')">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="signup-link">
+                    Don't have an account? <a href="#">Sign up here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password toggle functionality
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.querySelector('.password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            
+            // Basic validation
+            if (!email || !password) {
+                showToast('Please fill in all fields', 'error');
+                return;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showToast('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Show loading state
+            loginBtn.classList.add('loading');
+            loginBtn.textContent = '';
+            
+            // Simulate API call
+            setTimeout(() => {
+                loginBtn.classList.remove('loading');
+                loginBtn.textContent = 'Sign In';
+                
+                // Simulate successful login
+                if (email && password.length >= 6) {
+                    showToast('Login successful! Redirecting...');
+                    
+                    // Add success animation to form
+                    document.querySelector('.login-form-container').style.transform = 'scale(0.98)';
+                    document.querySelector('.login-form-container').style.opacity = '0.8';
+                    
+                    setTimeout(() => {
+                        // Simulate redirect to dashboard
+                        showToast('Welcome to SustainIQ Dashboard!');
+                        // window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    showToast('Invalid credentials. Please try again.', 'error');
+                    
+                    // Add shake animation to form
+                    const form = document.querySelector('.login-form-container');
+                    form.style.animation = 'shake 0.5s ease-in-out';
+                    setTimeout(() => {
+                        form.style.animation = '';
+                    }, 500);
+                }
+            }, 2000);
+        });
+
+        // Social login functionality
+        function socialLogin(provider) {
+            const providerName = provider.charAt(0).toUpperCase() + provider.slice(1);
+            showToast(`${providerName} login coming soon!`, 'error');
+            
+            // Add pulse animation to clicked button
+            const button = event.target.closest('.social-button');
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = '';
+            }, 150);
+        }
+
+        // Add focus animations
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+
+            // Real-time validation
+            input.addEventListener('input', function() {
+                if (this.type === 'email') {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (this.value && !emailRegex.test(this.value)) {
+                        this.style.borderColor = '#ef4444';
+                    } else if (this.value) {
+                        this.style.borderColor = '#10b981';
+                    } else {
+                        this.style.borderColor = '#e5e7eb';
+                    }
+                }
+                
+                if (this.type === 'password') {
+                    if (this.value.length > 0 && this.value.length < 6) {
+                        this.style.borderColor = '#f59e0b';
+                    } else if (this.value.length >= 6) {
+                        this.style.borderColor = '#10b981';
+                    } else {
+                        this.style.borderColor = '#e5e7eb';
+                    }
+                }
+            });
+        });
+
+        // Checkbox animation
+        document.getElementById('remember').addEventListener('change', function() {
+            if (this.checked) {
+                this.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            }
+        });
+
+        // Add CSS for shake animation
+        const shakeStyle = document.createElement('style');
+        shakeStyle.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                20%, 40%, 60%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(shakeStyle);
+
+        // Initialize page with entrance animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Stagger entrance animations
+            setTimeout(() => {
+                document.querySelector('.branding-section').style.opacity = '1';
+                document.querySelector('.branding-section').style.transform = 'translateX(0)';
+            }, 200);
+            
+            setTimeout(() => {
+                document.querySelector('.login-section').style.opacity = '1';
+                document.querySelector('.login-section').style.transform = 'translateX(0)';
+            }, 400);
+
+            // Add parallax effect to floating elements
+            document.addEventListener('mousemove', function(e) {
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                document.querySelectorAll('.floating-element').forEach((element, index) => {
+                    const speed = (index + 1) * 0.02;
+                    const x = (mouseX - 0.5) * speed * 100;
+                    const y = (mouseY - 0.5) * speed * 100;
+                    element.style.transform = `translate(${x}px, ${y}px)`;
+                });
+            });
+
+            // Add scroll reveal effect for mobile
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements for mobile animation
+            if (window.innerWidth <= 768) {
+                document.querySelectorAll('.feature-item, .form-group').forEach(el => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
+                    observer.observe(el);
+                });
+            }
+        });
+
+        // Add typing indicator for inputs
+        let typingTimer;
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('keydown', function() {
+                clearTimeout(typingTimer);
+                this.classList.add('typing');
+            });
+
+            input.addEventListener('keyup', function() {
+                clearTimeout(typingTimer);
+                const self = this;
+                typingTimer = setTimeout(() => {
+                    self.classList.remove('typing');
+                }, 500);
+            });
+        });
+
+        // Add CSS for typing indicator
+        const typingStyle = document.createElement('style');
+        typingStyle.textContent = `
+            .form-input.typing {
+                border-color: #10b981;
+                box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+            }
+        `;
+        document.head.appendChild(typingStyle);
+    </script>
+</body>
+</html>
