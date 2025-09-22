@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SustainIQ - Emission Calculation</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Emission Calculation</title>
     <style>
         * {
             margin: 0;
@@ -15,13 +14,13 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .dashboard-container {
             display: flex;
-            height: 100vh;
+            min-height: 100vh;
             background: #ffffff;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
         }
@@ -34,7 +33,6 @@
             padding: 0;
             position: relative;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
         }
 
         .sidebar::before {
@@ -62,8 +60,6 @@
             font-size: 22px;
             font-weight: 700;
             color: #ffffff;
-            text-decoration: none;
-            cursor: pointer;
         }
 
         .logo-icon {
@@ -95,10 +91,6 @@
             margin-top: 20px;
         }
 
-        .nav-header:first-child {
-            margin-top: 0;
-        }
-
         .nav-item {
             margin: 4px 12px;
             border-radius: 12px;
@@ -115,6 +107,8 @@
             transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .nav-link::before {
@@ -125,70 +119,12 @@
             bottom: 0;
             width: 4px;
             background: #d1fae5;
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            transform: translateX(4px);
-        }
-
-        .nav-link:hover::before {
-            transform: scaleY(1);
-        }
-
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-link.active::before {
             transform: scaleY(1);
         }
 
         .nav-text {
             font-size: 16px;
             font-weight: 500;
-        }
-
-        .nav-icon {
-            width: 20px;
-            margin-right: 12px;
-            text-align: center;
-        }
-
-        .sub-nav {
-            margin-left: 20px;
-            margin-top: 8px;
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .sub-nav-item {
-            margin: 2px 0;
-        }
-
-        .sub-nav-link {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .sub-nav-link:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .sub-nav-link.active {
-            color: #d1fae5;
-            background: rgba(209, 250, 229, 0.1);
         }
 
         /* Main Content Area */
@@ -228,30 +164,29 @@
             align-items: center;
         }
 
-        .status-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: #f3f4f6;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #22c55e;
-        }
-
         .content-area {
             flex: 1;
             background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
             overflow-y: auto;
             position: relative;
+        }
+
+        /* Interface Section */
+        .interface-section {
             padding: 30px;
+            min-height: 100%;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
         /* Card Styling */
@@ -283,370 +218,652 @@
             line-height: 1.5;
         }
 
-        /* Webhook Configuration */
-        .webhook-config {
-            background: rgba(6, 64, 43, 0.05);
-            border: 1px solid rgba(6, 64, 43, 0.2);
-            border-radius: 16px;
-            padding: 25px;
+        /* Emission Calculation Workflow Styles */
+        .calc-progress-section {
+            margin-bottom: 40px;
+        }
+
+        .calc-progress-steps {
+            display: flex;
+            justify-content: space-between;
             margin-bottom: 30px;
-        }
-
-        .webhook-config h3 {
-            color: #06402B;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .webhook-input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e5e7eb;
+            padding: 20px;
+            background: #f8fafc;
             border-radius: 12px;
-            font-size: 14px;
-            font-family: 'Monaco', 'Menlo', monospace;
+        }
+
+        .calc-progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .calc-progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .calc-progress-step.completed::after {
+            background: #06402B;
+        }
+
+        .calc-step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
             transition: all 0.3s ease;
-            background: #ffffff;
+            font-weight: 600;
         }
 
-        .webhook-input:focus {
-            outline: none;
-            border-color: #06402B;
-            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
+        .calc-step-circle.active {
+            background: #06402B;
+            color: white;
+            animation: pulse 2s infinite;
         }
 
-        /* Categories Section */
-        .categories-section {
-            margin-top: 30px;
+        .calc-step-circle.completed {
+            background: #06402B;
+            color: white;
         }
 
-        .categories-header {
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .calc-step-label {
+            font-size: 12px;
+            color: #6b7280;
             text-align: center;
+            font-weight: 500;
+        }
+
+        .calc-step-circle.active + .calc-step-label,
+        .calc-step-circle.completed + .calc-step-label {
+            color: #06402B;
+            font-weight: 600;
+        }
+
+        .calculation-step {
+            margin-bottom: 40px;
+        }
+
+        .step-header {
             margin-bottom: 30px;
         }
 
-        .categories-title {
+        .step-title {
             font-size: 24px;
             font-weight: 700;
             color: #1f2937;
             margin-bottom: 8px;
         }
 
-        .categories-description {
+        .step-description {
             font-size: 16px;
             color: #6b7280;
+            line-height: 1.5;
         }
 
-        .category-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid #e5e7eb;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .category-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #06402B, #0a5d35);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .category-card:hover {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transform: translateY(-4px);
-        }
-
-        .category-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .category-header {
+        .selected-source-info {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            margin-bottom: 16px;
+            gap: 15px;
         }
 
-        .category-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+        .source-label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .source-name {
+            font-weight: 700;
+            color: #06402B;
+        }
+
+        .change-source-btn {
+            background: #ffffff;
+            border: 1px solid #06402B;
+            color: #06402B;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .change-source-btn:hover {
+            background: #06402B;
+            color: white;
+        }
+
+        /* Source Grid */
+        .source-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .source-card {
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .source-card:hover {
+            border-color: #06402B;
+            box-shadow: 0 8px 25px rgba(6, 64, 43, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .source-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #06402B, #0a5d35);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            margin-right: 16px;
-            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            color: white;
+            margin: 0 auto 15px;
         }
 
-        .category-title {
+        .source-title {
             font-size: 18px;
             font-weight: 600;
             color: #1f2937;
+            margin-bottom: 8px;
         }
 
-        .category-textarea {
-            width: 100%;
-            min-height: 120px;
-            padding: 16px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
+        .source-subtitle {
             font-size: 14px;
-            resize: vertical;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            line-height: 1.5;
-        }
-
-        .category-textarea:focus {
-            outline: none;
-            border-color: #06402B;
-            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
-        }
-
-        .category-textarea::placeholder {
-            color: #9ca3af;
-        }
-
-        /* Submit Section */
-        .submit-section {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        .submit-button {
-            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
-            color: white;
-            border: none;
-            padding: 18px 48px;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 8px 25px rgba(6, 64, 43, 0.3);
-        }
-
-        .submit-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(6, 64, 43, 0.4);
-        }
-
-        .submit-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Status Messages */
-        .status-message {
-            margin-top: 20px;
-            padding: 16px 20px;
-            border-radius: 12px;
-            display: none;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { 
-                opacity: 0; 
-                transform: translateY(10px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
-        }
-
-        .status-success {
-            background: rgba(6, 64, 43, 0.1);
-            border: 1px solid rgba(6, 64, 43, 0.3);
-            color: #06402B;
-        }
-
-        .status-error {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #991b1b;
-        }
-
-        .status-info {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            color: #1e40af;
-        }
-
-        /* API Response Display */
-        .response-section {
-            margin-top: 30px;
-            display: none;
-        }
-
-        .response-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 0 5px;
-        }
-
-        .response-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #1f2937;
-        }
-
-        .response-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .control-button {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .control-button:hover {
-            background: #f9fafb;
-            border-color: #06402B;
-        }
-
-        .response-container {
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            max-height: 400px;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .response-tabs {
-            display: flex;
-            border-bottom: 1px solid #e5e7eb;
-            background: #f9fafb;
-            border-radius: 16px 16px 0 0;
-        }
-
-        .response-tab {
-            padding: 15px 20px;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-            font-weight: 500;
             color: #6b7280;
         }
 
-        .response-tab:first-child {
-            border-radius: 16px 0 0 0;
-        }
-
-        .response-tab.active {
-            color: #06402B;
-            border-bottom-color: #06402B;
-            background: #ffffff;
-        }
-
-        .response-content {
-            padding: 25px;
-        }
-
-        .response-panel {
-            display: none;
-        }
-
-        .response-panel.active {
-            display: block;
-        }
-
-        .response-raw {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 20px;
-            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-break: break-all;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .response-formatted {
+        /* Data Table */
+        .data-table-container {
             background: #ffffff;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
-            padding: 20px;
-            max-height: 300px;
-            overflow-y: auto;
+            overflow: hidden;
+            margin: 20px 0;
         }
 
-        .response-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            padding: 20px;
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
             background: #f8fafc;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
         }
 
-        .meta-item {
+        .data-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #1f2937;
+        }
+
+        .data-table tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Form Elements */
+        .factor-selection-form {
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
             display: flex;
             flex-direction: column;
         }
 
-        .meta-label {
-            font-size: 12px;
+        .form-label {
+            font-size: 14px;
             font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
+            color: #374151;
+            margin-bottom: 8px;
         }
 
-        .meta-value {
+        .form-select {
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
             font-size: 14px;
+            background: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #06402B;
+            box-shadow: 0 0 0 3px rgba(6, 64, 43, 0.1);
+        }
+
+        .form-select:disabled {
+            background: #f3f4f6;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* Available Factors */
+        .available-factors-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
             color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .available-factors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+        }
+
+        .available-factor-card {
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .available-factor-card:hover {
+            border-color: #06402B;
+            box-shadow: 0 8px 25px rgba(6, 64, 43, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .factor-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06402B;
+            margin-bottom: 8px;
+        }
+
+        .factor-unit {
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 12px;
             font-weight: 500;
         }
 
-        .form-hint {
-            font-size: 0.75rem;
+        .factor-details {
+            font-size: 13px;
             color: #6b7280;
-            margin-top: 0.25rem;
+            line-height: 1.4;
+        }
+
+        .factor-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .add-to-cart-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #06402B;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #0a5d35;
+            transform: scale(1.1);
+        }
+
+        /* Cart Section */
+        .cart-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .cart-summary {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .clear-cart-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-cart-btn:hover {
+            background: #dc2626;
+        }
+
+        .cart-items {
+            min-height: 100px;
+        }
+
+        .empty-cart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .empty-cart-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .empty-cart-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .empty-cart-subtext {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .cart-item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-details {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .remove-from-cart-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .remove-from-cart-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        /* Step Actions */
+        .step-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .back-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #4b5563;
+        }
+
+        .proceed-btn, .calculate-final-btn {
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .proceed-btn:hover, .calculate-final-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(6, 64, 43, 0.3);
+        }
+
+        .proceed-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Summary Sections */
+        .calculation-summary {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .summary-section {
+            margin-bottom: 25px;
+        }
+
+        .summary-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .summary-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 15px;
+        }
+
+        .summary-content {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        /* Results */
+        .emission-results {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid #06402B;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .results-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #06402B;
+        }
+
+        .new-calculation-btn {
+            background: #ffffff;
+            color: #06402B;
+            border: 2px solid #06402B;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .new-calculation-btn:hover {
+            background: #06402B;
+            color: white;
+        }
+
+        .results-content {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        /* Loading and Error States */
+        .loading-state {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .loading-text {
+            margin-top: 15px;
+            font-size: 16px;
         }
 
         .loading-spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #06402B;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #06402B;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-right: 10px;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .error-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .error-icon {
+            font-size: 24px;
+        }
+
+        .error-text {
+            color: #991b1b;
+            font-weight: 500;
         }
 
         /* Responsive Design */
@@ -655,8 +872,12 @@
                 width: 240px;
             }
             
-            .content-area {
+            .interface-section {
                 padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -669,16 +890,34 @@
                 display: none;
             }
             
-            .sub-nav {
-                display: none;
-            }
-            
-            .content-area {
+            .interface-section {
                 padding: 15px;
             }
             
             .interface-card {
                 padding: 30px 20px;
+            }
+
+            .calc-progress-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .calc-progress-step::after {
+                display: none;
+            }
+
+            .source-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .available-factors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-actions {
+                flex-direction: column;
+                gap: 15px;
             }
         }
     </style>
@@ -688,66 +927,19 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo-section">
-                <a href="Home.html" class="logo">
+                <div class="logo">
                     <div class="logo-icon">🌱</div>
-                    <span>SustainIQ</span>
-                </a>
+                    <span>EmissionIQ</span>
+                </div>
             </div>
 
             <nav class="nav-section">
-                <div class="nav-header">Data Intelligence</div>
+                <div class="nav-header">EMISSION MODULES</div>
                 
-                <!-- Data Extraction -->
+                <!-- Emission Calculation -->
                 <div class="nav-item">
-                    <a href="advanced-processing.html" class="nav-link">
-                        <i class="nav-icon fas fa-upload"></i>
-                        <span class="nav-text">Data Extraction</span>
-                    </a>
-                    <div class="sub-nav">
-                        <div class="sub-nav-item">
-                            <a href="advanced-processing.html" class="sub-nav-link">Advanced Processing</a>
-                        </div>
-                        <div class="sub-nav-item">
-                            <a href="custom-agent.html" class="sub-nav-link">Custom Agent</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="nav-header">Data Management</div>
-                
-                <!-- Data Verification -->
-                <div class="nav-item">
-                    <a href="verification.html" class="nav-link">
-                        <i class="nav-icon fas fa-check-circle"></i>
-                        <span class="nav-text">Data Verification</span>
-                    </a>
-                </div>
-
-                <div class="nav-header">Analysis Modules</div>
-
-                <!-- Emission Analysis -->
-                <div class="nav-item">
-                    <a href="dataset-choice.html" class="nav-link active">
-                        <i class="nav-icon fas fa-chart-line"></i>
-                        <span class="nav-text">Emission Analysis</span>
-                    </a>
-                    <div class="sub-nav">
-                        <div class="sub-nav-item">
-                            <a href="dataset-choice.html" class="sub-nav-link">Dataset Choice</a>
-                        </div>
-                        <div class="sub-nav-item">
-                            <a href="emission-calculation.html" class="sub-nav-link active">Emission Calculation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="nav-header">Reporting</div>
-
-                <!-- Report Generation -->
-                <div class="nav-item">
-                    <a href="reporting.html" class="nav-link">
-                        <i class="nav-icon fas fa-file-alt"></i>
-                        <span class="nav-text">Sustainability Reporting</span>
+                    <a href="#" class="nav-link">
+                        <span class="nav-text">Emission Calculation</span>
                     </a>
                 </div>
             </nav>
@@ -756,98 +948,180 @@
         <!-- Main Content -->
         <div class="main-content">
             <header class="header">
-                <h1 class="header-title">Sustainability Intelligence Platform</h1>
+                <h1 class="header-title">Emission Calculation</h1>
                 <div class="header-actions">
-                    <div class="status-badge">
-                        <div class="status-dot"></div>
-                        <span>System Online</span>
-                    </div>
+                    <div style="font-size: 14px; color: #6b7280;">Last updated: Just now</div>
                 </div>
             </header>
 
             <div class="content-area">
-                <div class="interface-card">
-                    <div class="interface-header">
-                        <h2 class="interface-title">Emission Analysis Prompts</h2>
-                        <p class="interface-description">Configure AI prompts for emission analysis and calculations</p>
-                    </div>
-
-                    <div class="webhook-config">
-                        <h3>Emission Analysis Webhook</h3>
-                        <input type="text" class="webhook-input" id="emissionWebhookUrl" 
-                               value="http://localhost:5678/webhook/457366eb-f988-4d3c-a301-9d2f0df8f3a6" 
-                               placeholder="Enter emission analysis webhook URL..." />
-                        <div class="form-hint">
-                            Configure webhook endpoint for emission analysis and prompt processing
-                        </div>
-                    </div>
-
-                    <div class="categories-section">
-                        <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Prompt Configuration</h3>
-                        
-                        <div class="category-card">
-                            <div class="category-header">
-                                <div class="category-icon" style="background: linear-gradient(135deg, #06402B, #0a5d35);">🌡️</div>
-                                <div class="category-title">Emission Calculation Prompts</div>
-                            </div>
-                            <textarea class="category-textarea" id="emissionPrompts" placeholder="Configure AI prompts for emission factor calculations, carbon footprint analysis, and GHG reporting..."></textarea>
+                <!-- Emission Calculation Interface -->
+                <div id="emission-calculation-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Emission Calculation</h2>
+                            <p class="interface-description">Select data source, view sustainability records, and build emission calculation</p>
                         </div>
 
-                        <div class="submit-section">
-                            <button type="button" class="submit-button" onclick="submitEmissionPrompts()">
-                                Update Emission Prompts
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="emissionStatusMessage" class="status-message"></div>
-
-                    <!-- API Response Display for Emission Prompts -->
-                    <div id="emissionResponseSection" class="response-section">
-                        <div class="response-header">
-                            <h3 class="response-title">Emission Prompts API Response</h3>
-                            <div class="response-controls">
-                                <button class="control-button" onclick="copyResponse('emission')">Copy</button>
-                                <button class="control-button" onclick="clearResponse('emissionResponseSection')">Clear</button>
+                        <!-- Progress Steps for Emission Calculation -->
+                        <div class="calc-progress-section" id="calcProgressSection">
+                            <div class="calc-progress-steps">
+                                <div class="calc-progress-step" id="calcStep1">
+                                    <div class="calc-step-circle">1</div>
+                                    <div class="calc-step-label">Select Source</div>
+                                </div>
+                                <div class="calc-progress-step" id="calcStep2">
+                                    <div class="calc-step-circle">2</div>
+                                    <div class="calc-step-label">View Data</div>
+                                </div>
+                                <div class="calc-progress-step" id="calcStep3">
+                                    <div class="calc-step-circle">3</div>
+                                    <div class="calc-step-label">Build Cart</div>
+                                </div>
+                                <div class="calc-progress-step" id="calcStep4">
+                                    <div class="calc-step-circle">4</div>
+                                    <div class="calc-step-label">Calculate</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="response-container">
-                            <div class="response-tabs">
-                                <div class="response-tab active" data-type="emission" onclick="switchTab(event, 'emission-formatted')">Formatted</div>
-                                <div class="response-tab" data-type="emission" onclick="switchTab(event, 'emission-raw')">Raw JSON</div>
-                                <div class="response-tab" data-type="emission" onclick="switchTab(event, 'emission-meta')">Metadata</div>
+
+                        <!-- Step 1: Source Selection -->
+                        <div id="sourceSelectionStep" class="calculation-step">
+                            <div class="step-header">
+                                <h3 class="step-title">Step 1: Select Data Source</h3>
+                                <p class="step-description">Choose a sustainability data source to analyze</p>
                             </div>
-                            <div class="response-content">
-                                <div id="emission-formatted" class="response-panel active">
-                                    <div id="emissionResponseFormatted" class="response-formatted">
-                                        No response yet. Submit emission prompts to see the API response here.
+                            
+                            <div id="sourceGrid" class="source-grid">
+                                <!-- Sources will be populated here -->
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Data View -->
+                        <div id="dataViewStep" class="calculation-step" style="display: none;">
+                            <div class="step-header">
+                                <h3 class="step-title">Step 2: Sustainability Data Overview</h3>
+                                <p class="step-description">Review the sustainability records for the selected source</p>
+                                <div class="selected-source-info">
+                                    <span class="source-label">Selected Source:</span>
+                                    <span id="selectedSourceName" class="source-name"></span>
+                                    <button id="changeSourceBtn" class="change-source-btn">Change Source</button>
+                                </div>
+                            </div>
+                            
+                            <div id="sustainabilityRecordsTable" class="data-table-container">
+                                <!-- Sustainability records table will be populated here -->
+                            </div>
+                            
+                            <div class="step-actions">
+                                <button id="proceedToFactorsBtn" class="proceed-btn">Proceed to Select Emission Factors</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Emission Factor Selection & Cart -->
+                        <div id="factorSelectionStep" class="calculation-step" style="display: none;">
+                            <div class="step-header">
+                                <h3 class="step-title">Step 3: Select Emission Factors</h3>
+                                <p class="step-description">Choose emission factors and add them to your calculation cart</p>
+                            </div>
+
+                            <!-- Factor Selection Form -->
+                            <div class="factor-selection-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Emission Scope</label>
+                                        <select id="factorScopeSelect" class="form-select">
+                                            <option value="">Choose a scope...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Category</label>
+                                        <select id="factorCategorySelect" class="form-select" disabled>
+                                            <option value="">Choose a category...</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div id="emission-raw" class="response-panel">
-                                    <pre id="emissionResponseRaw" class="response-raw">
-                                        No response yet. Submit emission prompts to see the raw API response here.
-                                    </pre>
+                            </div>
+
+                            <!-- Available Emission Factors -->
+                            <div id="availableFactorsSection" class="available-factors-section" style="display: none;">
+                                <h4 class="section-title">Available Emission Factors</h4>
+                                <div id="availableFactorsGrid" class="available-factors-grid">
+                                    <!-- Available emission factors will be populated here -->
                                 </div>
-                                <div id="emission-meta" class="response-panel">
-                                    <div id="emissionResponseMeta" class="response-meta">
-                                        <div class="meta-item">
-                                            <span class="meta-label">Status</span>
-                                            <span class="meta-value" id="emissionMetaStatus">-</span>
-                                        </div>
-                                        <div class="meta-item">
-                                            <span class="meta-label">Response Time</span>
-                                            <span class="meta-value" id="emissionMetaTime">-</span>
-                                        </div>
-                                        <div class="meta-item">
-                                            <span class="meta-label">Content Type</span>
-                                            <span class="meta-value" id="emissionMetaType">-</span>
-                                        </div>
-                                        <div class="meta-item">
-                                            <span class="meta-label">Size</span>
-                                            <span class="meta-value" id="emissionMetaSize">-</span>
-                                        </div>
+                            </div>
+
+                            <!-- Cart Section -->
+                            <div id="cartSection" class="cart-section">
+                                <div class="cart-header">
+                                    <h4 class="cart-title">Emission Factors Cart</h4>
+                                    <div class="cart-summary">
+                                        <span id="cartCount">0</span> items selected
+                                        <button id="clearCartBtn" class="clear-cart-btn" style="display: none;">Clear All</button>
                                     </div>
                                 </div>
+                                <div id="cartItems" class="cart-items">
+                                    <div class="empty-cart">
+                                        <div class="empty-cart-icon">🛒</div>
+                                        <div class="empty-cart-text">No emission factors selected yet</div>
+                                        <div class="empty-cart-subtext">Select factors from above to add them to your cart</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button id="backToDataBtn" class="back-btn">Back to Data View</button>
+                                <button id="proceedToCalculateBtn" class="proceed-btn" disabled>Proceed to Calculate</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Final Calculation -->
+                        <div id="finalCalculationStep" class="calculation-step" style="display: none;">
+                            <div class="step-header">
+                                <h3 class="step-title">Step 4: Emission Calculation Summary</h3>
+                                <p class="step-description">Review your selection and calculate emissions</p>
+                            </div>
+
+                            <div class="calculation-summary">
+                                <div class="summary-section">
+                                    <h4 class="summary-title">Data Source</h4>
+                                    <div id="summarySource" class="summary-content"></div>
+                                </div>
+                                
+                                <div class="summary-section">
+                                    <h4 class="summary-title">Selected Emission Factors</h4>
+                                    <div id="summaryFactors" class="summary-content"></div>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button id="backToFactorsBtn" class="back-btn">Back to Factor Selection</button>
+                                <button id="calculateEmissionsBtn" class="calculate-final-btn">Calculate Emissions</button>
+                            </div>
+                        </div>
+
+                        <!-- Final Results -->
+                        <div id="emissionResults" class="emission-results" style="display: none;">
+                            <div class="results-header">
+                                <h3 class="results-title">Emission Calculation Results</h3>
+                                <button id="startNewCalculationBtn" class="new-calculation-btn">Start New Calculation</button>
+                            </div>
+                            <div id="resultsContent" class="results-content">
+                                <!-- Results will be displayed here -->
+                            </div>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div id="calcLoadingState" class="loading-state" style="display: none;">
+                            <div class="loading-spinner"></div>
+                            <div id="calcLoadingText" class="loading-text">Loading...</div>
+                        </div>
+
+                        <!-- Error Message -->
+                        <div id="calcErrorMessage" class="error-message" style="display: none;">
+                            <div class="error-content">
+                                <div class="error-icon">⚠️</div>
+                                <div id="calcErrorText" class="error-text"></div>
                             </div>
                         </div>
                     </div>
@@ -857,137 +1131,754 @@
     </div>
 
     <script>
-        // Global state variable
-        let apiResponses = {
-            emission: null
+        // API Configuration
+        const EMISSION_API_BASE = 'http://137.117.121.135:5000/api';
+        const ECALC_API_URL = 'http://localhost:5678/webhook/ecalc';
+
+        // Global variables
+        let emissionCalculationData = {
+            selectedSource: null,
+            sustainabilityRecords: [],
+            sustainabilityPortfolio: [],
+            calculationResult: null
         };
 
-        // Utility Functions
-        function showToast(message, type = 'success') {
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEmissionCalculation();
+            console.log('Emission Calculation Interface initialized successfully');
+        });
+
+        // EMISSION CALCULATION WORKFLOW
+
+        function initializeEmissionCalculation() {
+            console.log('Initializing emission calculation...'); // Debug log
+            resetEmissionCalculation();
+            loadSustainabilitySources();
+            setupEmissionCalculationEventListeners();
+        }
+
+        function resetEmissionCalculation() {
+            emissionCalculationData = {
+                selectedSource: null,
+                sustainabilityRecords: [],
+                sustainabilityPortfolio: [],
+                calculationResult: null
+            };
+
+            updateCalcProgressStep(1, 'active');
+            updateCalcProgressStep(2, '');
+            updateCalcProgressStep(3, '');
+            updateCalcProgressStep(4, '');
+
+            showCalcStep('sourceSelectionStep');
+            hideCalcStep('factorSelectionStep');
+            hideCalcStep('finalCalculationStep');
+            hideCalcStep('emissionResults');
+            hideCalcStep('calcErrorMessage');
+
+            updateSustainabilityPortfolioDisplay();
+        }
+
+        function setupEmissionCalculationEventListeners() {
+            console.log('Setting up emission calculation event listeners...'); // Debug log
+            
+            const proceedToFactorsBtn = document.getElementById('proceedToFactorsBtn');
+            const backToDataBtn = document.getElementById('backToDataBtn');
+            const proceedToCalculateBtn = document.getElementById('proceedToCalculateBtn');
+            const backToFactorsBtn = document.getElementById('backToFactorsBtn');
+            const calculateEmissionsBtn = document.getElementById('calculateEmissionsBtn');
+            const startNewCalculationBtn = document.getElementById('startNewCalculationBtn');
+            const clearPortfolioBtn = document.getElementById('clearPortfolioBtn');
+            const factorScopeSelect = document.getElementById('factorScopeSelect');
+            const factorCategorySelect = document.getElementById('factorCategorySelect');
+
+            if (proceedToFactorsBtn) {
+                proceedToFactorsBtn.addEventListener('click', () => showFactorSelectionStep());
+            }
+
+            if (backToDataBtn) {
+                backToDataBtn.addEventListener('click', () => showDataViewStep());
+            }
+
+            if (proceedToCalculateBtn) {
+                proceedToCalculateBtn.addEventListener('click', () => showFinalCalculationStep());
+            }
+
+            if (backToFactorsBtn) {
+                backToFactorsBtn.addEventListener('click', () => showFactorSelectionStep());
+            }
+
+            if (calculateEmissionsBtn) {
+                calculateEmissionsBtn.addEventListener('click', () => performFinalCalculation());
+            }
+
+            if (startNewCalculationBtn) {
+                startNewCalculationBtn.addEventListener('click', () => resetEmissionCalculation());
+            }
+
+            if (clearPortfolioBtn) {
+                clearPortfolioBtn.addEventListener('click', () => clearSustainabilityPortfolio());
+            }
+
+            if (factorScopeSelect) {
+                factorScopeSelect.addEventListener('change', handleFactorScopeChange);
+            }
+
+            if (factorCategorySelect) {
+                factorCategorySelect.addEventListener('change', handleFactorCategoryChange);
+            }
+        }
+
+        function updateCalcProgressStep(stepNumber, status) {
+            const step = document.getElementById(`calcStep${stepNumber}`);
+            if (!step) return;
+            
+            const circle = step.querySelector('.calc-step-circle');
+            
+            circle.classList.remove('active', 'completed');
+            
+            if (status === 'active') {
+                circle.classList.add('active');
+            } else if (status === 'completed') {
+                circle.classList.add('completed');
+                circle.innerHTML = '✓';
+            } else {
+                circle.innerHTML = stepNumber;
+            }
+            
+            if (status === 'active' || status === 'completed') {
+                for (let i = 1; i < stepNumber; i++) {
+                    const prevStep = document.getElementById(`calcStep${i}`);
+                    if (prevStep) {
+                        const prevCircle = prevStep.querySelector('.calc-step-circle');
+                        prevCircle.classList.remove('active');
+                        prevCircle.classList.add('completed');
+                        prevCircle.innerHTML = '✓';
+                        prevStep.classList.add('completed');
+                    }
+                }
+            }
+        }
+
+        function showCalcStep(stepId) {
+            const element = document.getElementById(stepId);
+            if (element) {
+                element.style.display = 'block';
+            }
+        }
+
+        function hideCalcStep(stepId) {
+            const element = document.getElementById(stepId);
+            if (element) {
+                element.style.display = 'none';
+            }
+        }
+
+        async function loadSustainabilitySources() {
+            showCalcLoading('Loading sustainability data sources...');
+            
+            try {
+                const response = await fetch(`${EMISSION_API_BASE}/sustainability/sources`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displaySustainabilitySourcesDropdown(data.data);
+                    hideCalcLoading();
+                } else {
+                    throw new Error(data.error || 'Failed to load sources');
+                }
+            } catch (error) {
+                showCalcError(`Failed to load sources: ${error.message}`);
+                hideCalcLoading();
+            }
+        }
+
+        function displaySustainabilitySourcesDropdown(sources) {
+            const sourceGrid = document.getElementById('sourceGrid');
+            if (!sourceGrid) return;
+            
+            // Reset any existing grid layout and force single column
+            sourceGrid.style.display = 'block';
+            sourceGrid.style.gridTemplateColumns = 'none';
+            
+            // Create dropdown and data display container - PROPER VERTICAL LAYOUT
+            sourceGrid.innerHTML = `
+                <div style="width: 100%; display: block; margin-bottom: 30px;">
+                    <label style="display: block; font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 10px;">
+                        Select Data Source:
+                    </label>
+                    <select id="sourceDropdown" style="width: 100%; max-width: 500px; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 16px; background: #ffffff; transition: all 0.3s ease; display: block;">
+                        <option value="">Choose a sustainability data source...</option>
+                        ${sources.map(source => `<option value="${source}">${source}</option>`).join('')}
+                    </select>
+                </div>
+                <div id="sustainabilityDataContainer" style="display: none; width: 100%; clear: both; margin-top: 30px; float: none;">
+                    <h4 style="color: #06402B; margin-bottom: 15px; font-size: 18px;">Sustainability Records Overview</h4>
+                    <div id="sustainabilityRecordsTable" class="data-table-container" style="width: 100%; display: block;">
+                        <!-- Records will be populated here -->
+                    </div>
+                    <div class="step-actions" style="margin-top: 20px; width: 100%; display: block;">
+                        <button id="proceedToFactorsBtn" class="proceed-btn" disabled>Proceed to Select Environmental Factors</button>
+                    </div>
+                </div>
+            `;
+
+            // Add event listener to dropdown
+            const dropdown = document.getElementById('sourceDropdown');
+            if (dropdown) {
+                dropdown.addEventListener('change', handleSourceSelection);
+            }
+
+            // Re-attach event listener for proceed button
+            const newProceedBtn = document.getElementById('proceedToFactorsBtn');
+            if (newProceedBtn) {
+                newProceedBtn.addEventListener('click', () => showFactorSelectionStep());
+            }
+        }
+
+        async function handleSourceSelection(event) {
+            const selectedSource = event.target.value;
+            const container = document.getElementById('sustainabilityDataContainer');
+            const proceedBtn = document.getElementById('proceedToFactorsBtn');
+            
+            if (!selectedSource) {
+                if (container) container.style.display = 'none';
+                if (proceedBtn) proceedBtn.disabled = true;
+                return;
+            }
+
+            emissionCalculationData.selectedSource = selectedSource;
+            
+            if (container) container.style.display = 'block';
+            if (proceedBtn) proceedBtn.disabled = false;
+            
+            updateCalcProgressStep(1, 'completed');
+            updateCalcProgressStep(2, 'active');
+            
+            await loadSustainabilityRecords(selectedSource);
+        }
+
+        async function loadSustainabilityRecords(source) {
+            showCalcLoading('Loading sustainability records...');
+            
+            try {
+                const response = await fetch(`${EMISSION_API_BASE}/sustainability/records?filename=${encodeURIComponent(source)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    emissionCalculationData.sustainabilityRecords = data.data;
+                    displayDistinctSustainabilityRecords(data.data);
+                    hideCalcLoading();
+                } else {
+                    throw new Error(data.error || 'Failed to load records');
+                }
+            } catch (error) {
+                showCalcError(`Failed to load records: ${error.message}`);
+                hideCalcLoading();
+            }
+        }
+
+        function displayDistinctSustainabilityRecords(records) {
+            const tableContainer = document.getElementById('sustainabilityRecordsTable');
+            if (!tableContainer) return;
+            
+            if (records.length === 0) {
+                tableContainer.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 40px;">No records found for this source.</div>';
+                return;
+            }
+            
+            // Get distinct records based on category and service_type
+            const distinctRecords = [];
+            const seenCombinations = new Set();
+            
+            records.forEach(record => {
+                const key = `${record.category}-${record.service_type}`;
+                if (!seenCombinations.has(key)) {
+                    seenCombinations.add(key);
+                    distinctRecords.push(record);
+                }
+            });
+            
+            const table = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Service Type</th>
+                            <th>Sample Consumption</th>
+                            <th>Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${distinctRecords.map(record => `
+                            <tr>
+                                <td>${record.category || 'N/A'}</td>
+                                <td>${record.service_type || 'N/A'}</td>
+                                <td>${record.consumption || 'N/A'}</td>
+                                <td>${record.unit || 'N/A'}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            tableContainer.innerHTML = table;
+        }
+
+        function showFactorSelectionStep() {
+            updateCalcProgressStep(2, 'completed');
+            updateCalcProgressStep(3, 'active');
+            
+            hideCalcStep('sourceSelectionStep');
+            showCalcStep('factorSelectionStep');
+            
+            loadEmissionScopes();
+        }
+
+        function showDataViewStep() {
+            updateCalcProgressStep(3, '');
+            updateCalcProgressStep(2, 'active');
+            
+            hideCalcStep('factorSelectionStep');
+            showCalcStep('sourceSelectionStep');
+        }
+
+        async function loadEmissionScopes() {
+            try {
+                const response = await fetch(`${EMISSION_API_BASE}/scopes`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    populateFactorScopeSelect(data.data);
+                } else {
+                    throw new Error(data.error || 'Failed to load scopes');
+                }
+            } catch (error) {
+                showCalcError(`Failed to load scopes: ${error.message}`);
+            }
+        }
+
+        function populateFactorScopeSelect(scopes) {
+            const scopeSelect = document.getElementById('factorScopeSelect');
+            if (!scopeSelect) return;
+            
+            scopeSelect.innerHTML = '<option value="">Choose a scope...</option>';
+            
+            scopes.forEach(scope => {
+                const option = document.createElement('option');
+                option.value = scope;
+                option.textContent = scope;
+                scopeSelect.appendChild(option);
+            });
+        }
+
+        async function handleFactorScopeChange(event) {
+            const selectedScope = event.target.value;
+            const categorySelect = document.getElementById('factorCategorySelect');
+            
+            if (categorySelect) {
+                categorySelect.innerHTML = '<option value="">Choose a category...</option>';
+                categorySelect.disabled = !selectedScope;
+            }
+            
+            hideCalcStep('availableFactorsSection');
+            
+            if (selectedScope) {
+                await loadFactorCategories(selectedScope);
+            }
+        }
+
+        async function loadFactorCategories(scope) {
+            try {
+                const response = await fetch(`${EMISSION_API_BASE}/categories?scope=${encodeURIComponent(scope)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    populateFactorCategorySelect(data.data);
+                } else {
+                    throw new Error(data.error || 'Failed to load categories');
+                }
+            } catch (error) {
+                showCalcError(`Failed to load categories: ${error.message}`);
+            }
+        }
+
+        function populateFactorCategorySelect(categories) {
+            const categorySelect = document.getElementById('factorCategorySelect');
+            if (!categorySelect) return;
+            
+            categorySelect.innerHTML = '<option value="">Choose a category...</option>';
+            
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categorySelect.appendChild(option);
+            });
+            
+            categorySelect.disabled = false;
+        }
+
+        async function handleFactorCategoryChange(event) {
+            const selectedCategory = event.target.value;
+            const selectedScope = document.getElementById('factorScopeSelect').value;
+            
+            hideCalcStep('availableFactorsSection');
+            
+            if (selectedCategory && selectedScope) {
+                await loadAvailableFactors(selectedScope, selectedCategory);
+            }
+        }
+
+        async function loadAvailableFactors(scope, category) {
+            showCalcLoading('Loading environmental factors...');
+            
+            try {
+                const response = await fetch(`${EMISSION_API_BASE}/emission-factors?scope=${encodeURIComponent(scope)}&category=${encodeURIComponent(category)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayAvailableFactors(data.data);
+                    showCalcStep('availableFactorsSection');
+                    hideCalcLoading();
+                } else {
+                    throw new Error(data.error || 'Failed to load emission factors');
+                }
+            } catch (error) {
+                showCalcError(`Failed to load environmental factors: ${error.message}`);
+                hideCalcLoading();
+            }
+        }
+
+        function displayAvailableFactors(factors) {
+            const grid = document.getElementById('availableFactorsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            if (factors.length === 0) {
+                grid.innerHTML = '<div style="text-align: center; color: #6b7280; padding: 20px;">No environmental factors found for this combination.</div>';
+                return;
+            }
+            
+            factors.forEach((factor, index) => {
+                const card = createAvailableFactorCard(factor, index);
+                grid.appendChild(card);
+            });
+        }
+
+        function createAvailableFactorCard(factor, index) {
+            const card = document.createElement('div');
+            card.className = 'available-factor-card';
+            
+            card.innerHTML = `
+                <button class="add-to-portfolio-btn" onclick="addToSustainabilityPortfolio(${index})" style="position: absolute; top: 15px; right: 15px; background: #06402B; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">+</button>
+                <div class="factor-value">${factor.emission_factor}</div>
+                <div class="factor-unit">${factor.unit || 'No unit'}</div>
+                <div class="factor-details">
+                    <div><strong>Country:</strong> ${factor.country || 'Global'}</div>
+                    <div><strong>Source:</strong> ${factor.source || 'Unknown'}</div>
+                </div>
+                <div class="factor-meta">
+                    <span>Year: ${factor.year || 'N/A'}</span>
+                </div>
+            `;
+            
+            card.dataset.factorData = JSON.stringify(factor);
+            
+            return card;
+        }
+
+        // Global functions for sustainability portfolio management
+        window.addToSustainabilityPortfolio = function(index) {
+            const availableCards = document.querySelectorAll('.available-factor-card');
+            const selectedCard = availableCards[index];
+            
+            if (selectedCard) {
+                const factorData = JSON.parse(selectedCard.dataset.factorData);
+                
+                factorData.scope = document.getElementById('factorScopeSelect').value;
+                factorData.category = document.getElementById('factorCategorySelect').value;
+                factorData.portfolioId = Date.now() + Math.random();
+                
+                const existingIndex = emissionCalculationData.sustainabilityPortfolio.findIndex(item => 
+                    item.scope === factorData.scope && 
+                    item.category === factorData.category && 
+                    item.emission_factor === factorData.emission_factor &&
+                    item.country === factorData.country &&
+                    item.year === factorData.year
+                );
+                
+                if (existingIndex === -1) {
+                    emissionCalculationData.sustainabilityPortfolio.push(factorData);
+                    updateSustainabilityPortfolioDisplay();
+                    showToast('Environmental factor added to portfolio!');
+                } else {
+                    showToast('Factor already in portfolio!');
+                }
+            }
+        };
+
+        window.removeFromSustainabilityPortfolio = function(index) {
+            if (index >= 0 && index < emissionCalculationData.sustainabilityPortfolio.length) {
+                emissionCalculationData.sustainabilityPortfolio.splice(index, 1);
+                updateSustainabilityPortfolioDisplay();
+                showToast('Factor removed from portfolio!');
+            }
+        };
+
+        function updateSustainabilityPortfolioDisplay() {
+            const portfolioItems = document.getElementById('cartItems');
+            const portfolioCount = document.getElementById('cartCount');
+            const clearPortfolioBtn = document.getElementById('clearPortfolioBtn');
+            const proceedBtn = document.getElementById('proceedToCalculateBtn');
+            
+            if (portfolioCount) portfolioCount.textContent = emissionCalculationData.sustainabilityPortfolio.length;
+            
+            if (emissionCalculationData.sustainabilityPortfolio.length === 0) {
+                if (portfolioItems) {
+                    portfolioItems.innerHTML = `
+                        <div class="empty-cart">
+                            <div class="empty-cart-icon">📊</div>
+                            <div class="empty-cart-text">No environmental factors selected yet</div>
+                            <div class="empty-cart-subtext">Select factors from above to add them to your sustainability portfolio</div>
+                        </div>
+                    `;
+                }
+                if (clearPortfolioBtn) clearPortfolioBtn.style.display = 'none';
+                if (proceedBtn) proceedBtn.disabled = true;
+            } else {
+                if (portfolioItems) {
+                    portfolioItems.innerHTML = emissionCalculationData.sustainabilityPortfolio.map((item, index) => `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <div class="cart-item-title">${item.scope} - ${item.category}</div>
+                                <div class="cart-item-details">
+                                    Factor: ${item.emission_factor} ${item.unit || ''} | 
+                                    Country: ${item.country || 'Global'} | 
+                                    Year: ${item.year || 'N/A'}
+                                </div>
+                            </div>
+                            <button class="remove-from-cart-btn" onclick="removeFromSustainabilityPortfolio(${index})">×</button>
+                        </div>
+                    `).join('');
+                }
+                if (clearPortfolioBtn) clearPortfolioBtn.style.display = 'inline-block';
+                if (proceedBtn) proceedBtn.disabled = false;
+            }
+        }
+
+        function clearSustainabilityPortfolio() {
+            emissionCalculationData.sustainabilityPortfolio = [];
+            updateSustainabilityPortfolioDisplay();
+            showToast('Sustainability portfolio cleared!');
+        }
+
+        function showFinalCalculationStep() {
+            updateCalcProgressStep(3, 'completed');
+            updateCalcProgressStep(4, 'active');
+            
+            hideCalcStep('factorSelectionStep');
+            showCalcStep('finalCalculationStep');
+            
+            displayCalculationSummary();
+        }
+
+        function displayCalculationSummary() {
+            const summarySource = document.getElementById('summarySource');
+            const summaryFactors = document.getElementById('summaryFactors');
+            
+            if (summarySource) {
+                summarySource.innerHTML = `
+                    <div><strong>Source:</strong> ${emissionCalculationData.selectedSource}</div>
+                    <div><strong>Records:</strong> ${emissionCalculationData.sustainabilityRecords.length} sustainability records</div>
+                `;
+            }
+            
+            if (summaryFactors) {
+                summaryFactors.innerHTML = emissionCalculationData.sustainabilityPortfolio.map(factor => `
+                    <div style="padding: 10px; border-left: 3px solid #06402B; margin-bottom: 10px; background: #f9fafb;">
+                        <strong>${factor.scope} - ${factor.category}</strong><br>
+                        Factor: ${factor.emission_factor} ${factor.unit || ''} | 
+                        Country: ${factor.country || 'Global'} | 
+                        Source: ${factor.source || 'Unknown'}
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function performFinalCalculation() {
+            showCalcLoading('Calculating emissions...');
+            
+            // Only send source name and selected factors, not sustainability records
+            const payload = {
+                source_name: emissionCalculationData.selectedSource,
+                selected_factors: emissionCalculationData.sustainabilityPortfolio,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                // Direct API call to ecalc webhook
+                const response = await fetch(ECALC_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                let data;
+                const contentType = response.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    data = await response.text();
+                }
+                
+                if (response.ok) {
+                    emissionCalculationData.calculationResult = data;
+                    displayEmissionResults(data);
+                    
+                    updateCalcProgressStep(4, 'completed');
+                    hideCalcStep('finalCalculationStep');
+                    showCalcStep('emissionResults');
+                    hideCalcLoading();
+                    
+                    showToast('Emission calculation completed!');
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+            } catch (error) {
+                showCalcError(`Calculation failed: ${error.message}`);
+                hideCalcLoading();
+            }
+        }
+
+        function displayEmissionResults(results) {
+            const resultsContent = document.getElementById('resultsContent');
+            if (!resultsContent) return;
+            
+            let resultHtml = '<div class="emission-results-display">';
+            
+            resultHtml += `
+                <div class="result-summary">
+                    <h4 style="color: #06402B; margin-bottom: 15px; font-size: 18px;">Calculation Summary</h4>
+                    <div style="background: #f0fdf4; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                        <div style="margin-bottom: 10px;">
+                            <strong>Data Source:</strong> ${emissionCalculationData.selectedSource}
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <strong>Environmental Factors Used:</strong> ${emissionCalculationData.sustainabilityPortfolio.length}
+                        </div>
+                        <div>
+                            <strong>Calculation Date:</strong> ${new Date().toLocaleDateString()}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            if (typeof results === 'object' && results !== null) {
+                resultHtml += `
+                    <div class="detailed-results">
+                        <h4 style="color: #06402B; margin-bottom: 15px; font-size: 18px;">Detailed Results</h4>
+                        <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px;">
+                            <pre style="white-space: pre-wrap; font-family: inherit; font-size: 14px; line-height: 1.6;">${JSON.stringify(results, null, 2)}</pre>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultHtml += `
+                    <div class="detailed-results">
+                        <h4 style="color: #06402B; margin-bottom: 15px; font-size: 18px;">Results</h4>
+                        <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px;">
+                            <div style="font-size: 16px; line-height: 1.6;">${results}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            resultHtml += `
+                <div class="factors-breakdown" style="margin-top: 25px;">
+                    <h4 style="color: #06402B; margin-bottom: 15px; font-size: 18px;">Environmental Factors Used</h4>
+                    <div style="background: #f8fafc; border-radius: 12px; padding: 20px;">
+                        ${emissionCalculationData.sustainabilityPortfolio.map((factor, index) => `
+                            <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; margin-bottom: 10px;">
+                                <div style="font-weight: 600; color: #1f2937; margin-bottom: 8px;">
+                                    ${factor.scope} - ${factor.category}
+                                </div>
+                                <div style="font-size: 14px; color: #6b7280;">
+                                    <div>Factor: <strong>${factor.emission_factor}</strong> ${factor.unit || ''}</div>
+                                    <div>Country: ${factor.country || 'Global'}</div>
+                                    <div>Year: ${factor.year || 'N/A'}</div>
+                                    <div>Source: ${factor.source || 'Unknown'}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            resultHtml += '</div>';
+            
+            resultsContent.innerHTML = resultHtml;
+        }
+
+        // Utility functions
+        function showCalcLoading(message = 'Loading...') {
+            const loadingState = document.getElementById('calcLoadingState');
+            const loadingText = document.getElementById('calcLoadingText');
+            if (loadingState && loadingText) {
+                loadingText.textContent = message;
+                loadingState.style.display = 'block';
+            }
+        }
+
+        function hideCalcLoading() {
+            const loadingState = document.getElementById('calcLoadingState');
+            if (loadingState) {
+                loadingState.style.display = 'none';
+            }
+        }
+
+        function showCalcError(message) {
+            const errorMessage = document.getElementById('calcErrorMessage');
+            const errorText = document.getElementById('calcErrorText');
+            if (errorMessage && errorText) {
+                errorText.textContent = message;
+                errorMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 8000);
+            }
+        }
+
+        function showToast(message) {
             const toast = document.createElement('div');
             toast.style.cssText = `
                 position: fixed;
                 top: 20px;
                 right: 20px;
-                background: ${type === 'success' ? '#06402B' : '#ef4444'};
+                background: #06402B;
                 color: white;
                 padding: 12px 20px;
                 border-radius: 8px;
                 z-index: 1000;
-                animation: slideIn 0.3s ease-out;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                box-shadow: 0 4px 12px rgba(6, 64, 43, 0.3);
+                font-weight: 500;
             `;
             toast.textContent = message;
             document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-
-        // Emission Prompts Function
-        async function submitEmissionPrompts() {
-            const webhookUrl = document.getElementById('emissionWebhookUrl').value.trim();
-            const prompts = document.getElementById('emissionPrompts').value.trim();
-            if (!webhookUrl) return showStatus('Please provide a webhook URL.', 'error', 'emissionStatusMessage');
-            if (!prompts) return showStatus('Please enter emission prompts.', 'error', 'emissionStatusMessage');
             
-            showStatus('Updating...', 'info', 'emissionStatusMessage');
-            const startTime = Date.now();
-            
-            try {
-                const response = await fetch(webhookUrl, { 
-                    method: 'POST', 
-                    body: JSON.stringify({ prompts }), 
-                    headers: {'Content-Type': 'application/json'} 
-                });
-                const responseData = await response.json();
-                displayApiResponse(responseData, 'emission', startTime);
-                showStatus('Updated successfully!', 'success', 'emissionStatusMessage');
-            } catch(e) {
-                displayApiResponse({success: false, error: e.message}, 'emission', startTime);
-                showStatus('Update failed!', 'error', 'emissionStatusMessage');
-            }
-        }
-
-        // Generic Status Function
-        function showStatus(message, type, elementId) {
-            const statusEl = document.getElementById(elementId);
-            if (!statusEl) return;
-            statusEl.textContent = message;
-            statusEl.className = `status-message status-${type}`;
-            statusEl.style.display = 'block';
             setTimeout(() => {
-                statusEl.style.display = 'none';
-            }, 5000);
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 3000);
         }
-
-        // Response Handling Functions
-        function switchTab(event, tabId) {
-            const container = event.target.closest('.response-container');
-            container.querySelectorAll('.response-tab').forEach(tab => tab.classList.remove('active'));
-            container.querySelectorAll('.response-panel').forEach(panel => panel.classList.remove('active'));
-            event.target.classList.add('active');
-            container.querySelector(`#${tabId}`).classList.add('active');
-        }
-
-        function copyResponse(responseType) {
-            const textToCopy = apiResponses[responseType] ? JSON.stringify(apiResponses[responseType], null, 2) : '';
-            if (textToCopy) {
-                navigator.clipboard.writeText(textToCopy).then(() => showToast('Response copied to clipboard!'));
-            }
-        }
-
-        function clearResponse(sectionId) {
-            const section = document.getElementById(sectionId);
-            section.style.display = 'none';
-            
-            let type;
-            if (sectionId === 'emissionResponseSection') type = 'emission';
-
-            if (type) {
-                apiResponses[type] = null;
-                resetResponseDisplay(type);
-            }
-        }
-
-        function resetResponseDisplay(type) {
-            document.getElementById(`${type}ResponseFormatted`).innerHTML = 'No response yet.';
-            document.getElementById(`${type}ResponseRaw`).textContent = 'No response yet.';
-            document.getElementById(`${type}MetaStatus`).textContent = '-';
-            document.getElementById(`${type}MetaTime`).textContent = '-';
-            document.getElementById(`${type}MetaType`).textContent = '-';
-            document.getElementById(`${type}MetaSize`).textContent = '-';
-        }
-
-        function displayApiResponse(responseData, type, startTime) {
-            const endTime = Date.now();
-            apiResponses[type] = responseData;
-            
-            document.getElementById(`${type}ResponseSection`).style.display = 'block';
-            document.getElementById(`${type}ResponseFormatted`).innerHTML = formatResponse(responseData);
-            document.getElementById(`${type}ResponseRaw`).textContent = JSON.stringify(responseData, null, 2);
-            document.getElementById(`${type}MetaStatus`).textContent = (responseData.success === true || responseData.output === 'success') ? 'Success' : 'Error';
-            document.getElementById(`${type}MetaTime`).textContent = `${endTime - startTime}ms`;
-            document.getElementById(`${type}MetaType`).textContent = 'application/json';
-            document.getElementById(`${type}MetaSize`).textContent = `${JSON.stringify(responseData).length} bytes`;
-        }
-
-        function formatResponse(data) {
-            if (!data) return 'No response data';
-            let html = '<div style="font-family: inherit;">';
-            const isSuccess = data.success === true || data.output === 'success';
-            html += `<div style="color: ${isSuccess ? '#059669' : '#dc2626'}; font-weight: 600; margin-bottom: 15px;">${isSuccess ? '✅ Success' : '❌ Error'}</div>`;
-            if (data.message) html += `<div style="margin-bottom: 15px;"><strong>Message:</strong> ${data.message}</div>`;
-            
-            html += '<pre style="white-space: pre-wrap; word-break: break-all; background: #f8fafc; padding: 15px; border-radius: 8px;">' + JSON.stringify(data, null, 2) + '</pre>';
-
-            if (data.error) html += `<div style="color: #dc2626; margin-bottom: 15px; margin-top: 15px;"><strong>Error:</strong> ${data.error}</div>`;
-            html += '</div>';
-            return html;
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            showToast('Emission Calculation loaded successfully');
-        });
     </script>
 </body>
 </html>

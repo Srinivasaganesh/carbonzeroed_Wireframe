@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SustainIQ - Custom Agent</title>
+    <title>Custom Agent - SustainIQ</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -15,13 +15,12 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
         }
 
         .dashboard-container {
             display: flex;
-            height: 100vh;
+            min-height: 100vh;
             background: #ffffff;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
         }
@@ -254,7 +253,7 @@
             padding: 30px;
         }
 
-        /* Card Styling */
+        /* Interface Card */
         .interface-card {
             background: #ffffff;
             border-radius: 20px;
@@ -329,51 +328,10 @@
             resize: vertical;
         }
 
-        .form-select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.5rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            padding-right: 2.5rem;
-        }
-
         .form-hint {
             font-size: 0.75rem;
             color: #6b7280;
             margin-top: 0.25rem;
-        }
-
-        /* Webhook Configuration */
-        .webhook-config {
-            background: rgba(6, 64, 43, 0.05);
-            border: 1px solid rgba(6, 64, 43, 0.2);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-
-        .webhook-config h3 {
-            color: #06402B;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .webhook-input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 14px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            transition: all 0.3s ease;
-            background: #ffffff;
-        }
-
-        .webhook-input:focus {
-            outline: none;
-            border-color: #06402B;
-            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
         }
 
         /* Buttons */
@@ -420,6 +378,7 @@
             transform: translateY(-1px);
         }
 
+        /* Loading States */
         .btn.loading {
             position: relative;
             pointer-events: none;
@@ -442,22 +401,30 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Collapsible Sections */
+        /* Collapsible sections */
         details {
-            margin-bottom: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
         }
 
         details summary {
             cursor: pointer;
             font-weight: 600;
-            padding: 0.75rem 0;
+            padding: 0.75rem 1rem;
             color: #374151;
+            background: #f9fafb;
             border-bottom: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
+            margin: 0;
         }
 
         details[open] summary {
-            color: #06402B;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        details > div {
+            padding: 1rem;
         }
 
         /* Responsive Design */
@@ -492,14 +459,31 @@
                 display: none;
             }
             
-            .content-area {
-                padding: 15px;
-            }
-            
             .interface-card {
                 padding: 30px 20px;
             }
         }
+
+        /* Schema Styles */
+        .schema-card{background:linear-gradient(180deg,#0f5132 0%,#0b3d25 100%);border:1px solid #164b35;border-radius:14px;padding:16px;color:#e9f5ef;box-shadow:0 6px 16px rgba(0,0,0,.2);margin-top:.75rem}
+        .schema-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+        .schema-title{font-weight:700;letter-spacing:.3px}
+        .schema-secondary{opacity:.85}
+        .schema-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0 .25rem}
+        .schema-chip{background:#e9f5ef;color:#0b3d25;border-radius:999px;padding:.25rem .6rem;font-size:.85rem;border:1px solid #b6e2cf}
+        .schema-row{display:flex;gap:.5rem;align-items:center;margin-top:.6rem}
+        .schema-input{flex:1;border:1px solid #1f6d4c;background:#0c2f20;color:#e9f5ef;border-radius:10px;padding:.5rem .75rem;outline:none}
+        .schema-input::placeholder{color:#7bd4b0}
+        .schema-btn{background:#22c55e;border:none;color:white;padding:.45rem .8rem;border-radius:10px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+        .schema-btn:hover{transform:translateY(-1px)}
+        .schema-dd{position:relative;display:inline-block}
+        .schema-dd-toggle{background:#10b981;border:none;color:#072a1b;padding:.45rem .8rem;border-radius:10px;cursor:pointer}
+        .schema-dd-panel{position:absolute;top:110%;left:0;min-width:320px;max-width:420px;max-height:320px;overflow:auto;background:#0a261a;border:1px solid #164b35;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:10px;color:#e9f5ef;display:none;z-index:10000}
+        .schema-dd-panel.open{display:block}
+        .schema-search{width:100%;margin-bottom:.5rem;border:1px solid #165238;background:#0f3424;color:#e9f5ef;border-radius:8px;padding:.45rem .6rem}
+        .schema-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.35rem}
+        .schema-item{background:#0f3424;border:1px solid #165238;border-radius:10px;padding:.35rem .5rem;display:flex;gap:.45rem;align-items:center}
+        .schema-item input{accent-color:#22c55e}
     </style>
 </head>
 <body>
@@ -518,7 +502,7 @@
                 
                 <!-- Data Extraction -->
                 <div class="nav-item">
-                    <a href="advanced-processing.html" class="nav-link active">
+                    <a href="advanced-processing.html" class="nav-link">
                         <i class="nav-icon fas fa-upload"></i>
                         <span class="nav-text">Data Extraction</span>
                     </a>
@@ -603,35 +587,17 @@
                                 <input type="text" id="agentPath" class="form-input" placeholder="custom-agents/packaging-waste">
                                 <div class="form-hint">Auto-generated from agent name</div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Target Database Table</label>
-                                <input type="text" id="dbTable" class="form-input" placeholder="sustainability_records" value="sustainability_records">
-                            </div>
                         </div>
                         <div class="form-col">
-                            <div class="form-group">
+                            <div class="form-group" style="display:none;">
                                 <label class="form-label">n8n Base URL</label>
                                 <input type="text" id="n8nBaseUrl" class="form-input" value="http://localhost:5678">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="display:none;">
                                 <label class="form-label">n8n API Key</label>
                                 <input type="text" id="n8nApiKey" class="form-input" placeholder="Your n8n API key" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMmUwN2QxNy04NDJkLTQyZWEtYjQxYS00NDA5NDcxOGJiNWMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzU3NTg0NTMzfQ.YSM83QVKL_9c7sdIMTdla_u5PscKf-2zuGttNL6IXsI">
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">Insert into Database?</label>
-                                <select id="insertToggle" class="form-input form-select">
-                                    <option value="yes" selected>Yes</option>
-                                    <option value="no">No</option>
-                                </select>
-                            </div>
                         </div>
-                    </div>
-
-                    <!-- MIME Types -->
-                    <div class="form-group">
-                        <label class="form-label">Accepted MIME Types</label>
-                        <input type="text" id="mimeTypes" class="form-input" value="application/pdf,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
-                        <div class="form-hint">Comma-separated list of MIME types the agent should accept</div>
                     </div>
 
                     <!-- Document Tool Prompt -->
@@ -639,25 +605,6 @@
                         <label class="form-label">Document Tool Prompt</label>
                         <textarea id="documentPrompt" class="form-input form-textarea" placeholder="Enter the instructions for the document tool here...">Extract sustainability data including carbon emissions, energy consumption, waste generation, and travel data from the provided document. Focus on numerical values, dates, locations, and categorical information needed for environmental impact calculations.</textarea>
                         <div class="form-hint">Define what data the agent should extract from documents</div>
-                    </div>
-
-                    <!-- Credentials Section -->
-                    <div class="webhook-config">
-                        <h3>AI Service Credentials</h3>
-                        <div class="form-row">
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label">Google Gemini Credentials (ID | Name)</label>
-                                    <input type="text" id="geminiCreds" class="form-input" value="KIq58RKFRUPil9Kz | Google Gemini(PaLM) Api account">
-                                </div>
-                            </div>
-                            <div class="form-col">
-                                <div class="form-group">
-                                    <label class="form-label">Azure OpenAI Credentials (ID | Name)</label>
-                                    <input type="text" id="azureCreds" class="form-input" value="oY1NeqDGxOWYRSi1 | Azure Open AI account">
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Collapsible Sections -->
@@ -765,6 +712,7 @@ Be layout-robust (merged cells, multiple pages/sheets, rotated headers, multilin
                       .replace(/(^-|-$)/g, '');
         }
 
+        // Custom Agent Functions
         function updateAgentPath() {
             const name = document.getElementById('agentName').value.trim();
             const pathInput = document.getElementById('agentPath');
@@ -864,9 +812,9 @@ return rows.map(r=>({json:r}));
         function generateWorkflowJson() {
             const name = document.getElementById('agentName').value.trim();
             const path = document.getElementById('agentPath').value.replace(/^\/+|\/+$/g, '');
-            const table = document.getElementById('dbTable').value.trim();
-            const insertToDb = document.getElementById('insertToggle').value === 'yes';
-            const mimeTypes = document.getElementById('mimeTypes').value;
+            const table = "sustainability_records"; 
+            const insertToDb = true; 
+            const mimeTypes = "application/pdf,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel";
             const docPrompt = document.getElementById('documentPrompt').value;
             const systemMessage = document.getElementById('systemMessage').value;
             const userMessage = document.getElementById('userMessage').value;
@@ -881,8 +829,10 @@ return rows.map(r=>({json:r}));
                 throw new Error('Invalid JSON schema: ' + e.message);
             }
 
-            const { id: geminiId, name: geminiName } = parseCredentialPair(document.getElementById('geminiCreds').value);
-            const { id: azureId, name: azureName } = parseCredentialPair(document.getElementById('azureCreds').value);
+            const geminiId = "default_gemini_id";
+            const geminiName = "Google Gemini";
+            const azureId = "default_azure_id";
+            const azureName = "Azure OpenAI";
 
             // Generate all node IDs
             const webhookId = generateNodeId('wh');
@@ -1107,103 +1057,64 @@ return rows.map(r=>({json:r}));
         async function createCustomAgent() {
             const btn = document.getElementById('createAgentBtn');
             const results = document.getElementById('agentResults');
-            
             try {
                 btn.disabled = true;
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Workflow...';
-                
-                const workflowData = generateWorkflowJson();
-                const apiKey = document.getElementById('n8nApiKey').value.trim();
-                
-                if (!apiKey) {
-                    throw new Error('n8n API key is required');
-                }
 
-                const createResponse = await fetch('/api/v1/workflows', {
+                const name = document.getElementById('agentName').value.trim();
+                const path = document.getElementById('agentPath').value.trim();
+                const mime_types = ['application/pdf','text/csv','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/vnd.ms-excel'];
+                const document_prompt = (document.getElementById('documentPrompt')?.value || '').trim();
+                const system_message = (document.getElementById('systemMessage')?.value || '').trim();
+                const user_message = (document.getElementById('userMessage')?.value || '').trim();
+                const json_schema = (document.getElementById('jsonSchema')?.value || '').trim();
+                const insert_to_db = true;
+
+                if (!name || !path) throw new Error('Agent Name and Webhook Path are required');
+
+                const resp = await fetch('http://localhost:8081/py-agents', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-N8N-API-KEY': apiKey
-                    },
-                    body: JSON.stringify(workflowData)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name, path, mime_types, document_prompt, system_message, user_message, json_schema, insert_to_db
+                    })
                 });
 
-                if (!createResponse.ok) {
-                    const errorText = await createResponse.text();
-                    throw new Error(`Failed to create workflow: ${errorText}`);
-                }
+                const data = await resp.json();
+                if (!resp.ok || !data.ok) throw new Error(data.error || ('HTTP ' + resp.status));
 
-                const createResult = await createResponse.json();
-                const workflowId = createResult.id || createResult?.data?.id || createResult?.data?.workflow?.id;
-                
-                if (!workflowId) {
-                    throw new Error('Could not determine workflow ID');
-                }
-
-                const activateResponse = await fetch(`/api/v1/workflows/${workflowId}/activate`, {
-                    method: 'POST',
-                    headers: {
-                        'X-N8N-API-KEY': apiKey
-                    }
-                });
-
-                if (!activateResponse.ok) {
-                    const errorText = await activateResponse.text();
-                    throw new Error(`Failed to activate workflow: ${errorText}`);
-                }
-
-                const path = document.getElementById('agentPath').value.replace(/^\/+|\/+$/g, '');
-                const baseUrl = document.getElementById('n8nBaseUrl').value.replace(/\/+$/, '');
-                const prodUrl = `${baseUrl}/webhook/${path}`;
-                const testUrl = `${baseUrl}/webhook-test/${path}`;
-
+                // Show the new Python endpoint (invoke_url)
+                results.style.display = 'block';
                 results.innerHTML = `
                     <div style="background: #ffffff; border-radius: 12px; padding: 30px; border: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                        <div style="text-align: center; margin-bottom: 30px;">
-                            <h3 style="color: #06402B; font-size: 24px; font-weight: 700; margin-bottom: 10px;">Workflow Created Successfully!</h3>
-                            <p style="color: #6b7280;">Your custom agent is now active and ready to process documents.</p>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <h3 style="color: #06402B; font-size: 24px; font-weight: 700;">Agent Created Successfully!</h3>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                            <div>
-                                <div style="margin-bottom: 20px;">
-                                    <label style="font-weight: 600; color: #374151; margin-bottom: 8px; display: block;">Workflow ID</label>
-                                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 14px; border: 1px solid #e5e7eb;">${workflowId}</div>
-                                </div>
-                                <div>
-                                    <label style="font-weight: 600; color: #374151; margin-bottom: 8px; display: block;">Production Webhook URL</label>
-                                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 14px; border: 1px solid #e5e7eb; word-break: break-all;">${prodUrl}</div>
-                                </div>
-                            </div>
-                            <div>
-                                <div style="margin-bottom: 20px;">
-                                    <label style="font-weight: 600; color: #374151; margin-bottom: 8px; display: block;">Test Webhook URL</label>
-                                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 14px; border: 1px solid #e5e7eb; word-break: break-all;">${testUrl}</div>
-                                </div>
-                                <div>
-                                    <label style="font-weight: 600; color: #374151; margin-bottom: 8px; display: block;">Test Command</label>
-                                    <div style="background: #f8fafc; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 12px; border: 1px solid #e5e7eb; word-break: break-all;">curl -X POST ${testUrl} \\<br>&nbsp;&nbsp;-H "Authorization: Bearer devtoken123" \\<br>&nbsp;&nbsp;-F "file=@/path/to/your.pdf"</div>
-                                </div>
+                        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 20px;">
+                            <div style="font-weight: 600; color: #06402B; margin-bottom: 10px;">Python Agent Endpoint:</div>
+                            <div style="font-family: 'Monaco', 'Menlo', monospace; background: #1f2937; color: #f9fafb; padding: 15px; border-radius: 8px; overflow-x: auto;">
+                                http://localhost:8081${data.agent.invoke_url}
                             </div>
                         </div>
                     </div>
                 `;
 
-                showToast('Custom agent workflow created and activated successfully!');
+                showToast('Custom agent created successfully!');
 
-            } catch (error) {
-                console.error('Create agent error:', error);
-                showToast('Failed to create agent: ' + error.message, 'error');
+            } catch (err) {
+                console.error(err);
                 results.innerHTML = `
                     <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; padding: 20px;">
                         <div style="color: #dc2626; display: flex; align-items: center;">
                             <i class="fas fa-exclamation-triangle" style="margin-right: 10px;"></i>
-                            <strong>Error:</strong> ${error.message}
+                            <strong>Error:</strong> ${err.message || err}
                         </div>
                     </div>
                 `;
+                showToast('Failed to create agent: ' + (err.message || err), 'error');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-magic"></i> Create & Activate Workflow';
+                btn.innerHTML = '<i class="fas fa-robot"></i> Create & Activate Workflow';
             }
         }
 
@@ -1237,8 +1148,229 @@ return rows.map(r=>({json:r}));
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             updateAgentPath();
-            showToast('Custom Agent Wizard loaded successfully');
+            showToast('Custom Agent page loaded successfully');
         });
+
+        /* Schema Enhancement Script */
+        (function () {
+            var TABLE = 'sustainability_records';
+            var FETCH_URL = 'http://localhost:8081/py-agents/table-columns?table=' + encodeURIComponent(TABLE);
+
+            function onReady(fn) {
+                if (document.readyState !== 'loading') fn();
+                else document.addEventListener('DOMContentLoaded', fn);
+            }
+            
+            function sanitize(name) {
+                return (name || '')
+                    .toLowerCase()
+                    .replace(/[^a-z0-9_]/g, '_')
+                    .replace(/^_+|_+$/g, '');
+            }
+            
+            function uniq(arr) {
+                var s = {}, out = [];
+                for (var i = 0; i < arr.length; i++) { 
+                    if (!s[arr[i]]) { 
+                        s[arr[i]] = 1; 
+                        out.push(arr[i]); 
+                    } 
+                }
+                return out;
+            }
+            
+            function fetchColumns(cb) {
+                fetch(FETCH_URL)
+                    .then(function (r) { 
+                        if (!r.ok) throw new Error('columns fetch failed'); 
+                        return r.json(); 
+                    })
+                    .then(function (j) { 
+                        if (!j || !j.ok) throw new Error('bad response'); 
+                        cb(j.columns || []); 
+                    })
+                    .catch(function () { 
+                        cb(['category', 'date', 'service_type', 'fuel_type']); 
+                    });
+            }
+            
+            function makeSchema(cols) {
+                var obj = {};
+                for (var i = 0; i < cols.length; i++) obj[cols[i]] = null;
+                return JSON.stringify({ items: [obj] }, null, 2);
+            }
+
+            function buildUI() {
+                var area = document.getElementById('jsonSchema');
+                if (!area || document.getElementById('schemaCard')) return;
+
+                area.style.display = 'none';
+
+                var block = area.parentElement.parentElement;
+                var card = document.createElement('div');
+                card.className = 'schema-card';
+                card.id = 'schemaCard';
+
+                var header = document.createElement('div');
+                header.className = 'schema-header';
+
+                var title = document.createElement('div');
+                title.className = 'schema-title';
+                title.textContent = 'Output Columns';
+
+                var dd = document.createElement('div');
+                dd.className = 'schema-dd';
+
+                var ddToggle = document.createElement('button');
+                ddToggle.className = 'schema-dd-toggle';
+                ddToggle.type = 'button';
+                ddToggle.textContent = 'Select Columns ▾';
+
+                var ddPanel = document.createElement('div');
+                ddPanel.className = 'schema-dd-panel';
+
+                var search = document.createElement('input');
+                search.className = 'schema-search';
+                search.placeholder = 'Search columns...';
+
+                var list = document.createElement('div');
+                list.className = 'schema-list';
+
+                ddPanel.appendChild(search);
+                ddPanel.appendChild(list);
+                dd.appendChild(ddToggle);
+                dd.appendChild(ddPanel);
+
+                header.appendChild(title);
+                header.appendChild(dd);
+
+                var sub = document.createElement('div');
+                sub.className = 'schema-secondary';
+                sub.textContent = 'Choose the columns the agent should return. You can also add custom ones.';
+
+                var chips = document.createElement('div');
+                chips.className = 'schema-chips';
+                chips.id = 'schemaChips';
+
+                var row = document.createElement('div');
+                row.className = 'schema-row';
+                var input = document.createElement('input');
+                input.className = 'schema-input';
+                input.id = 'schemaNewCol';
+                input.placeholder = 'Add custom column (e.g., supplier_name)';
+                var addBtn = document.createElement('button');
+                addBtn.className = 'schema-btn';
+                addBtn.type = 'button';
+                addBtn.textContent = 'Add';
+
+                row.appendChild(input);
+                row.appendChild(addBtn);
+
+                card.appendChild(header);
+                card.appendChild(sub);
+                card.appendChild(chips);
+                card.appendChild(row);
+
+                block.parentElement.insertBefore(card, block.nextSibling);
+
+                var available = [];
+                window.__customNewColumns = window.__customNewColumns || [];
+                var custom = window.__customNewColumns;
+                var selected = [];
+
+                function renderChips() {
+                    chips.innerHTML = '';
+                    if (!selected.length) {
+                        var em = document.createElement('span');
+                        em.textContent = 'No columns selected';
+                        em.className = 'schema-secondary';
+                        chips.appendChild(em);
+                        return;
+                    }
+                    selected.forEach(function (c) {
+                        var sp = document.createElement('span');
+                        sp.className = 'schema-chip';
+                        sp.textContent = c;
+                        chips.appendChild(sp);
+                    });
+                }
+
+                function sync() {
+                    selected = uniq(selected);
+                    area.value = makeSchema(selected);
+                    renderChips();
+                }
+
+                function renderList(filter) {
+                    list.innerHTML = '';
+                    var all = uniq(available.concat(custom));
+                    if (filter) {
+                        var q = filter.toLowerCase();
+                        all = all.filter(function (c) { return c.indexOf(q) !== -1; });
+                    }
+                    all.forEach(function (col) {
+                        var item = document.createElement('label');
+                        item.className = 'schema-item';
+                        var cb = document.createElement('input');
+                        cb.type = 'checkbox';
+                        cb.value = col;
+                        cb.checked = selected.indexOf(col) !== -1;
+                        var txt = document.createElement('span');
+                        txt.textContent = col;
+                        item.appendChild(cb);
+                        item.appendChild(txt);
+                        cb.addEventListener('change', function () {
+                            if (cb.checked) {
+                                if (selected.indexOf(col) === -1) selected.push(col);
+                            } else {
+                                selected = selected.filter(function (x) { return x !== col; });
+                            }
+                            sync();
+                        });
+                        list.appendChild(item);
+                    });
+                }
+
+                ddToggle.addEventListener('click', function () {
+                    ddPanel.classList.toggle('open');
+                    if (ddPanel.classList.contains('open')) {
+                        renderList(search.value || '');
+                    }
+                });
+                
+                document.addEventListener('click', function (e) {
+                    if (!dd.contains(e.target)) ddPanel.classList.remove('open');
+                });
+                
+                search.addEventListener('input', function () {
+                    renderList(search.value || '');
+                });
+                
+                addBtn.addEventListener('click', function () {
+                    var raw = (input.value || '').trim();
+                    var col = sanitize(raw);
+                    if (!col) return;
+                    if (available.indexOf(col) === -1) available.push(col);
+                    if (custom.indexOf(col) === -1) custom.push(col);
+                    if (selected.indexOf(col) === -1) selected.push(col);
+                    input.value = '';
+                    sync();
+                    renderList(search.value || '');
+                });
+
+                fetchColumns(function (cols) {
+                    available = cols.slice(0);
+                    selected = uniq(cols.concat(custom));
+                    sync();
+                });
+            }
+
+            onReady(function () {
+                buildUI();
+                var mo = new MutationObserver(function () { buildUI(); });
+                mo.observe(document.body, { childList: true, subtree: true });
+            });
+        })();
     </script>
 </body>
 </html>

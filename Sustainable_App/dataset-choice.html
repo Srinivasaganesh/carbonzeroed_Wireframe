@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SustainIQ - Dataset Choice</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Emission Dataset Processing</title>
     <style>
         * {
             margin: 0;
@@ -15,13 +14,13 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .dashboard-container {
             display: flex;
-            height: 100vh;
+            min-height: 100vh;
             background: #ffffff;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
         }
@@ -34,7 +33,6 @@
             padding: 0;
             position: relative;
             box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
         }
 
         .sidebar::before {
@@ -62,8 +60,6 @@
             font-size: 22px;
             font-weight: 700;
             color: #ffffff;
-            text-decoration: none;
-            cursor: pointer;
         }
 
         .logo-icon {
@@ -95,10 +91,6 @@
             margin-top: 20px;
         }
 
-        .nav-header:first-child {
-            margin-top: 0;
-        }
-
         .nav-item {
             margin: 4px 12px;
             border-radius: 12px;
@@ -115,6 +107,8 @@
             transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .nav-link::before {
@@ -125,70 +119,12 @@
             bottom: 0;
             width: 4px;
             background: #d1fae5;
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            transform: translateX(4px);
-        }
-
-        .nav-link:hover::before {
-            transform: scaleY(1);
-        }
-
-        .nav-link.active {
-            background: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-link.active::before {
             transform: scaleY(1);
         }
 
         .nav-text {
             font-size: 16px;
             font-weight: 500;
-        }
-
-        .nav-icon {
-            width: 20px;
-            margin-right: 12px;
-            text-align: center;
-        }
-
-        .sub-nav {
-            margin-left: 20px;
-            margin-top: 8px;
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .sub-nav-item {
-            margin: 2px 0;
-        }
-
-        .sub-nav-link {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .sub-nav-link:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .sub-nav-link.active {
-            color: #d1fae5;
-            background: rgba(209, 250, 229, 0.1);
         }
 
         /* Main Content Area */
@@ -228,30 +164,29 @@
             align-items: center;
         }
 
-        .status-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: #f3f4f6;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #22c55e;
-        }
-
         .content-area {
             flex: 1;
             background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
             overflow-y: auto;
             position: relative;
+        }
+
+        /* Interface Section */
+        .interface-section {
             padding: 30px;
+            min-height: 100%;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
         /* Card Styling */
@@ -281,39 +216,6 @@
             font-size: 16px;
             color: #6b7280;
             line-height: 1.5;
-        }
-
-        /* Webhook Configuration */
-        .webhook-config {
-            background: rgba(6, 64, 43, 0.05);
-            border: 1px solid rgba(6, 64, 43, 0.2);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 30px;
-        }
-
-        .webhook-config h3 {
-            color: #06402B;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .webhook-input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            font-size: 14px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            transition: all 0.3s ease;
-            background: #ffffff;
-        }
-
-        .webhook-input:focus {
-            outline: none;
-            border-color: #06402B;
-            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
         }
 
         /* File Drop Zone */
@@ -385,6 +287,146 @@
             display: none;
         }
 
+        /* Progress Section */
+        .progress-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .progress-step.completed::after {
+            background: #06402B;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .step-circle.active {
+            background: #06402B;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .step-circle.completed {
+            background: #06402B;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .step-circle.active + .step-label,
+        .step-circle.completed + .step-label {
+            color: #06402B;
+            font-weight: 600;
+        }
+
+        /* API Status Display */
+        .api-status {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .api-status h4 {
+            margin-bottom: 15px;
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        .api-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #e5e7eb;
+        }
+
+        .api-item.loading {
+            border-left-color: #fbbf24;
+        }
+
+        .api-item.success {
+            border-left-color: #06402B;
+        }
+
+        .api-item.error {
+            border-left-color: #ef4444;
+        }
+
+        .api-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .api-status-text {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .api-status-text.loading {
+            color: #fbbf24;
+        }
+
+        .api-status-text.success {
+            color: #06402B;
+        }
+
+        .api-status-text.error {
+            color: #ef4444;
+        }
+
         /* Files Preview */
         .files-preview {
             margin-top: 30px;
@@ -442,6 +484,30 @@
             color: #6b7280;
         }
 
+        /* Custom Input Section */
+        .custom-input-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .custom-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #ffffff;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: #06402B;
+            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
+        }
+
         /* Submit Section */
         .submit-section {
             display: none;
@@ -482,17 +548,6 @@
             border-radius: 12px;
             display: none;
             animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { 
-                opacity: 0; 
-                transform: translateY(10px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
         }
 
         .status-success {
@@ -623,36 +678,6 @@
             overflow-y: auto;
         }
 
-        .response-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            padding: 20px;
-            background: #f8fafc;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .meta-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .meta-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 5px;
-        }
-
-        .meta-value {
-            font-size: 14px;
-            color: #1f2937;
-            font-weight: 500;
-        }
-
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -669,38 +694,13 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Emission Calculation Section */
-        .emission-calculation-section {
-            display: none;
-            margin-top: 40px;
-            border-top: 1px solid #e5e7eb;
-            padding-top: 40px;
-        }
-
-        .categories-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .categories-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 8px;
-        }
-
-        .categories-description {
-            font-size: 16px;
-            color: #6b7280;
-        }
-
         /* Responsive Design */
         @media (max-width: 1024px) {
             .sidebar {
                 width: 240px;
             }
             
-            .content-area {
+            .interface-section {
                 padding: 20px;
             }
         }
@@ -714,11 +714,7 @@
                 display: none;
             }
             
-            .sub-nav {
-                display: none;
-            }
-            
-            .content-area {
+            .interface-section {
                 padding: 15px;
             }
             
@@ -733,66 +729,19 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo-section">
-                <a href="Home.html" class="logo">
+                <div class="logo">
                     <div class="logo-icon">🌱</div>
-                    <span>SustainIQ</span>
-                </a>
+                    <span>EmissionIQ</span>
+                </div>
             </div>
 
             <nav class="nav-section">
-                <div class="nav-header">Data Intelligence</div>
+                <div class="nav-header">EMISSION MODULES</div>
                 
-                <!-- Data Extraction -->
+                <!-- Emission Dataset -->
                 <div class="nav-item">
-                    <a href="advanced-processing.html" class="nav-link">
-                        <i class="nav-icon fas fa-upload"></i>
-                        <span class="nav-text">Data Extraction</span>
-                    </a>
-                    <div class="sub-nav">
-                        <div class="sub-nav-item">
-                            <a href="advanced-processing.html" class="sub-nav-link">Advanced Processing</a>
-                        </div>
-                        <div class="sub-nav-item">
-                            <a href="custom-agent.html" class="sub-nav-link">Custom Agent</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="nav-header">Data Management</div>
-                
-                <!-- Data Verification -->
-                <div class="nav-item">
-                    <a href="verification.html" class="nav-link">
-                        <i class="nav-icon fas fa-check-circle"></i>
-                        <span class="nav-text">Data Verification</span>
-                    </a>
-                </div>
-
-                <div class="nav-header">Analysis Modules</div>
-
-                <!-- Emission Analysis -->
-                <div class="nav-item">
-                    <a href="dataset-choice.html" class="nav-link active">
-                        <i class="nav-icon fas fa-chart-line"></i>
-                        <span class="nav-text">Emission Analysis</span>
-                    </a>
-                    <div class="sub-nav">
-                        <div class="sub-nav-item">
-                            <a href="dataset-choice.html" class="sub-nav-link active">Dataset Choice</a>
-                        </div>
-                        <div class="sub-nav-item">
-                            <a href="emission-calculation.html" class="sub-nav-link">Emission Calculation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="nav-header">Reporting</div>
-
-                <!-- Report Generation -->
-                <div class="nav-item">
-                    <a href="reporting.html" class="nav-link">
-                        <i class="nav-icon fas fa-file-alt"></i>
-                        <span class="nav-text">Sustainability Reporting</span>
+                    <a href="#" class="nav-link">
+                        <span class="nav-text">Emission Dataset</span>
                     </a>
                 </div>
             </nav>
@@ -801,122 +750,98 @@
         <!-- Main Content -->
         <div class="main-content">
             <header class="header">
-                <h1 class="header-title">Sustainability Intelligence Platform</h1>
+                <h1 class="header-title">Emission Dataset Processing</h1>
                 <div class="header-actions">
-                    <div class="status-badge">
-                        <div class="status-dot"></div>
-                        <span>System Online</span>
-                    </div>
+                    <div style="font-size: 14px; color: #6b7280;">Last updated: Just now</div>
                 </div>
             </header>
 
             <div class="content-area">
-                <div class="interface-card">
-                    <div class="interface-header">
-                        <h2 class="interface-title">Emission Factor Dataset Upload</h2>
-                        <p class="interface-description">Upload an emission factor dataset to begin the analysis and calculation process.</p>
-                    </div>
-
-                    <!-- Step 1: Upload Dataset -->
-                    <div class="webhook-config">
-                        <h3>Dataset Upload Webhook</h3>
-                        <input type="text" class="webhook-input" id="datasetWebhookUrl" placeholder="Enter your dataset upload webhook URL here..." />
-                    </div>
-
-                    <form id="datasetUploadForm">
-                        <div class="file-drop-zone" id="datasetDropZone">
-                            <input type="file" id="datasetFileInput" class="file-input" accept=".csv,.xls,.xlsx">
-                            <div class="drop-icon">📊</div>
-                            <div class="drop-text">Drop your dataset file here or click to browse</div>
-                            <div class="drop-subtext">Supports CSV, XLS, and XLSX files</div>
+                <!-- Emission Dataset Interface -->
+                <div id="emission-dataset-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Emission Dataset Processing</h2>
+                            <p class="interface-description">Upload your emission dataset files for automated calculation and analysis</p>
                         </div>
 
-                        <div id="datasetFilesPreview" class="files-preview">
-                            <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Selected Dataset</h3>
-                            <div id="datasetFilesGrid" class="files-grid"></div>
-                        </div>
-
-                        <div id="datasetSubmitSection" class="submit-section">
-                            <button type="submit" class="submit-button" id="datasetSubmitButton">Upload Dataset</button>
-                        </div>
-                    </form>
-
-                    <div id="datasetStatusMessage" class="status-message"></div>
-
-                    <div id="datasetResponseSection" class="response-section">
-                        <div class="response-header">
-                            <h3 class="response-title">Dataset Upload Response</h3>
-                            <div class="response-controls">
-                                <button class="control-button" onclick="copyResponse('dataset')">Copy</button>
-                                <button class="control-button" onclick="clearResponse('datasetResponseSection')">Clear</button>
-                            </div>
-                        </div>
-                        <div class="response-container">
-                            <div class="response-tabs">
-                                <div class="response-tab active" data-type="dataset" onclick="switchTab(event, 'dataset-formatted')">Formatted</div>
-                                <div class="response-tab" data-type="dataset" onclick="switchTab(event, 'dataset-raw')">Raw JSON</div>
-                                <div class="response-tab" data-type="dataset" onclick="switchTab(event, 'dataset-meta')">Metadata</div>
-                            </div>
-                            <div class="response-content">
-                                <div id="dataset-formatted" class="response-panel active">
-                                    <div id="datasetResponseFormatted" class="response-formatted">Waiting for dataset upload...</div>
+                        <!-- Progress Tracker -->
+                        <div class="progress-section" id="progressSection">
+                            <div class="progress-steps">
+                                <div class="progress-step" id="step1">
+                                    <div class="step-circle">1</div>
+                                    <div class="step-label">File Upload</div>
                                 </div>
-                                <div id="dataset-raw" class="response-panel">
-                                    <pre id="datasetResponseRaw" class="response-raw">Waiting for dataset upload...</pre>
+                                <div class="progress-step" id="step2">
+                                    <div class="step-circle">2</div>
+                                    <div class="step-label">Processing</div>
                                 </div>
-                                <div id="dataset-meta" class="response-panel">
-                                    <div id="datasetResponseMeta" class="response-meta">
-                                        <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value" id="datasetMetaStatus">-</span></div>
-                                        <div class="meta-item"><span class="meta-label">Time</span><span class="meta-value" id="datasetMetaTime">-</span></div>
-                                        <div class="meta-item"><span class="meta-label">Type</span><span class="meta-value" id="datasetMetaType">-</span></div>
-                                        <div class="meta-item"><span class="meta-label">Size</span><span class="meta-value" id="datasetMetaSize">-</span></div>
-                                    </div>
+                                <div class="progress-step" id="step3">
+                                    <div class="step-circle">3</div>
+                                    <div class="step-label">Calculation Complete</div>
+                                </div>
+                            </div>
+
+                            <!-- API Status Display -->
+                            <div class="api-status" id="apiStatus">
+                                <h4>Emission Calculation Status</h4>
+                                <div class="api-item" id="emissionCalc">
+                                    <span class="api-name">Emission Calculation API</span>
+                                    <span class="api-status-text">Waiting...</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Step 2: Calculate Emission Factor -->
-                    <div id="emissionCalculationSection" class="emission-calculation-section">
-                        <div class="categories-header">
-                            <h3 class="categories-title">Emission Factor Calculation</h3>
-                            <p class="categories-description">Dataset successfully processed. You can now proceed with the calculation.</p>
-                        </div>
-                        <div class="submit-section" style="display: block;">
-                            <button type="button" class="submit-button" id="calculateEmissionButton">
-                                Calculate Emission Factor
-                            </button>
-                        </div>
+                        <form id="uploadForm">
+                            <div class="file-drop-zone" id="dropZone">
+                                <input type="file" id="fileInput" class="file-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.jpg,.png">
+                                <div class="drop-icon">📊</div>
+                                <div class="drop-text">Drop emission data files here or click to browse</div>
+                                <div class="drop-subtext">Supports PDF, Word, Excel, CSV, and image files</div>
+                            </div>
 
-                        <div id="calculationStatusMessage" class="status-message"></div>
+                            <div id="filesPreview" class="files-preview">
+                                <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Selected Files</h3>
+                                <div id="filesGrid" class="files-grid"></div>
+                            </div>
 
-                        <div id="calculationResponseSection" class="response-section">
+                            <div id="customInputSection" class="custom-input-section">
+                                <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 15px;">Additional Information</h3>
+                                <textarea id="customInput" class="custom-input" placeholder="Enter any additional context or instructions for emission calculation..."></textarea>
+                            </div>
+
+                            <div id="submitSection" class="submit-section">
+                                <button type="submit" class="submit-button" id="submitButton">
+                                    Process Emission Dataset
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="statusMessage" class="status-message"></div>
+
+                        <!-- API Response Display -->
+                        <div id="responseSection" class="response-section">
                             <div class="response-header">
-                                <h3 class="response-title">Calculation Response</h3>
+                                <h3 class="response-title">Emission Calculation Results</h3>
                                 <div class="response-controls">
-                                    <button class="control-button" onclick="copyResponse('calculation')">Copy</button>
-                                    <button class="control-button" onclick="clearResponse('calculationResponseSection')">Clear</button>
+                                    <button class="control-button" onclick="copyResponse()">Copy</button>
+                                    <button class="control-button" onclick="clearResponse()">Clear</button>
                                 </div>
                             </div>
                             <div class="response-container">
                                 <div class="response-tabs">
-                                    <div class="response-tab active" data-type="calculation" onclick="switchTab(event, 'calculation-formatted')">Formatted</div>
-                                    <div class="response-tab" data-type="calculation" onclick="switchTab(event, 'calculation-raw')">Raw JSON</div>
-                                    <div class="response-tab" data-type="calculation" onclick="switchTab(event, 'calculation-meta')">Metadata</div>
+                                    <div class="response-tab active" onclick="switchTab(event, 'formatted')">Results</div>
+                                    <div class="response-tab" onclick="switchTab(event, 'raw')">Raw Data</div>
                                 </div>
                                 <div class="response-content">
-                                    <div id="calculation-formatted" class="response-panel active">
-                                        <div id="calculationResponseFormatted" class="response-formatted">Waiting for calculation to be triggered...</div>
+                                    <div id="formatted" class="response-panel active">
+                                        <div id="responseFormatted" class="response-formatted">
+                                            No results yet. Process a dataset to see emission calculations here.
+                                        </div>
                                     </div>
-                                    <div id="calculation-raw" class="response-panel">
-                                        <pre id="calculationResponseRaw" class="response-raw">Waiting for calculation to be triggered...</pre>
-                                    </div>
-                                    <div id="calculation-meta" class="response-panel">
-                                        <div id="calculationResponseMeta" class="response-meta">
-                                            <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value" id="calculationMetaStatus">-</span></div>
-                                            <div class="meta-item"><span class="meta-label">Time</span><span class="meta-value" id="calculationMetaTime">-</span></div>
-                                            <div class="meta-item"><span class="meta-label">Type</span><span class="meta-value" id="calculationMetaType">-</span></div>
-                                            <div class="meta-item"><span class="meta-label">Size</span><span class="meta-value" id="calculationMetaSize">-</span></div>
+                                    <div id="raw" class="response-panel">
+                                        <div id="responseRaw" class="response-raw">
+                                            No results yet. Process a dataset to see raw data here.
                                         </div>
                                     </div>
                                 </div>
@@ -929,251 +854,346 @@
     </div>
 
     <script>
-        // Global state variables
-        let extractedDatasetFilename = null;
-        let apiResponses = {
-            dataset: null,
-            calculation: null
+        // API Configuration
+        const EMISSION_CALC_URL = 'http://localhost:5678/webhook/emssioncalc';
+
+        // Global variables
+        let processingResults = {
+            uploadedFiles: [],
+            emissionResult: null
         };
 
-        // Utility Functions
-        function showToast(message, type = 'success') {
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${type === 'success' ? '#06402B' : '#ef4444'};
-                color: white;
-                padding: 12px 20px;
-                border-radius: 8px;
-                z-index: 1000;
-                animation: slideIn 0.3s ease-out;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            `;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDatasetInterface();
+            console.log('Emission Dataset Interface initialized successfully');
+        });
+
+        // Dataset processing functionality
+        function initializeDatasetInterface() {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const uploadForm = document.getElementById('uploadForm');
+
+            if (dropZone && fileInput) {
+                dropZone.addEventListener('click', () => fileInput.click());
+                dropZone.addEventListener('dragover', handleDragOver);
+                dropZone.addEventListener('drop', handleDrop);
+                dropZone.addEventListener('dragleave', handleDragLeave);
+                fileInput.addEventListener('change', handleFileSelect);
+            }
+
+            if (uploadForm) {
+                uploadForm.addEventListener('submit', handleFormSubmit);
+            }
         }
 
-        // File Handling Functions
-        function setupFileDrop() {
-            const dropZone = document.getElementById('datasetDropZone');
-            const fileInput = document.getElementById('datasetFileInput');
-
-            dropZone.addEventListener('click', () => fileInput.click());
-            dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
-            dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
-            dropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                dropZone.classList.remove('dragover');
-                fileInput.files = e.dataTransfer.files;
-                handleFileSelection();
-            });
-            fileInput.addEventListener('change', handleFileSelection);
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
         }
 
-        function handleFileSelection() {
-            const fileInput = document.getElementById('datasetFileInput');
-            if (fileInput.files.length === 0) return;
-            
-            const grid = document.getElementById('datasetFilesGrid');
-            grid.innerHTML = '';
-            
-            const file = fileInput.files[0];
-            const fileItem = createFileItem(file);
-            grid.appendChild(fileItem);
-
-            document.getElementById('datasetFilesPreview').style.display = 'block';
-            document.getElementById('datasetSubmitSection').style.display = 'block';
+        function handleDragLeave(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
         }
 
-        function createFileItem(file) {
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            handleFiles(e.target.files);
+        }
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+
+            const filesGrid = document.getElementById('filesGrid');
+            const filesPreview = document.getElementById('filesPreview');
+            const customInputSection = document.getElementById('customInputSection');
+            const submitSection = document.getElementById('submitSection');
+
+            if (filesGrid) {
+                filesGrid.innerHTML = '';
+                processingResults.uploadedFiles = [];
+                
+                Array.from(files).forEach((file, index) => {
+                    const fileItem = createFileItem(file, index);
+                    filesGrid.appendChild(fileItem);
+                    processingResults.uploadedFiles.push(file);
+                });
+
+                if (filesPreview) filesPreview.style.display = 'block';
+                if (customInputSection) customInputSection.style.display = 'block';
+                if (submitSection) submitSection.style.display = 'block';
+                
+                updateProgressStep(1, 'completed');
+            }
+        }
+
+        function createFileItem(file, index) {
             const div = document.createElement('div');
             div.className = 'file-item';
-            const iconMap = { csv: '📈', excel: '📊', spreadsheet: '📊' };
-            const type = Object.keys(iconMap).find(key => file.type.includes(key)) || 'default';
+            
+            const icon = getFileIcon(file.type);
             const size = (file.size / 1024 / 1024).toFixed(2);
+            
             div.innerHTML = `
-                <div class="file-icon">${iconMap[type] || '📊'}</div>
+                <div class="file-icon">${icon}</div>
                 <div class="file-info">
                     <div class="file-name">${file.name}</div>
-                    <div class="file-details">${size} MB • ${file.type || 'Unknown'}</div>
+                    <div class="file-details">${size} MB • ${file.type || 'Unknown type'}</div>
                 </div>
             `;
+            
             return div;
         }
 
-        // Form Handler
-        document.getElementById('datasetUploadForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const webhookUrl = document.getElementById('datasetWebhookUrl').value.trim();
-            const file = document.getElementById('datasetFileInput').files[0];
-            if (!webhookUrl) return showStatus('Please enter a dataset webhook URL.', 'error', 'datasetStatusMessage');
-            if (!file) return showStatus('Please select a dataset file.', 'error', 'datasetStatusMessage');
-
-            const submitButton = document.getElementById('datasetSubmitButton');
-            submitButton.innerHTML = '<span class="loading-spinner"></span>Uploading...';
-            submitButton.disabled = true;
-            showStatus('Uploading dataset...', 'info', 'datasetStatusMessage');
-            document.getElementById('emissionCalculationSection').style.display = 'none';
-            extractedDatasetFilename = null;
-            
-            const startTime = Date.now();
-            
-            const formData = new FormData();
-            formData.append('file_0', file);
-            formData.append('filename_0', file.name);
-            formData.append('file_count', '1');
-            formData.append('filenames_json', JSON.stringify([file.name]));
-
-            try {
-                const response = await fetch(webhookUrl, {
-                    method: 'POST', 
-                    body: formData
-                });
-                const responseData = await response.json();
-                displayApiResponse(responseData, 'dataset', startTime);
-
-                if (response.ok && responseData.output === 'success' && responseData.filename) {
-                    showStatus('Dataset uploaded successfully. Ready for calculation.', 'success', 'datasetStatusMessage');
-                    const filenameWithExt = responseData.filename;
-                    const lastDotIndex = filenameWithExt.lastIndexOf('.');
-                    extractedDatasetFilename = lastDotIndex === -1 ? filenameWithExt : filenameWithExt.substring(0, lastDotIndex);
-                    document.getElementById('emissionCalculationSection').style.display = 'block';
-                } else {
-                    throw new Error(responseData.message || 'Upload was not successful or filename missing in response.');
-                }
-            } catch (error) {
-                displayApiResponse({ success: false, error: error.message }, 'dataset', startTime);
-                showStatus(`Upload failed: ${error.message}`, 'error', 'datasetStatusMessage');
-            } finally {
-                submitButton.innerHTML = 'Upload Dataset';
-                submitButton.disabled = false;
-            }
-        });
-
-        // Calculation Button Handler
-        document.getElementById('calculateEmissionButton').addEventListener('click', async function() {
-            if (!extractedDatasetFilename) {
-                return showStatus('No valid dataset filename available for calculation.', 'error', 'calculationStatusMessage');
-            }
-            const calculationWebhookUrl = 'http://localhost:5678/webhook/ecalc';
-            
-            const calcButton = this;
-            calcButton.innerHTML = '<span class="loading-spinner"></span>Calculating...';
-            calcButton.disabled = true;
-            showStatus('Sending request for calculation...', 'info', 'calculationStatusMessage');
-            
-            const startTime = Date.now();
-            
-            try {
-                const response = await fetch(calculationWebhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ input: extractedDatasetFilename })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const responseData = await response.json();
-                displayApiResponse(responseData, 'calculation', startTime);
-                showStatus('Calculation request completed.', 'success', 'calculationStatusMessage');
-            } catch (error) {
-                const errorData = { success: false, error: error.message };
-                displayApiResponse(errorData, 'calculation', startTime);
-                showStatus(`Calculation failed: ${error.message}`, 'error', 'calculationStatusMessage');
-            } finally {
-                calcButton.innerHTML = 'Calculate Emission Factor';
-                calcButton.disabled = false;
-            }
-        });
-
-        // Generic Status Function
-        function showStatus(message, type, elementId) {
-            const statusEl = document.getElementById(elementId);
-            if (!statusEl) return;
-            statusEl.textContent = message;
-            statusEl.className = `status-message status-${type}`;
-            statusEl.style.display = 'block';
-            setTimeout(() => {
-                statusEl.style.display = 'none';
-            }, 5000);
+        function getFileIcon(type) {
+            if (type.includes('pdf')) return '📄';
+            if (type.includes('word') || type.includes('document')) return '📝';
+            if (type.includes('excel') || type.includes('spreadsheet')) return '📊';
+            if (type.includes('image')) return '🖼️';
+            if (type.includes('csv')) return '📈';
+            return '📄';
         }
 
-        // Response Handling Functions
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('fileInput');
+            const files = Array.from(fileInput.files);
+            
+            if (files.length === 0) {
+                showStatus('Please select at least one file!', 'error');
+                return;
+            }
+
+            const customInput = document.getElementById('customInput').value.trim();
+            const submitButton = document.getElementById('submitButton');
+            
+            try {
+                processingResults.emissionResult = null;
+                
+                submitButton.innerHTML = '<span class="loading-spinner"></span>Processing...';
+                submitButton.disabled = true;
+                
+                document.getElementById('progressSection').style.display = 'block';
+                document.getElementById('apiStatus').style.display = 'block';
+                
+                updateProgressStep(2, 'active');
+                showStatus('Starting emission calculation...', 'info');
+
+                const emissionResult = await callEmissionCalculationApi(files, customInput);
+                processingResults.emissionResult = emissionResult;
+                
+                updateProgressStep(2, 'completed');
+                updateProgressStep(3, 'completed');
+                
+                if (emissionResult.success) {
+                    showStatus('Dataset uploaded successfully', 'success');
+                } else {
+                    showStatus(`Processing failed: ${emissionResult.error}`, 'error');
+                }
+                
+                displayResults();
+                
+            } catch (error) {
+                showStatus(`Processing failed: ${error.message}`, 'error');
+                console.error('Processing error:', error);
+            } finally {
+                submitButton.innerHTML = 'Process Emission Dataset';
+                submitButton.disabled = false;
+            }
+        }
+
+        async function callEmissionCalculationApi(files, customInput = '') {
+            try {
+                updateApiStatus('emissionCalc', 'loading');
+                
+                const formData = new FormData();
+                
+                files.forEach((file, index) => {
+                    formData.append(`file_${index}`, file);
+                    formData.append(`filename_${index}`, file.name);
+                });
+                
+                formData.append('file_count', files.length.toString());
+                formData.append('timestamp', new Date().toISOString());
+                
+                if (customInput) {
+                    formData.append('custom_input', customInput);
+                }
+                
+                const response = await fetch(EMISSION_CALC_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                let responseData;
+                const contentType = response.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    responseData = await response.json();
+                } else {
+                    responseData = await response.text();
+                }
+
+                if (response.ok) {
+                    updateApiStatus('emissionCalc', 'success', 'Calculation completed');
+                    return {
+                        success: true,
+                        data: responseData,
+                        status: response.status
+                    };
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                updateApiStatus('emissionCalc', 'error', `Error: ${error.message}`);
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }
+
+        function updateProgressStep(stepNumber, status) {
+            const step = document.getElementById(`step${stepNumber}`);
+            if (!step) return;
+            
+            const circle = step.querySelector('.step-circle');
+            
+            circle.classList.remove('active', 'completed');
+            
+            if (status === 'active') {
+                circle.classList.add('active');
+            } else if (status === 'completed') {
+                circle.classList.add('completed');
+                circle.innerHTML = '✓';
+            }
+            
+            if (status === 'active' || status === 'completed') {
+                for (let i = 1; i < stepNumber; i++) {
+                    const prevStep = document.getElementById(`step${i}`);
+                    if (prevStep) {
+                        const prevCircle = prevStep.querySelector('.step-circle');
+                        prevCircle.classList.remove('active');
+                        prevCircle.classList.add('completed');
+                        prevCircle.innerHTML = '✓';
+                        prevStep.classList.add('completed');
+                    }
+                }
+            }
+        }
+
+        function updateApiStatus(apiId, status, message = '') {
+            const apiElement = document.getElementById(apiId);
+            if (!apiElement) return;
+            
+            const statusText = apiElement.querySelector('.api-status-text');
+            
+            apiElement.classList.remove('loading', 'success', 'error');
+            statusText.classList.remove('loading', 'success', 'error');
+            
+            apiElement.classList.add(status);
+            statusText.classList.add(status);
+            
+            switch(status) {
+                case 'loading':
+                    statusText.textContent = 'Processing...';
+                    break;
+                case 'success':
+                    statusText.textContent = message || 'Success';
+                    break;
+                case 'error':
+                    statusText.textContent = message || 'Failed';
+                    break;
+            }
+        }
+
+        function displayResults() {
+            const responseSection = document.getElementById('responseSection');
+            const responseFormatted = document.getElementById('responseFormatted');
+            const responseRaw = document.getElementById('responseRaw');
+            
+            if (responseSection) responseSection.style.display = 'block';
+            
+            let formattedHtml = '<div style="font-family: inherit;">';
+            
+            formattedHtml += '<h4 style="color: #06402B; margin-bottom: 15px;">Processed Files</h4>';
+            formattedHtml += '<div style="margin-bottom: 20px; background: #f0fdf4; padding: 15px; border-radius: 8px;">';
+            processingResults.uploadedFiles.forEach(file => {
+                formattedHtml += `<div style="margin: 5px 0;">📊 ${file.name}</div>`;
+            });
+            formattedHtml += '</div>';
+            
+            if (processingResults.emissionResult) {
+                formattedHtml += '<h4 style="color: #06402B; margin-bottom: 15px;">Emission Calculation Result</h4>';
+                if (processingResults.emissionResult.success) {
+                    formattedHtml += '<div style="color: #06402B; font-weight: 600; margin-bottom: 10px;">✅ Dataset uploaded successfully</div>';
+                    formattedHtml += '<div style="background: #f0fdf4; padding: 15px; border-radius: 8px; margin: 10px 0;">';
+                    if (typeof processingResults.emissionResult.data === 'object') {
+                        formattedHtml += `<pre style="white-space: pre-wrap; font-family: inherit; margin: 0;">${JSON.stringify(processingResults.emissionResult.data, null, 2)}</pre>`;
+                    } else {
+                        formattedHtml += `<div style="font-family: inherit;">${processingResults.emissionResult.data}</div>`;
+                    }
+                    formattedHtml += '</div>';
+                } else {
+                    formattedHtml += '<div style="color: #ef4444; font-weight: 600;">❌ Calculation Failed</div>';
+                    formattedHtml += `<div style="margin: 10px 0; color: #ef4444;">${processingResults.emissionResult.error || 'Unknown error'}</div>`;
+                }
+            }
+            
+            formattedHtml += '</div>';
+            
+            if (responseFormatted) responseFormatted.innerHTML = formattedHtml;
+            if (responseRaw) responseRaw.textContent = JSON.stringify(processingResults, null, 2);
+        }
+
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            if (statusEl) {
+                statusEl.textContent = message;
+                statusEl.className = `status-message status-${type}`;
+                statusEl.style.display = 'block';
+                
+                if (type !== 'info') {
+                    setTimeout(() => {
+                        statusEl.style.display = 'none';
+                    }, 5000);
+                }
+            }
+        }
+
         function switchTab(event, tabId) {
             const container = event.target.closest('.response-container');
+            
             container.querySelectorAll('.response-tab').forEach(tab => tab.classList.remove('active'));
             container.querySelectorAll('.response-panel').forEach(panel => panel.classList.remove('active'));
+            
             event.target.classList.add('active');
             container.querySelector(`#${tabId}`).classList.add('active');
         }
 
-        function copyResponse(responseType) {
-            const textToCopy = apiResponses[responseType] ? JSON.stringify(apiResponses[responseType], null, 2) : '';
-            if (textToCopy) {
-                navigator.clipboard.writeText(textToCopy).then(() => showToast('Response copied to clipboard!'));
+        function copyResponse() {
+            const textToCopy = JSON.stringify(processingResults, null, 2);
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showStatus('Results copied to clipboard!', 'success');
+            });
+        }
+
+        function clearResponse() {
+            const responseSection = document.getElementById('responseSection');
+            if (responseSection) {
+                responseSection.style.display = 'none';
+                processingResults.emissionResult = null;
             }
         }
-
-        function clearResponse(sectionId) {
-            const section = document.getElementById(sectionId);
-            section.style.display = 'none';
-            
-            let type;
-            if (sectionId === 'datasetResponseSection') type = 'dataset';
-            else if (sectionId === 'calculationResponseSection') type = 'calculation';
-
-            if (type) {
-                apiResponses[type] = null;
-                resetResponseDisplay(type);
-            }
-        }
-
-        function resetResponseDisplay(type) {
-            document.getElementById(`${type}ResponseFormatted`).innerHTML = 'No response yet.';
-            document.getElementById(`${type}ResponseRaw`).textContent = 'No response yet.';
-            document.getElementById(`${type}MetaStatus`).textContent = '-';
-            document.getElementById(`${type}MetaTime`).textContent = '-';
-            document.getElementById(`${type}MetaType`).textContent = '-';
-            document.getElementById(`${type}MetaSize`).textContent = '-';
-        }
-
-        function displayApiResponse(responseData, type, startTime) {
-            const endTime = Date.now();
-            apiResponses[type] = responseData;
-            
-            document.getElementById(`${type}ResponseSection`).style.display = 'block';
-            document.getElementById(`${type}ResponseFormatted`).innerHTML = formatResponse(responseData);
-            document.getElementById(`${type}ResponseRaw`).textContent = JSON.stringify(responseData, null, 2);
-            document.getElementById(`${type}MetaStatus`).textContent = (responseData.success === true || responseData.output === 'success') ? 'Success' : 'Error';
-            document.getElementById(`${type}MetaTime`).textContent = `${endTime - startTime}ms`;
-            document.getElementById(`${type}MetaType`).textContent = 'application/json';
-            document.getElementById(`${type}MetaSize`).textContent = `${JSON.stringify(responseData).length} bytes`;
-        }
-
-        function formatResponse(data) {
-            if (!data) return 'No response data';
-            let html = '<div style="font-family: inherit;">';
-            const isSuccess = data.success === true || data.output === 'success';
-            html += `<div style="color: ${isSuccess ? '#059669' : '#dc2626'}; font-weight: 600; margin-bottom: 15px;">${isSuccess ? '✅ Success' : '❌ Error'}</div>`;
-            if (data.message) html += `<div style="margin-bottom: 15px;"><strong>Message:</strong> ${data.message}</div>`;
-            
-            html += '<pre style="white-space: pre-wrap; word-break: break-all; background: #f8fafc; padding: 15px; border-radius: 8px;">' + JSON.stringify(data, null, 2) + '</pre>';
-
-            if (data.error) html += `<div style="color: #dc2626; margin-bottom: 15px; margin-top: 15px;"><strong>Error:</strong> ${data.error}</div>`;
-            html += '</div>';
-            return html;
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            setupFileDrop();
-            showToast('Dataset Choice loaded successfully');
-        });
     </script>
 </body>
 </html>

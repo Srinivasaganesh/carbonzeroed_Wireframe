@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SustainIQ - Login</title>
+    <title>SustainIQ - Unified Intelligence Platform</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
@@ -14,1074 +14,2229 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
             height: 100vh;
             overflow: hidden;
-            background: linear-gradient(135deg, #0f172a 0%, #134e4a 25%, #15803d 50%, #16a34a 75%, #22c55e 100%);
-            position: relative;
         }
 
-        /* Enhanced animated background particles */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .particle {
-            position: absolute;
-            background: rgba(34, 197, 94, 0.15);
-            border-radius: 50%;
-            animation: float 8s ease-in-out infinite;
-        }
-
-        .leaf-particle {
-            background: transparent;
-            font-size: 20px;
-            animation: leafFloat 12s ease-in-out infinite;
-        }
-
-        .particle:nth-child(1) { width: 6px; height: 6px; left: 10%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 4px; height: 4px; left: 20%; animation-delay: 2s; }
-        .particle:nth-child(3) { width: 8px; height: 8px; left: 30%; animation-delay: 4s; }
-        .particle:nth-child(4) { width: 5px; height: 5px; left: 40%; animation-delay: 1s; }
-        .particle:nth-child(5) { width: 7px; height: 7px; left: 50%; animation-delay: 3s; }
-        .particle:nth-child(6) { width: 4px; height: 4px; left: 60%; animation-delay: 5s; }
-        .particle:nth-child(7) { width: 6px; height: 6px; left: 70%; animation-delay: 2.5s; }
-        .particle:nth-child(8) { width: 5px; height: 5px; left: 80%; animation-delay: 4.5s; }
-        .particle:nth-child(9) { width: 3px; height: 3px; left: 90%; animation-delay: 1.5s; }
-
-        .leaf-particle:nth-child(10) { left: 15%; animation-delay: 0s; }
-        .leaf-particle:nth-child(11) { left: 35%; animation-delay: 3s; }
-        .leaf-particle:nth-child(12) { left: 55%; animation-delay: 6s; }
-        .leaf-particle:nth-child(13) { left: 75%; animation-delay: 9s; }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes leafFloat {
-            0%, 100% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            5% {
-                opacity: 0.8;
-            }
-            95% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(-100px) rotate(180deg);
-                opacity: 0;
-            }
-        }
-
-        /* Main container */
-        .login-container {
+        .dashboard-container {
             display: flex;
             height: 100vh;
-            position: relative;
-            z-index: 2;
+            background: #ffffff;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
         }
 
-        /* Left side - Branding with better integration */
-        .branding-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 60px;
+        /* Sidebar Styling */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #06402B 0%, #0a5d35 50%, #0f7a40 100%);
+            color: white;
+            padding: 0;
             position: relative;
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(19, 78, 74, 0.9) 50%, rgba(21, 128, 61, 0.8) 100%);
-            backdrop-filter: blur(10px);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
         }
 
-        .branding-section::before {
+        .sidebar::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="sustainPattern" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="15" cy="15" r="1" fill="rgba(34,197,94,0.1)"/><path d="M10,10 Q15,5 20,10 Q15,15 10,10" fill="none" stroke="rgba(34,197,94,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23sustainPattern)"/></svg>');
-            opacity: 0.4;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="50" r="0.3" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="90" r="0.4" fill="rgba(255,255,255,0.08)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
         }
 
         .logo-section {
-            text-align: center;
-            margin-bottom: 40px;
-            z-index: 1;
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
+            z-index: 1;
         }
 
-        /* Enhanced logo with sustainability theme */
-        .main-logo {
-            width: 140px;
-            height: 140px;
-            background: linear-gradient(135deg, #22c55e 0%, #16a34a 50%, #15803d 100%);
-            border-radius: 35px;
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #0f7a40, #06402B);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 70px;
-            margin: 0 auto 30px;
-            box-shadow: 0 25px 50px rgba(21, 128, 61, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            animation: logoFloat 4s ease-in-out infinite;
-            position: relative;
-            overflow: hidden;
-            border: 3px solid rgba(255, 255, 255, 0.1);
+            margin-right: 12px;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(6, 64, 43, 0.3);
         }
 
-        .main-logo::before {
+        .nav-section {
+            padding: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-header {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 20px 15px;
+            margin-top: 20px;
+        }
+
+        .nav-header:first-child {
+            margin-top: 0;
+        }
+
+        .nav-item {
+            margin: 4px 12px;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: #d1fae5;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        .nav-link:hover::before {
+            transform: scaleY(1);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 20px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .sub-nav {
+            margin-left: 20px;
+            margin-top: 8px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sub-nav-item {
+            margin: 2px 0;
+        }
+
+        .sub-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .sub-nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sub-nav-link.active {
+            color: #d1fae5;
+            background: rgba(209, 250, 229, 0.1);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            background: #ffffff;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            background: linear-gradient(135deg, #06402B, #0f7a40);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f3f4f6;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .content-area {
+            flex: 1;
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* All Interface Sections */
+        .interface-section {
+            padding: 30px;
+            min-height: 100%;
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .interface-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100%;
+            text-align: center;
+            padding: 60px 30px;
+        }
+
+        .welcome-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            color: #06402B;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(209, 250, 229, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .welcome-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .welcome-subtitle {
+            font-size: 18px;
+            color: #d1fae5;
+            max-width: 600px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* Feature Cards Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            max-width: 1000px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .feature-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        /* Card Styling */
+        .interface-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        .interface-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .interface-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 12px;
+        }
+
+        .interface-description {
+            font-size: 16px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* Webhook Configuration */
+        .webhook-config {
+            background: rgba(6, 64, 43, 0.05);
+            border: 1px solid rgba(6, 64, 43, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .webhook-config h3 {
+            color: #06402B;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .webhook-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+
+        .webhook-input:focus {
+            outline: none;
+            border-color: #06402B;
+            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
+        }
+
+        /* File Drop Zone */
+        .file-drop-zone {
+            border: 3px dashed #d1d5db;
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .file-drop-zone::before {
             content: '';
             position: absolute;
             top: -50%;
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-            transform: rotate(45deg);
-            animation: logoShine 6s ease-in-out infinite;
+            background: radial-gradient(circle, rgba(6, 64, 43, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .main-logo::after {
-            content: '🌱';
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        .file-drop-zone:hover {
+            border-color: #06402B;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .file-drop-zone:hover::before {
+            opacity: 1;
+        }
+
+        .file-drop-zone.dragover {
+            border-color: #0a5d35;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            transform: scale(1.02);
+        }
+
+        .drop-icon {
+            font-size: 64px;
+            color: #9ca3af;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .file-drop-zone:hover .drop-icon {
+            color: #06402B;
+            transform: scale(1.1);
+        }
+
+        .drop-text {
             font-size: 20px;
-            opacity: 0.7;
-            animation: pulse 3s ease-in-out infinite;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
         }
 
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
-            25% { transform: translateY(-8px) rotate(1deg) scale(1.02); }
-            75% { transform: translateY(-5px) rotate(-1deg) scale(1.01); }
+        .drop-subtext {
+            font-size: 14px;
+            color: #6b7280;
         }
 
-        @keyframes logoShine {
-            0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.2); opacity: 1; }
-        }
-
-        .brand-title {
-            font-size: 52px;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, #ffffff 0%, #a7f3d0 50%, #22c55e 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            letter-spacing: -1px;
-        }
-
-        .brand-subtitle {
-            font-size: 22px;
-            color: #a7f3d0;
-            font-weight: 400;
-            margin-bottom: 50px;
-            opacity: 0.95;
-            letter-spacing: 0.5px;
-        }
-
-        /* Enhanced sustainability visual with complex animation */
-        .sustainability-visual {
-            width: 320px;
-            height: 220px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(167, 243, 208, 0.15) 100%);
-            border-radius: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 40px;
-            backdrop-filter: blur(5px);
-        }
-
-        /* Enhanced Earth with more details */
-        .earth-ecosystem {
-            position: relative;
-            width: 120px;
-            height: 120px;
-        }
-
-        .earth {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #3b82f6 0%, #22c55e 30%, #16a34a 70%, #15803d 100%);
-            border-radius: 50%;
-            position: relative;
-            animation: earthRotate 15s linear infinite;
-            box-shadow: 
-                0 0 40px rgba(34, 197, 94, 0.6),
-                inset -20px -10px 0 rgba(21, 128, 61, 0.3);
-            margin: 10px;
-        }
-
-        /* Continent shapes */
-        .earth::before {
-            content: '';
-            position: absolute;
-            top: 20%;
-            left: 25%;
-            width: 30%;
-            height: 35%;
-            background: #15803d;
-            border-radius: 60% 40% 70% 30%;
-            transform: rotate(20deg);
-            box-shadow: 
-                15px 10px 0 -5px #166534,
-                -10px 20px 0 -3px #166534;
-        }
-
-        .earth::after {
-            content: '';
-            position: absolute;
-            bottom: 25%;
-            right: 20%;
-            width: 25%;
-            height: 30%;
-            background: #166534;
-            border-radius: 50% 30% 60% 40%;
-            transform: rotate(-45deg);
-        }
-
-        /* Orbital rings with plants */
-        .orbit-ring {
-            position: absolute;
-            border: 2px solid rgba(167, 243, 208, 0.4);
-            border-radius: 50%;
-            animation: orbitRotate 12s linear infinite;
-        }
-
-        .orbit-ring:nth-child(1) {
-            width: 140px;
-            height: 140px;
-            top: -10px;
-            left: -10px;
-        }
-
-        .orbit-ring:nth-child(2) {
-            width: 160px;
-            height: 160px;
-            top: -20px;
-            left: -20px;
-            animation-duration: 18s;
-            animation-direction: reverse;
-        }
-
-        .orbit-element {
-            position: absolute;
-            font-size: 16px;
-            animation: keepUpright 12s linear infinite reverse;
-        }
-
-        .orbit-element:nth-child(1) { top: -8px; left: 50%; transform: translateX(-50%); }
-        .orbit-element:nth-child(2) { top: 50%; right: -8px; transform: translateY(-50%); }
-        .orbit-element:nth-child(3) { bottom: -8px; left: 50%; transform: translateX(-50%); }
-        .orbit-element:nth-child(4) { top: 50%; left: -8px; transform: translateY(-50%); }
-
-        @keyframes earthRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes orbitRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes keepUpright {
-            0% { transform: rotate(0deg) translateX(-50%); }
-            100% { transform: rotate(-360deg) translateX(-50%); }
-        }
-
-        /* Floating icons around the ecosystem */
-        .floating-icon {
-            position: absolute;
-            font-size: 24px;
-            animation: floatAround 8s ease-in-out infinite;
-            opacity: 0.8;
-        }
-
-        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-        .floating-icon:nth-child(2) { top: 15%; right: 15%; animation-delay: 2s; }
-        .floating-icon:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 4s; }
-        .floating-icon:nth-child(4) { bottom: 10%; right: 10%; animation-delay: 6s; }
-
-        @keyframes floatAround {
-            0%, 100% { transform: translateY(0px) scale(1); }
-            50% { transform: translateY(-15px) scale(1.1); }
-        }
-
-        .features-list {
-            text-align: left;
-            color: rgba(255, 255, 255, 0.9);
-            z-index: 1;
-            position: relative;
+        .file-input {
             display: none;
         }
 
-        .feature-item {
+        /* Progress Section */
+        .progress-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .progress-steps {
             display: flex;
-            align-items: center;
-            margin-bottom: 18px;
-            font-size: 17px;
-            opacity: 0;
-            animation: slideInLeft 0.8s ease-out forwards;
-            font-weight: 500;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
         }
 
-        .feature-item:nth-child(1) { animation-delay: 0.3s; }
-        .feature-item:nth-child(2) { animation-delay: 0.6s; }
-        .feature-item:nth-child(3) { animation-delay: 0.9s; }
-        .feature-item:nth-child(4) { animation-delay: 1.2s; }
-
-        .feature-icon {
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(21, 128, 61, 0.2));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            color: #a7f3d0;
-            font-size: 14px;
-            border: 1px solid rgba(167, 243, 208, 0.3);
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Right side - Login Form with better integration */
-        .login-section {
-            flex: 1;
+        .progress-step {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 60px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 253, 244, 0.95) 100%);
-            backdrop-filter: blur(10px);
+            flex: 1;
             position: relative;
         }
 
-        .login-section::before {
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+
+        .progress-step.completed::after {
+            background: #06402B;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .step-circle.active {
+            background: #06402B;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .step-circle.completed {
+            background: #06402B;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .step-circle.active + .step-label,
+        .step-circle.completed + .step-label {
+            color: #06402B;
+            font-weight: 600;
+        }
+
+        /* API Status Display */
+        .api-status {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .api-status h4 {
+            margin-bottom: 15px;
+            color: #1f2937;
+            font-size: 16px;
+        }
+
+        .api-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #e5e7eb;
+        }
+
+        .api-item.loading {
+            border-left-color: #fbbf24;
+        }
+
+        .api-item.success {
+            border-left-color: #06402B;
+        }
+
+        .api-item.error {
+            border-left-color: #ef4444;
+        }
+
+        .api-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .api-status-text {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .api-status-text.loading {
+            color: #fbbf24;
+        }
+
+        .api-status-text.success {
+            color: #06402B;
+        }
+
+        .api-status-text.error {
+            color: #ef4444;
+        }
+
+        /* Files Preview */
+        .files-preview {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .file-item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .file-item:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #06402B, #0a5d35);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin-right: 16px;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .file-details {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Categories Section */
+        .categories-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .categories-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .categories-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .categories-description {
+            font-size: 16px;
+            color: #6b7280;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
+        .category-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(34, 197, 94, 0.02) 0%, rgba(21, 128, 61, 0.03) 100%);
-            pointer-events: none;
+            height: 4px;
+            background: linear-gradient(90deg, #06402B, #0a5d35);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
-        .login-form-container {
-            width: 100%;
-            max-width: 420px;
-            z-index: 1;
-            position: relative;
+        .category-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
         }
 
-        .login-header {
-            text-align: center;
-            margin-bottom: 40px;
+        .category-card:hover::before {
+            transform: scaleX(1);
         }
 
-        .login-title {
-            font-size: 34px;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #22c55e 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-
-        .login-subtitle {
-            font-size: 17px;
-            color: #6b7280;
-            font-weight: 400;
-        }
-
-        .login-form {
+        .category-header {
             display: flex;
-            flex-direction: column;
-            gap: 26px;
+            align-items: center;
+            margin-bottom: 16px;
         }
 
-        .form-group {
-            position: relative;
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 16px;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
         }
 
-        .form-label {
-            display: block;
-            font-size: 15px;
+        .category-title {
+            font-size: 18px;
             font-weight: 600;
-            color: #374151;
-            margin-bottom: 10px;
+            color: #1f2937;
         }
 
-        .form-input {
+        .category-textarea {
             width: 100%;
-            padding: 18px 22px;
-            padding-left: 55px;
+            min-height: 120px;
+            padding: 16px;
             border: 2px solid #e5e7eb;
-            border-radius: 14px;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.9);
-            outline: none;
-        }
-
-        .form-input:focus {
-            border-color: #16a34a;
-            box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
-            transform: translateY(-2px);
-            background: #ffffff;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            margin-top: 18px;
-        }
-
-        .form-input:focus + .input-icon {
-            color: #16a34a;
-        }
-
-        .password-toggle {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            margin-top: 18px;
-        }
-
-        .password-toggle:hover {
-            color: #16a34a;
-        }
-
-        .form-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-radius: 12px;
             font-size: 14px;
-        }
-
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #6b7280;
-        }
-
-        .checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #d1d5db;
-            border-radius: 5px;
-            cursor: pointer;
-            position: relative;
+            resize: vertical;
             transition: all 0.3s ease;
+            font-family: inherit;
+            line-height: 1.5;
         }
 
-        .checkbox:checked {
-            background: #16a34a;
-            border-color: #16a34a;
+        .category-textarea:focus {
+            outline: none;
+            border-color: #06402B;
+            box-shadow: 0 0 0 4px rgba(6, 64, 43, 0.1);
         }
 
-        .checkbox:checked::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
+        .category-textarea::placeholder {
+            color: #9ca3af;
         }
 
-        .forgot-password {
-            color: #16a34a;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
+        /* Submit Section */
+        .submit-section {
+            display: none;
+            margin-top: 30px;
+            text-align: center;
         }
 
-        .forgot-password:hover {
-            color: #15803d;
-            text-decoration: underline;
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        .submit-button {
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
             color: white;
             border: none;
-            border-radius: 14px;
+            padding: 18px 48px;
+            border-radius: 16px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 0 10px 30px rgba(22, 163, 74, 0.3);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(6, 64, 43, 0.3);
         }
 
-        .login-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(6, 64, 43, 0.4);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Forms and Controls */
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .form-col {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-input {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: #ffffff;
         }
 
-        .login-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(22, 163, 74, 0.4);
+        .form-input:focus {
+            outline: none;
+            border-color: #06402B;
+            box-shadow: 0 0 0 3px rgba(6, 64, 43, 0.1);
         }
 
-        .login-button:hover::before {
-            left: 100%;
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
         }
 
-        .login-button:active {
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #06402B 0%, #0a5d35 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(6, 64, 43, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(6, 64, 43, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
             transform: translateY(-1px);
         }
 
-        .social-login {
-            margin-top: 35px;
-            text-align: center;
-        }
-
-        .social-divider {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-            color: #9ca3af;
-            font-size: 14px;
-        }
-
-        .social-divider::before,
-        .social-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e5e7eb;
-        }
-
-        .social-divider span {
-            padding: 0 18px;
-        }
-
-        .social-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-button {
-            flex: 1;
-            padding: 14px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .social-button:hover {
-            border-color: #16a34a;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .social-button.google { color: #ea4335; }
-        .social-button.microsoft { color: #00a1f1; }
-        .social-button.apple { color: #000000; }
-
-        .signup-link {
-            margin-top: 35px;
-            text-align: center;
-            font-size: 15px;
-            color: #6b7280;
-        }
-
-        .signup-link a {
-            color: #16a34a;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .signup-link a:hover {
-            color: #15803d;
-            text-decoration: underline;
-        }
-
-        /* Loading animation */
-        .loading {
+        .btn.loading {
             position: relative;
             pointer-events: none;
-            opacity: 0.8;
+            opacity: .85;
         }
 
-        .loading::after {
+        .btn.loading:after {
             content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 22px;
-            height: 22px;
-            margin: -11px 0 0 -11px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top-color: #ffffff;
+            right: 10px;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.7);
+            border-top-color: rgba(255,255,255,0.1);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin .7s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
-        /* Toast notification */
-        .toast {
-            position: fixed;
-            top: 25px;
-            right: 25px;
-            padding: 18px 24px;
-            background: #16a34a;
-            color: white;
+        /* Status Messages */
+        .status-message {
+            margin-top: 20px;
+            padding: 16px 20px;
             border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .status-success {
+            background: rgba(6, 64, 43, 0.1);
+            border: 1px solid rgba(6, 64, 43, 0.3);
+            color: #06402B;
+        }
+
+        .status-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #991b1b;
+        }
+
+        .status-info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #1e40af;
+        }
+
+        /* HTML Actions Section */
+        .html-actions-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 1px solid #bbf7d0;
+            border-radius: 16px;
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .html-actions-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .html-actions-title {
+            color: #06402B;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .html-actions-subtitle {
+            color: #059669;
+            font-size: 14px;
+        }
+
+        .html-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .html-action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .html-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .html-action-btn.preview {
+            color: #3b82f6;
+            border: 1px solid #93c5fd;
+        }
+
+        .html-action-btn.open {
+            color: #06402B;
+            border: 1px solid #bbf7d0;
+        }
+
+        .html-action-btn.download {
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        .html-action-btn.copy {
+            color: #8b5cf6;
+            border: 1px solid #c4b5fd;
+        }
+
+        /* Tables */
+        .table-container {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            display: none;
+        }
+
+        .table-container.active {
+            display: block;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #06402B, #0a5d35);
+            color: white;
+            padding: 1rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table td {
+            padding: 0.875rem 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+            color: #374151;
+        }
+
+        .data-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .cell-ellipsis {
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .editable {
+            cursor: pointer;
+            background-color: #f9fafb;
+        }
+
+        .editable:hover {
+            background-color: rgba(6, 64, 43, 0.05);
+        }
+
+        .saving {
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        /* Pagination */
+        .pagination-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pagination-info {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .pagination-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .pagination-buttons button {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            background: #ffffff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-buttons button:hover:not(:disabled) {
+            background: #f9fafb;
+            border-color: #06402B;
+        }
+
+        .pagination-buttons button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-indicator {
+            padding: 0.5rem 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .page-size-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.875rem;
+        }
+
+        /* Loading States */
+        .loading-container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .loading-container.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e5e7eb;
+            border-left-color: #06402B;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        .loading-text {
+            color: #6b7280;
             font-weight: 500;
         }
 
-        .toast.show {
-            transform: translateX(0);
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #06402B;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
         }
 
-        .toast.error {
-            background: #ef4444;
+        /* API Response Display */
+        .response-section {
+            margin-top: 30px;
+            display: none;
         }
 
-        /* Responsive design */
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+
+        .response-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .response-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-button {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: #f9fafb;
+            border-color: #06402B;
+        }
+
+        .response-container {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .response-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .response-tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .response-tab:first-child {
+            border-radius: 16px 0 0 0;
+        }
+
+        .response-tab.active {
+            color: #06402B;
+            border-bottom-color: #06402B;
+            background: #ffffff;
+        }
+
+        .response-content {
+            padding: 25px;
+        }
+
+        .response-panel {
+            display: none;
+        }
+
+        .response-panel.active {
+            display: block;
+        }
+
+        .response-raw {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .response-formatted {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .response-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .meta-value {
+            font-size: 14px;
+            color: #1f2937;
+            font-weight: 500;
+        }
+
+        /* Controls Section */
+        .controls-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .connection-status {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .status-label {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 0.875rem;
+        }
+
+        .status-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Placeholder Content */
+        .placeholder-content {
+            padding: 60px 40px;
+            text-align: center;
+            color: #ffffff;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive Design */
         @media (max-width: 1024px) {
-            .login-container {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .interface-section {
+                padding: 20px;
+            }
+            
+            .form-row {
                 flex-direction: column;
             }
             
-            .branding-section {
-                padding: 40px;
-                min-height: 45vh;
-            }
-            
-            .login-section {
-                padding: 40px;
-                min-height: 55vh;
-            }
-            
-            .brand-title {
-                font-size: 42px;
-            }
-            
-            .main-logo {
-                width: 100px;
-                height: 100px;
-                font-size: 50px;
+            .form-col {
+                min-width: auto;
             }
         }
 
         @media (max-width: 768px) {
-            .branding-section,
-            .login-section {
-                padding: 30px;
+            .sidebar {
+                width: 60px;
             }
             
-            .login-form-container {
-                max-width: 100%;
+            .nav-text {
+                display: none;
             }
             
-            .social-buttons {
+            .sub-nav {
+                display: none;
+            }
+            
+            .interface-section {
+                padding: 15px;
+            }
+            
+            .interface-card {
+                padding: 30px 20px;
+            }
+            
+            .welcome-screen {
+                padding: 40px 20px;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .progress-step::after {
+                display: none;
+            }
+
+            .html-actions {
                 flex-direction: column;
             }
-            
-            .sustainability-visual {
-                width: 280px;
-                height: 180px;
+
+            .html-action-btn {
+                width: 100%;
             }
-            
-            .earth-ecosystem {
-                width: 90px;
-                height: 90px;
+
+            .controls-section {
+                flex-direction: column;
+                align-items: stretch;
             }
-            
-            .earth {
-                width: 70px;
-                height: 70px;
+
+            .pagination-controls {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
             }
         }
     </style>
 </head>
 <body>
-    <div class="particles">
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="particle"></div>
-        <div class="leaf-particle">🍃</div>
-        <div class="leaf-particle">🌿</div>
-        <div class="leaf-particle">🌱</div>
-        <div class="leaf-particle">🍀</div>
-    </div>
-
-    <div class="login-container">
-        <!-- Left side - Enhanced Branding -->
-        <div class="branding-section">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
             <div class="logo-section">
-                <div class="main-logo">
-                    🌍
+                <div class="logo" onclick="showInterface('welcome')">
+                    <div class="logo-icon">🌱</div>
+                    <span>SustainIQ</span>
                 </div>
-                <h1 class="brand-title">SustainIQ</h1>
-                <p class="brand-subtitle">Intelligent Sustainability Platform</p>
             </div>
 
-            <div class="sustainability-visual">
-                <div class="earth-ecosystem">
-                    <div class="earth"></div>
-                    <div class="orbit-ring">
-                        <div class="orbit-element">🌱</div>
-                        <div class="orbit-element">♻️</div>
-                        <div class="orbit-element">🌿</div>
-                        <div class="orbit-element">🍃</div>
-                    </div>
-                    <div class="orbit-ring">
-                        <div class="orbit-element">🌳</div>
-                        <div class="orbit-element">💧</div>
-                        <div class="orbit-element">☀️</div>
-                        <div class="orbit-element">🌸</div>
+            <nav class="nav-section">
+                <div class="nav-header">Data Intelligence</div>
+                
+                <!-- Data Extraction -->
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="extraction">
+                        <i class="nav-icon fas fa-upload"></i>
+                        <span class="nav-text">Data Extraction</span>
+                    </a>
+                    <div class="sub-nav">
+                        <div class="sub-nav-item">
+                            <a href="#" class="sub-nav-link" data-subsection="advanced-processing">Advanced Processing</a>
+                        </div>
+                        <div class="sub-nav-item">
+                            <a href="#" class="sub-nav-link" data-subsection="custom-agent">Custom Agent</a>
+                        </div>
                     </div>
                 </div>
-                <div class="floating-icon">⚡</div>
-                <div class="floating-icon">🔋</div>
-                <div class="floating-icon">🌾</div>
-                <div class="floating-icon">🦋</div>
-            </div>
 
-            <div class="features-list">
-                <div class="feature-item">
-                    <div class="feature-icon">📊</div>
-                    <span>Advanced Carbon Analytics</span>
+                <div class="nav-header">Data Management</div>
+                
+                <!-- Data Verification -->
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="verification">
+                        <i class="nav-icon fas fa-check-circle"></i>
+                        <span class="nav-text">Data Verification</span>
+                    </a>
                 </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🤖</div>
-                    <span>AI-Powered ESG Insights</span>
+
+                <div class="nav-header">Analysis Modules</div>
+
+                <!-- Emission Analysis -->
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="emission">
+                        <i class="nav-icon fas fa-chart-line"></i>
+                        <span class="nav-text">Emission Analysis</span>
+                    </a>
+                    <div class="sub-nav">
+                        <div class="sub-nav-item">
+                            <a href="#" class="sub-nav-link" data-subsection="dataset-choice">Dataset Choice</a>
+                        </div>
+                        <div class="sub-nav-item">
+                            <a href="#" class="sub-nav-link" data-subsection="emission-calculation">Emission Calculation</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="feature-item">
-                    <div class="feature-icon">📈</div>
-                    <span>Real-time Impact Monitoring</span>
+
+                <div class="nav-header">Reporting</div>
+
+                <!-- Report Generation -->
+                <div class="nav-item">
+                    <a href="#" class="nav-link" data-section="reporting">
+                        <i class="nav-icon fas fa-file-alt"></i>
+                        <span class="nav-text">Sustainability Reporting</span>
+                    </a>
                 </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🌍</div>
-                    <span>Global Sustainability Standards</span>
-                </div>
-            </div>
+            </nav>
         </div>
 
-        <!-- Right side - Login Form -->
-        <div class="login-section">
-            <div class="login-form-container">
-                <div class="login-header">
-                    <h2 class="login-title">Welcome Back</h2>
-                    <p class="login-subtitle">Sign in to your SustainIQ dashboard</p>
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="header">
+                <h1 class="header-title">Sustainability Intelligence Platform</h1>
+                <div class="header-actions">
+                    <div class="status-badge">
+                        <div class="status-dot"></div>
+                        <span>System Online</span>
+                    </div>
                 </div>
+            </header>
 
-                <form class="login-form" id="loginForm">
-                    <div class="form-group">
-                        <label class="form-label" for="email">Email Address</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            class="form-input" 
-                            placeholder="Enter your email address"
-                            required
-                        >
-                        <i class="fas fa-envelope input-icon"></i>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="password">Password</label>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            class="form-input" 
-                            placeholder="Enter your password"
-                            required
-                        >
-                        <i class="fas fa-lock input-icon"></i>
-                        <i class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
-                    </div>
-
-                    <div class="form-options">
-                        <label class="remember-me">
-                            <input type="checkbox" class="checkbox" id="remember">
-                            <span>Remember me</span>
-                        </label>
-                        <a href="#" class="forgot-password">Forgot password?</a>
-                    </div>
-
-                    <button type="submit" class="login-button" id="loginBtn">
-                        Sign In
-                    </button>
-                </form>
-
-                <div class="social-login">
-                    <div class="social-divider">
-                        <span>Or continue with</span>
-                    </div>
-                    <div class="social-buttons">
-                        <div class="social-button google" onclick="socialLogin('google')">
-                            <i class="fab fa-google"></i>
-                        </div>
-                        <div class="social-button microsoft" onclick="socialLogin('microsoft')">
-                            <i class="fab fa-microsoft"></i>
-                        </div>
-                        <div class="social-button apple" onclick="socialLogin('apple')">
-                            <i class="fab fa-apple"></i>
+            <div class="content-area">
+                <!-- Welcome Screen -->
+                <div id="welcome-screen" class="interface-section active">
+                    <div class="welcome-screen">
+                        <div class="welcome-icon">🌱</div>
+                        <h1 class="welcome-title">Welcome to SustainIQ</h1>
+                        <p class="welcome-subtitle">
+                            Your comprehensive sustainability intelligence platform with advanced data extraction, 
+                            verification, emission analysis, and automated reporting capabilities.
+                        </p>
+                        
+                        <div class="features-grid">
+                            <div class="feature-card" onclick="showInterface('advanced-processing')">
+                                <div class="feature-icon">📊</div>
+                                <div class="feature-title">Advanced Processing</div>
+                                <div class="feature-description">Smart sequential processing with intelligent HTML rendering</div>
+                            </div>
+                            <div class="feature-card" onclick="showInterface('custom-agent')">
+                                <div class="feature-icon">🤖</div>
+                                <div class="feature-title">Custom Agent</div>
+                                <div class="feature-description">Create AI agents for automated data extraction</div>
+                            </div>
+                            <div class="feature-card" onclick="showInterface('verification')">
+                                <div class="feature-icon">✅</div>
+                                <div class="feature-title">Data Verification</div>
+                                <div class="feature-description">Verify and validate sustainability data</div>
+                            </div>
+                            <div class="feature-card" onclick="showInterface('dataset-choice')">
+                                <div class="feature-icon">📈</div>
+                                <div class="feature-title">Emission Analysis</div>
+                                <div class="feature-description">Calculate and analyze carbon emissions</div>
+                            </div>
+                            <div class="feature-card" onclick="showInterface('reporting')">
+                                <div class="feature-icon">📄</div>
+                                <div class="feature-title">Sustainability Reports</div>
+                                <div class="feature-description">Generate comprehensive sustainability reports</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="signup-link">
-                    Don't have an account? <a href="#">Sign up here</a>
+                <!-- Advanced Processing Interface -->
+                <div id="advanced-processing-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Advanced Processing Pipeline</h2>
+                            <p class="interface-description">Smart sequential processing with intelligent HTML rendering and multiple fallback systems</p>
+                        </div>
+
+                        <!-- Progress Tracker -->
+                        <div class="progress-section" id="progressSection">
+                            <div class="progress-steps">
+                                <div class="progress-step" id="step1">
+                                    <div class="step-circle">1</div>
+                                    <div class="step-label">File Upload</div>
+                                </div>
+                                <div class="progress-step" id="step2">
+                                    <div class="step-circle">2</div>
+                                    <div class="step-label">Parallel Processing</div>
+                                </div>
+                                <div class="progress-step" id="step3">
+                                    <div class="step-circle">3</div>
+                                    <div class="step-label">Smart Extraction</div>
+                                </div>
+                            </div>
+
+                            <!-- API Status Display -->
+                            <div class="api-status" id="apiStatus">
+                                <h4>API Processing Status</h4>
+                                <div class="api-item" id="webhook1">
+                                    <span class="api-name">Processing Agent 1 (Energy_Utilities)</span>
+                                    <span class="api-status-text">Waiting...</span>
+                                </div>
+                                <div class="api-item" id="webhook2">
+                                    <span class="api-name">Processing Agent 2 (water_land)</span>
+                                    <span class="api-status-text">Waiting...</span>
+                                </div>
+                                <div class="api-item" id="webhook3">
+                                    <span class="api-name">Processing Agent 3 (Fuels_and_Combustion)</span>
+                                    <span class="api-status-text">Waiting...</span>
+                                </div>
+                                <div class="api-item" id="webhook4">
+                                    <span class="api-name">Processing Agent 4 (Mobility)</span>
+                                    <span class="api-status-text">Waiting...</span>
+                                </div>
+                                <div class="api-item" id="webhook5">
+                                    <span class="api-name">Processing Agent 5 (Procurement_and_waste)</span>
+                                    <span class="api-status-text">Waiting...</span>
+                                </div>
+                                <div class="api-item" id="extraction">
+                                    <span class="api-name">Smart Extraction API</span>
+                                    <span class="api-status-text">Waiting for all webhooks...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="advancedUploadForm">
+                            <div class="file-drop-zone" id="advancedDropZone">
+                                <input type="file" id="advancedFileInput" class="file-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.jpg,.png">
+                                <div class="drop-icon">📄</div>
+                                <div class="drop-text">Drop files here or click to browse</div>
+                                <div class="drop-subtext">Supports PDF, Word, Excel, CSV, and image files</div>
+                            </div>
+
+                            <div id="advancedFilesPreview" class="files-preview">
+                                <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Selected Files</h3>
+                                <div id="advancedFilesGrid" class="files-grid"></div>
+<div id="customAgentsPicker" class="files-preview" style="margin-top: 10px;; display:block">
+  <h4 style="font-size: 16px; font-weight:600; margin-bottom: 8px;">Select Custom Python Agents (optional)</h4>
+  <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+    <select id="customAgentsMulti" multiple size="4" style="min-width: 320px; max-width: 520px; padding:8px; border:1px solid #e5e7eb; border-radius:8px;">
+      <!-- populated dynamically -->
+    </select>
+    <button type="button" class="submit-button" id="refreshAgentsBtn" style="width:auto; padding:8px 12px;">Refresh</button>
+    <span id="customAgentsHint" style="color:#6b7280;">Hold Ctrl/Cmd to select multiple</span>
+  </div>
+<div id="customAgentsContexts" style="margin-top:14px; display:none;">
+  <h4 style="font-size:16px; font-weight:600; margin-bottom:8px;">Custom Agent Context (optional)</h4>
+  <div id="customAgentsContextsGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:12px;"></div>
+</div>
+
+</div>
+
+                                <div id="advancedFilenames" style="margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 8px;">
+                                    <h4 style="color: #06402B; margin-bottom: 10px;">Filenames for extraction (sent only if all webhooks succeed):</h4>
+                                    <div id="advancedFilenamesList" style="font-family: monospace; color: #374151;"></div>
+                                </div>
+                            </div>
+
+                            <div id="advancedCategoriesSection" class="categories-section">
+                                <div class="categories-header">
+                                    <h3 class="categories-title">Sustainability Categories</h3>
+                                    <p class="categories-description">Optional: Provide additional context for each sustainability category</p>
+                                </div>
+
+                                <div class="categories-grid">
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <div class="category-icon" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">⚡</div>
+                                            <div class="category-title">Energy & Utilities</div>
+                                        </div>
+                                        <textarea class="category-textarea" name="energy_utilities" placeholder="Describe energy consumption, utility usage, power generation, renewable energy initiatives..."></textarea>
+                                    </div>
+
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <div class="category-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">💧</div>
+                                            <div class="category-title">Water & Land Use</div>
+                                        </div>
+                                        <textarea class="category-textarea" name="water_land" placeholder="Document water consumption, land usage, irrigation, conservation efforts..."></textarea>
+                                    </div>
+
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <div class="category-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">🔥</div>
+                                            <div class="category-title">Fuels & Combustion</div>
+                                        </div>
+                                        <textarea class="category-textarea" name="fuels_combustion" placeholder="Report fuel usage, combustion processes, emissions, heating systems..."></textarea>
+                                    </div>
+
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <div class="category-icon" style="background: linear-gradient(135deg, #06402B, #0a5d35);">🚗</div>
+                                            <div class="category-title">Mobility</div>
+                                        </div>
+                                        <textarea class="category-textarea" name="mobility" placeholder="Detail transportation, vehicle usage, travel patterns, logistics..."></textarea>
+                                    </div>
+
+                                    <div class="category-card">
+                                        <div class="category-header">
+                                            <div class="category-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">♻️</div>
+                                            <div class="category-title">Procurement, Waste & Maintenance</div>
+                                        </div>
+                                        <textarea class="category-textarea" name="procurement_waste" placeholder="Describe procurement processes, waste management, maintenance activities..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="advancedSubmitSection" class="submit-section">
+                                <button type="submit" class="submit-button" id="advancedSubmitButton">
+                                    Start Advanced Processing
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="advancedStatusMessage" class="status-message"></div>
+
+                        <!-- Persistent HTML Actions Section -->
+                        <div id="advancedHtmlActionsSection" class="html-actions-section">
+                            <div class="html-actions-header">
+                                <div class="html-actions-title">HTML Report Ready</div>
+                                <div class="html-actions-subtitle">Choose how you want to view or save your results</div>
+                            </div>
+                            <div id="advancedHtmlActions" class="html-actions">
+                                <!-- Buttons will be added here -->
+                            </div>
+                        </div>
+
+                        <!-- API Response Display -->
+                        <div id="advancedResponseSection" class="response-section">
+                            <div class="response-header">
+                                <h3 class="response-title">Processing Results</h3>
+                                <div class="response-controls">
+                                    <button class="control-button" onclick="copyAdvancedResponse()">Copy</button>
+                                    <button class="control-button" onclick="clearAdvancedResponse()">Clear</button>
+                                </div>
+                            </div>
+                            <div class="response-container">
+                                <div class="response-tabs">
+                                    <div class="response-tab active" onclick="switchAdvancedTab(event, 'advanced-formatted')">Results</div>
+                                    <div class="response-tab" onclick="switchAdvancedTab(event, 'advanced-raw')">Raw Data</div>
+                                </div>
+                                <div class="response-content">
+                                    <div id="advanced-formatted" class="response-panel active">
+                                        <div id="advancedResponseFormatted" class="response-formatted">
+                                            No results yet. Start processing to see results here.
+                                        </div>
+                                    </div>
+                                    <div id="advanced-raw" class="response-panel">
+                                        <div id="advancedResponseRaw" class="response-raw">
+                                            No results yet. Start processing to see raw data here.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Custom Agent Interface -->
+                <div id="custom-agent-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Custom Agent Wizard</h2>
+                            <p class="interface-description">Create and deploy custom AI agents for automated data extraction workflows</p>
+                        </div>
+                        
+                        <!-- Agent Configuration -->
+                        <div class="form-row">
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">Agent Name</label>
+                                    <input type="text" id="agentName" class="form-input" placeholder="e.g., Packaging Waste Extractor">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Webhook Path</label>
+                                    <input type="text" id="agentPath" class="form-input" placeholder="custom-agents/packaging-waste">
+                                    <div class="form-hint">Auto-generated from agent name</div>
+                                </div>
+                                
+                            </div>
+                            <div class="form-col">
+                                <div class="form-group">
+                                    <label class="form-label">n8n Base URL</label>
+                                    <input type="text" id="n8nBaseUrl" class="form-input" value="http://localhost:5678">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">n8n API Key</label>
+                                    <input type="text" id="n8nApiKey" class="form-input" placeholder="Your n8n API key" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMmUwN2QxNy04NDJkLTQyZWEtYjQxYS00NDA5NDcxOGJiNWMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzU3NTg0NTMzfQ.YSM83QVKL_9c7sdIMTdla_u5PscKf-2zuGttNL6IXsI">
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        
+                        </div>
+
+                        <!-- Document Tool Prompt -->
+                        <div class="form-group">
+                            <label class="form-label">Document Tool Prompt</label>
+                            <textarea id="documentPrompt" class="form-input form-textarea" placeholder="Enter the instructions for the document tool here...">Extract sustainability data including carbon emissions, energy consumption, waste generation, and travel data from the provided document. Focus on numerical values, dates, locations, and categorical information needed for environmental impact calculations.</textarea>
+                            <div class="form-hint">Define what data the agent should extract from documents</div>
+                        </div>
+
+                        <!-- Collapsible Sections -->
+                        <details open>
+                            <summary style="cursor: pointer; font-weight: 600; padding: 0.75rem 0; color: #374151; border-bottom: 1px solid #e5e7eb; margin-bottom: 1rem;">Output JSON Schema</summary>
+                            <div class="form-group">
+                                <textarea id="jsonSchema" class="form-input" style="font-family: 'Monaco', 'Menlo', monospace; min-height: 200px;">{ 
+  "items": [
+    {
+      "category": null,
+      "date": null,
+      "service_type": null,
+      "fuel_type": null,
+      "material": null,
+      "waste_type": null,
+      "recharge_type": null,
+      "origin": null,
+      "destination": null,
+      "class_of_travel": null,
+      "no_of_passengers": null,
+      "trip_mode": null,
+      "vehicle_model": null,
+      "vehicle_make": null,
+      "site": null,
+      "account_type": null,
+      "consumption": null,
+      "unit": null,
+      "amount_spent": null,
+      "scope": null,
+      "file_name": null
+    }
+  ]
+}</textarea>
+                            </div>
+                        </details>
+
+                        <details>
+                            <summary style="cursor: pointer; font-weight: 600; padding: 0.75rem 0; color: #374151; border-bottom: 1px solid #e5e7eb; margin-bottom: 1rem;">System & User Defaults</summary>
+                            <div class="form-group">
+                                <label class="form-label">System Message</label>
+                                <textarea id="systemMessage" class="form-input form-textarea">You are a sustainability data extraction agent.
+Always return valid JSON only, no markdown, no commentary.
+Follow your agent-specific instructions strictly.
+Do not extract data outside your agent's assigned categories.
+Ignore all unrelated data even if similar fields exist elsewhere.
+If no relevant information is found, return: { "items": [] }</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">User Message Template</label>
+                                <textarea id="userMessage" class="form-input form-textarea">You are a carbon-data extraction agent. Your sole task is to extract fields that are potentially required to calculate a carbon footprint from any document.
+Do not normalize values. Return exactly as found.
+Be layout-robust (merged cells, multiple pages/sheets, rotated headers, multilingual).</textarea>
+                            </div>
+                        </details>
+
+                        <!-- Action Buttons -->
+                        <div class="form-row" style="margin-top: 2rem;">
+                            <button type="button" class="btn btn-primary" id="createAgentBtn" onclick="createCustomAgent()">
+                                <i class="fas fa-magic"></i>
+                                Create & Activate Workflow
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="previewJsonBtn" onclick="previewWorkflowJson()">
+                                <i class="fas fa-eye"></i>
+                                Preview Workflow JSON
+                            </button>
+                        </div>
+
+                        <!-- Results -->
+                        <div id="agentResults" style="margin-top: 2rem;"></div>
+                    </div>
+                </div>
+
+                <!-- Data Verification Interface -->
+                <div id="verification-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Data Verification</h2>
+                            <p class="interface-description">Verify and validate sustainability data for accuracy and compliance</p>
+                        </div>
+                        
+                        <!-- Controls -->
+                        <div class="controls-section">
+                            <div class="connection-status">
+                                <div class="status-label">Database Connection Status</div>
+                                <div class="status-text" id="connectionStatus">Ready to connect to database</div>
+                            </div>
+                            <div class="form-row" style="margin: 0; flex: 1; max-width: 600px;">
+                                <div class="form-col">
+                                    <input type="text" id="webhookUrl" class="form-input" placeholder="Enter n8n webhook URL" value="http://localhost:5678/webhook/data-verification">
+                                </div>
+                                <button type="button" class="btn btn-primary" id="loadDataBtn" onclick="loadVerificationData()">
+                                    <i class="fas fa-database"></i>
+                                    Load Database Records
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Loading -->
+                        <div id="loadingContainer" class="loading-container">
+                            <div>
+                                <div class="spinner"></div>
+                                <div class="loading-text">Loading database records...</div>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <div id="dataTableContainer" class="table-container">
+                            <div class="table-wrapper">
+                                <table id="dataTable" class="data-table">
+                                    <thead id="tableHeader"></thead>
+                                    <tbody id="tableBody"></tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="pagination-controls">
+                                <div class="pagination-info">
+                                    <span id="recordsInfo">Showing 0 of 0 records</span>
+                                </div>
+                                <div class="pagination-buttons">
+                                    <button onclick="goToFirstPage()" id="firstPageBtn">
+                                        <i class="fas fa-angle-double-left"></i>
+                                    </button>
+                                    <button onclick="goToPreviousPage()" id="prevPageBtn">
+                                        <i class="fas fa-angle-left"></i>
+                                    </button>
+                                    <span id="pageIndicator" class="page-indicator">1 / 1</span>
+                                    <button onclick="goToNextPage()" id="nextPageBtn">
+                                        <i class="fas fa-angle-right"></i>
+                                    </button>
+                                    <button onclick="goToLastPage()" id="lastPageBtn">
+                                        <i class="fas fa-angle-double-right"></i>
+                                    </button>
+                                </div>
+                                <div class="page-size-controls">
+                                    <label for="pageSizeSelect">Rows per page:</label>
+                                    <select id="pageSizeSelect" class="form-input form-select" onchange="changePageSize(this.value)" style="width: auto; min-width: 80px;">
+                                        <option value="10">10</option>
+                                        <option value="25" selected>25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dataset Choice Interface -->
+                <div id="dataset-choice-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Emission Factor Dataset Upload</h2>
+                            <p class="interface-description">Upload an emission factor dataset to begin the analysis and calculation process.</p>
+                        </div>
+
+                        <!-- Step 1: Upload Dataset -->
+                        <div class="webhook-config">
+                            <h3>Dataset Upload Webhook</h3>
+                            <input type="text" class="webhook-input" id="datasetWebhookUrl" placeholder="Enter your dataset upload webhook URL here..." />
+                        </div>
+
+                        <form id="datasetUploadForm">
+                            <div class="file-drop-zone" id="datasetDropZone">
+                                <input type="file" id="datasetFileInput" class="file-input" accept=".csv,.xls,.xlsx">
+                                <div class="drop-icon">📊</div>
+                                <div class="drop-text">Drop your dataset file here or click to browse</div>
+                                <div class="drop-subtext">Supports CSV, XLS, and XLSX files</div>
+                            </div>
+
+                            <div id="datasetFilesPreview" class="files-preview">
+                                <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Selected Dataset</h3>
+                                <div id="datasetFilesGrid" class="files-grid"></div>
+                            </div>
+
+                            <div id="datasetSubmitSection" class="submit-section">
+                                <button type="submit" class="submit-button" id="datasetSubmitButton">Upload Dataset</button>
+                            </div>
+                        </form>
+
+                        <div id="datasetStatusMessage" class="status-message"></div>
+
+                        <div id="datasetResponseSection" class="response-section">
+                            <div class="response-header">
+                                <h3 class="response-title">Dataset Upload Response</h3>
+                                <div class="response-controls">
+                                    <button class="control-button" onclick="copyResponse('dataset')">Copy</button>
+                                    <button class="control-button" onclick="clearResponse('datasetResponseSection')">Clear</button>
+                                </div>
+                            </div>
+                            <div class="response-container">
+                                <div class="response-tabs">
+                                    <div class="response-tab active" data-type="dataset" onclick="switchTab(event, 'dataset-formatted')">Formatted</div>
+                                    <div class="response-tab" data-type="dataset" onclick="switchTab(event, 'dataset-raw')">Raw JSON</div>
+                                    <div class="response-tab" data-type="dataset" onclick="switchTab(event, 'dataset-meta')">Metadata</div>
+                                </div>
+                                <div class="response-content">
+                                    <div id="dataset-formatted" class="response-panel active">
+                                        <div id="datasetResponseFormatted" class="response-formatted">Waiting for dataset upload...</div>
+                                    </div>
+                                    <div id="dataset-raw" class="response-panel">
+                                        <pre id="datasetResponseRaw" class="response-raw">Waiting for dataset upload...</pre>
+                                    </div>
+                                    <div id="dataset-meta" class="response-panel">
+                                        <div id="datasetResponseMeta" class="response-meta">
+                                            <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value" id="datasetMetaStatus">-</span></div>
+                                            <div class="meta-item"><span class="meta-label">Time</span><span class="meta-value" id="datasetMetaTime">-</span></div>
+                                            <div class="meta-item"><span class="meta-label">Type</span><span class="meta-value" id="datasetMetaType">-</span></div>
+                                            <div class="meta-item"><span class="meta-label">Size</span><span class="meta-value" id="datasetMetaSize">-</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Calculate Emission Factor -->
+                        <div id="emissionCalculationSection" style="display: none; margin-top: 40px; border-top: 1px solid #e5e7eb; padding-top: 40px;">
+                            <div class="interface-header">
+                                <h3 class="categories-title">Emission Factor Calculation</h3>
+                                <p class="categories-description">Dataset successfully processed. You can now proceed with the calculation.</p>
+                            </div>
+                            <div class="submit-section" style="display: block;">
+                                <button type="button" class="submit-button" id="calculateEmissionButton">
+                                    Calculate Emission Factor
+                                </button>
+                            </div>
+
+                            <div id="calculationStatusMessage" class="status-message"></div>
+
+                            <div id="calculationResponseSection" class="response-section">
+                                <div class="response-header">
+                                    <h3 class="response-title">Calculation Response</h3>
+                                    <div class="response-controls">
+                                        <button class="control-button" onclick="copyResponse('calculation')">Copy</button>
+                                        <button class="control-button" onclick="clearResponse('calculationResponseSection')">Clear</button>
+                                    </div>
+                                </div>
+                                <div class="response-container">
+                                    <div class="response-tabs">
+                                        <div class="response-tab active" data-type="calculation" onclick="switchTab(event, 'calculation-formatted')">Formatted</div>
+                                        <div class="response-tab" data-type="calculation" onclick="switchTab(event, 'calculation-raw')">Raw JSON</div>
+                                        <div class="response-tab" data-type="calculation" onclick="switchTab(event, 'calculation-meta')">Metadata</div>
+                                    </div>
+                                    <div class="response-content">
+                                        <div id="calculation-formatted" class="response-panel active">
+                                            <div id="calculationResponseFormatted" class="response-formatted">Waiting for calculation to be triggered...</div>
+                                        </div>
+                                        <div id="calculation-raw" class="response-panel">
+                                            <pre id="calculationResponseRaw" class="response-raw">Waiting for calculation to be triggered...</pre>
+                                        </div>
+                                        <div id="calculation-meta" class="response-panel">
+                                            <div id="calculationResponseMeta" class="response-meta">
+                                                <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value" id="calculationMetaStatus">-</span></div>
+                                                <div class="meta-item"><span class="meta-label">Time</span><span class="meta-value" id="calculationMetaTime">-</span></div>
+                                                <div class="meta-item"><span class="meta-label">Type</span><span class="meta-value" id="calculationMetaType">-</span></div>
+                                                <div class="meta-item"><span class="meta-label">Size</span><span class="meta-value" id="calculationMetaSize">-</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emission Calculation Interface -->
+                <div id="emission-calculation-interface" class="interface-section">
+                    <div class="interface-card">
+                        <div class="interface-header">
+                            <h2 class="interface-title">Emission Analysis Prompts</h2>
+                            <p class="interface-description">Configure AI prompts for emission analysis and calculations</p>
+                        </div>
+
+                        <div class="webhook-config">
+                            <h3>Emission Analysis Webhook</h3>
+                            <input type="text" class="webhook-input" id="emissionWebhookUrl" 
+                                   value="http://localhost:5678/webhook/457366eb-f988-4d3c-a301-9d2f0df8f3a6" 
+                                   placeholder="Enter emission analysis webhook URL..." />
+                            <small style="color: #6b7280; font-size: 12px; margin-top: 8px; display: block;">
+                                Configure webhook endpoint for emission analysis and prompt processing
+                            </small>
+                        </div>
+
+                        <div style="margin-top: 30px;">
+                            <h3 style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px;">Prompt Configuration</h3>
+                            
+                            <div class="category-card" style="margin-bottom: 20px;">
+                                <div class="category-header">
+                                    <div class="category-icon" style="background: linear-gradient(135deg, #06402B, #0a5d35);">🌡️</div>
+                                    <div class="category-title">Emission Calculation Prompts</div>
+                                </div>
+                                <textarea class="category-textarea" id="emissionPrompts" placeholder="Configure AI prompts for emission factor calculations, carbon footprint analysis, and GHG reporting..."></textarea>
+                            </div>
+
+                            <div class="submit-section" style="display: block; margin-top: 30px;">
+                                <button type="button" class="submit-button" onclick="submitEmissionPrompts()">
+                                    Update Emission Prompts
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="emissionStatusMessage" class="status-message"></div>
+
+                        <!-- API Response Display for Emission Prompts -->
+                        <div id="emissionResponseSection" class="response-section">
+                            <div class="response-header">
+                                <h3 class="response-title">Emission Prompts API Response</h3>
+                                <div class="response-controls">
+                                    <button class="control-button" onclick="copyResponse('emission')">Copy</button>
+                                    <button class="control-button" onclick="clearResponse('emissionResponseSection')">Clear</button>
+                                </div>
+                            </div>
+                            <div class="response-container">
+                                <div class="response-tabs">
+                                    <div class="response-tab active" data-type="emission" onclick="switchTab(event, 'emission-formatted')">Formatted</div>
+                                    <div class="response-tab" data-type="emission" onclick="switchTab(event, 'emission-raw')">Raw JSON</div>
+                                    <div class="response-tab" data-type="emission" onclick="switchTab(event, 'emission-meta')">Metadata</div>
+                                </div>
+                                <div class="response-content">
+                                    <div id="emission-formatted" class="response-panel active">
+                                        <div id="emissionResponseFormatted" class="response-formatted">
+                                            No response yet. Submit emission prompts to see the API response here.
+                                        </div>
+                                    </div>
+                                    <div id="emission-raw" class="response-panel">
+                                        <pre id="emissionResponseRaw" class="response-raw">
+                                            No response yet. Submit emission prompts to see the raw API response here.
+                                        </pre>
+                                    </div>
+                                    <div id="emission-meta" class="response-panel">
+                                        <div id="emissionResponseMeta" class="response-meta">
+                                            <div class="meta-item">
+                                                <span class="meta-label">Status</span>
+                                                <span class="meta-value" id="emissionMetaStatus">-</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="meta-label">Response Time</span>
+                                                <span class="meta-value" id="emissionMetaTime">-</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="meta-label">Content Type</span>
+                                                <span class="meta-value" id="emissionMetaType">-</span>
+                                            </div>
+                                            <div class="meta-item">
+                                                <span class="meta-label">Size</span>
+                                                <span class="meta-value" id="emissionMetaSize">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sustainability Reporting Interface -->
+                <div id="reporting-interface" class="interface-section active">
+				  <div class="interface-card">
+					<div class="interface-header">
+					  <h2 class="interface-title">Sustainability Reporting</h2>
+					  <p class="interface-description">Generate comprehensive sustainability reports and compliance documentation</p>
+					</div>
+
+					<div class="webhook-config">
+					  <h3>n8n Webhook URL</h3>
+					  <input id="n8nWebhookUrl" class="webhook-input" value="/report/generate" />
+					  <div class="form-hint">
+						Leave as <code>/report/generate</code> to use the new proxy.  
+						(Advanced: set to <code>/webhook/report</code> or a full n8n URL if you need direct access.)
+					  </div>
+					</div>
+
+					<div class="form-row" style="margin-top: 8px;">
+					  <button id="btnGenerateReport" class="btn btn-primary">
+						<i class="fas fa-play"></i> Generate Report
+					  </button>
+					  <button id="btnDownloadReport" class="btn btn-secondary" disabled>
+						<i class="fas fa-download"></i> Download
+					  </button>
+					</div>
+
+					<div id="reportStatus" class="status-message" style="display:none;"></div>
+
+					<div class="interface-card" style="padding:0; margin-top:16px;">
+					  <iframe id="reportIframe" style="width:100%; height:700px; border:0; display:none;"></iframe>
+					  <div id="reportEmptyState" style="padding:40px; text-align:center; color:#6b7280;">
+						<i class="fas fa-file-alt" style="font-size:40px; margin-bottom:12px;"></i>
+						<div>Your report will appear here.</div>
+					  </div>
+					</div>
+				  </div>
+				</div>
             </div>
         </div>
     </div>
-
-    <script>
-        // Password toggle functionality
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.querySelector('.password-toggle');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        }
-
-        // Show toast notification
-        function showToast(message, type = 'success') {
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => toast.classList.add('show'), 100);
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => document.body.removeChild(toast), 300);
-            }, 3000);
-        }
-
-        // Login form submission
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const loginBtn = document.getElementById('loginBtn');
-            
-            // Basic validation
-            if (!email || !password) {
-                showToast('Please fill in all fields', 'error');
-                return;
-            }
-            
-            // Show loading state
-            loginBtn.classList.add('loading');
-            loginBtn.textContent = '';
-            
-            // Simulate API call
-            setTimeout(() => {
-                loginBtn.classList.remove('loading');
-                loginBtn.textContent = 'Sign In';
-                
-                // Simulate successful login
-                if (email && password) {
-                    showToast('Login successful! Redirecting to dashboard...');
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
-                } else {
-                    showToast('Invalid email or password', 'error');
-                }
-            }, 2000);
-        });
-
-        // Social login functionality
-        function socialLogin(provider) {
-            showToast(`${provider.charAt(0).toUpperCase() + provider.slice(1)} login integration coming soon!`, 'error');
-        }
-
-        // Add focus animations
-        document.querySelectorAll('.form-input').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.classList.add('focused');
-            });
-            
-            input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.parentElement.classList.remove('focused');
-                }
-            });
-        });
-
-        // Initialize page with entrance animations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Staggered entrance animation for sections
-            setTimeout(() => {
-                document.querySelector('.login-section').style.opacity = '1';
-                document.querySelector('.login-section').style.transform = 'translateX(0)';
-            }, 500);
-
-            // Add dynamic particle effects
-            setInterval(() => {
-                const particles = document.querySelector('.particles');
-                const newParticle = document.createElement('div');
-                newParticle.className = Math.random() > 0.7 ? 'leaf-particle' : 'particle';
-                
-                if (newParticle.className === 'leaf-particle') {
-                    const leafEmojis = ['🍃', '🌿', '🌱', '🍀'];
-                    newParticle.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
-                } else {
-                    newParticle.style.width = Math.random() * 8 + 3 + 'px';
-                    newParticle.style.height = newParticle.style.width;
-                }
-                
-                newParticle.style.left = Math.random() * 100 + '%';
-                newParticle.style.animationDuration = (Math.random() * 8 + 8) + 's';
-                
-                particles.appendChild(newParticle);
-                
-                setTimeout(() => {
-                    if (particles.contains(newParticle)) {
-                        particles.removeChild(newParticle);
-                    }
-                }, 16000);
-            }, 3000);
-        });
-
-        // Add smooth scrolling and interactive effects
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Add interactive hover effects for feature items
-        document.querySelectorAll('.feature-item').forEach(item => {
-            item.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateX(10px)';
-                this.querySelector('.feature-icon').style.transform = 'scale(1.2)';
-            });
-            
-            item.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateX(0)';
-                this.querySelector('.feature-icon').style.transform = 'scale(1)';
-            });
-        });
-
-        // Add visual feedback for social buttons
-        document.querySelectorAll('.social-button').forEach(button => {
-            button.addEventListener('click', function() {
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = 'translateY(-3px)';
-                }, 150);
-            });
-        });
-    </script>
+<script src="./loginxx.js"></script>
 </body>
 </html>
